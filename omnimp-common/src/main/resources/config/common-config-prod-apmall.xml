@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>ONE-AP Common configuration</comment>
+
+	<!-- scheduler 매일 1시에 실행 -->
+	<entry key="scheduler.withdraw.cron"><![CDATA[0 0 1 * * ?]]></entry>
+	<entry key="scheduler.withdraw.cron.use">false</entry>
+	
+	<!-- logging filter -->
+	<entry key="logging.filter">false</entry>
+	<entry key="logging.resttemplate">true</entry>
+	
+	<!-- sms eai -->
+	<entry key="sms.url"><![CDATA[http://PRV-BO-LB-PRD-EAI-NLB-EAIAPP-6cb2ab6089253ccf.elb.ap-northeast-2.amazonaws.com:5520/restv2/restLEGI2606_OCP_SMS_P]]></entry>
+	<entry key="sms.source">OCP</entry>
+	<entry key="sms.username"><![CDATA[ENC(AIKodaugeQoXkopfHHTybA==)]]></entry><!-- OCP -->
+	<entry key="sms.userpassword"><![CDATA[ENC(kgCSztdOhmS2d8nzP4nqLg==)]]></entry><!-- OCP! -->
+	<entry key="sms.id">71010059</entry>
+	<entry key="sms.callback">027096000</entry>
+	<entry key="sms.applclcd">OMP</entry>
+	<entry key="sms.pltfclcd">OCP</entry>
+	<entry key="sms.eaifl">N</entry>
+	
+	<!-- 휴면 복구 eai  -->
+	<entry key="dormancy.url"><![CDATA[http://PRV-BO-LB-PRD-EAI-NLB-EAIAPP-6cb2ab6089253ccf.elb.ap-northeast-2.amazonaws.com:5520/restv2/restLEGI2611_AP_DORMANCY_P]]></entry>
+	<entry key="dormancy.source">OCP</entry>
+	<entry key="dormancy.username"><![CDATA[ENC(nOqsF8l2qR0mh4Zql+OyRw==)]]></entry><!-- OCP -->
+	<entry key="dormancy.userpassword"><![CDATA[ENC(oFnFvAS5m+yxgVYkWz5nNA==)]]></entry><!-- OCP! -->
+	
+	<!-- 카카오 알림톡 eai -->
+	<entry key="kakao.notice.url"><![CDATA[http://PRV-BO-LB-PRD-EAI-NLB-EAIAPP-6cb2ab6089253ccf.elb.ap-northeast-2.amazonaws.com:5520/restv2/AP_LEG_19.API_SMS.api:restLEGI3659_API_SMS/LEGI3659]]></entry>
+	<entry key="kakao.notice.authorization"><![CDATA[ENC(LrwgLRe27gQ+zoqsxxVUPGDNUio+kVO6TVdwXgCaqNI=)]]></entry>
+	<entry key="kakao.notice.id"><![CDATA[ENC(LMiR1PQto09l55XuefSxaG9vpr9kSZ+g)]]></entry>
+	<entry key="kakao.notice.callback"><![CDATA[0800235454]]></entry>
+	<entry key="kakao.notice.templatecode"><![CDATA[CEM0489]]></entry>
+	<entry key="kakao.notice.failedtype"><![CDATA[LMS]]></entry>
+	<entry key="kakao.notice.failedsubject"><![CDATA[[개인정보수집출처고지]]]></entry>
+	<entry key="kakao.notice.profilekey"><![CDATA[f75af437fa72546ce27aa1849890c9c0a70da5c6]]></entry>
+	<entry key="kakao.notice.applclcd"><![CDATA[OCP]]></entry>
+	<entry key="kakao.notice.pltfclcd"><![CDATA[OCP]]></entry>
+	
+	<!-- kmcis -->
+	<entry key="kmcis.url.code">001001</entry><!-- DB로 이동 ocp.occdem_chn_infr_mgnt -->
+	<entry key="kmcis.cert.url"><![CDATA[https://www.kmcert.com/kmcis/web/kmcisReq.jsp]]></entry>
+	<entry key="kmcis.result.url"><![CDATA[https://one3-ap.amorepacific.com/auth/cert/kmcis-result]]></entry>
+	
+	<!-- nice -->
+	<entry key="nice.site.password"><![CDATA[ENC(5CAlo4oVRQaNswIIdL7kOAh5bECwCDon)]]></entry><!-- IPIN 서비스 사이트 패스워드 (NICE평가정보에서 발급한 사이트패스워드) -->
+	<entry key="nice.ipin.cert.url"><![CDATA[https://cert.vno.co.kr/ipin.cb]]></entry>
+	<entry key="nice.ipin.result.url"><![CDATA[https://one3-ap.amorepacific.com/auth/cert/ipin-result]]></entry>
+	
+	<!-- sns -->
+	<entry key="sns.types">{KA:'KAKAO',NA:'NAVER',FB:'FacebookAuthenticator',AP:'AppleID',LOCAL:'MobileVerifier,BasicAuthenticator,KakaoVerifier'}</entry>
+	<entry key="sns.types.iosapp">{KA:'KAKAO',AP:'AppleID',NA:'NAVER',FB:'FacebookAuthenticator',LOCAL:'MobileVerifier,BasicAuthenticator,KakaoVerifier'}</entry>
+	<entry key="sns.common.mappingpageurl"><![CDATA[https://one3-ap.amorepacific.com/auth/sns/auth]]></entry>
+	
+	<!-- wso2(web.xml context param) -->
+	<entry key="wso2.oneapurl"><![CDATA[https://one3-ap.amorepacific.com]]></entry>
+	<entry key="wso2.samlssourl">${wso2.oneapurl}/samlsso</entry>
+	<entry key="wso2.commonauthurl">${wso2.oneapurl}/commonauth</entry>
+	<entry key="wso2.oauth2authorizeurl">${wso2.oneapurl}/oauth2/authorize</entry>
+	<entry key="wso2.oidclogouturl">${wso2.oneapurl}/oidc/logout</entry>
+	<entry key="wso2.openidserverurl">${wso2.oneapurl}/oidc/logout</entry>
+	<entry key="wso2.accountrecoveryrestendpointurl"><![CDATA[/t/tenant-domain/api/identity/user/v1.0/]]></entry>
+	<entry key="wso2.identityserverendpointcontexturl"><![CDATA[https://wso2.amorepacific.com]]></entry>
+	<entry key="wso2.identitymanagementendpointcontexturl">${wso2.identityserverendpointcontexturl}/accountrecoveryendpoint</entry>	
+	<entry key="wso2.authenticationrestendpointurl">${wso2.identityserverendpointcontexturl}/api/identity/auth/v1.1/</entry>
+	<entry key="wso2.usersessionendpointurl">${wso2.identityserverendpointcontexturl}/api/users/v1/</entry>
+	<entry key="wso2.adminuserid"><![CDATA[ENC(nT55HDc3w6Khm7lzmpumQA==)]]></entry>
+	<entry key="wso2.adminuserpassword"><![CDATA[ENC(BYUaC7bDn5al/MS4OCKRg0m2mh++1iJ4)]]></entry>
+	<entry key="wso2.enableauthenticationwithauthenticationrestapi">false</entry>
+	<entry key="wso2.displayscopes">true</entry>
+	<entry key="wso2.ssocommonauthurl"><![CDATA[https://one3-ap.amorepacific.com/commonauth]]></entry>
+	<entry key="wso2.ssoauthorizeurl"><![CDATA[https://one3-ap.amorepacific.com/oauth2/authorize]]></entry>
+	
+	<!-- external api -->
+	<!-- cip : 통합고객 -->
+	<entry key="external.cip.api.domain"><![CDATA[http://on-cit.amorepacific.com]]></entry>
+	<!-- 고객여부조회 -->
+	<entry key="external.cip.api.getcicuemcuyn">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrcommgnt/getcicuemcuyn/v1.00</entry>
+	<!-- 고객목록조회 -->
+	<entry key="external.cip.api.getcicuemcuinfrlist">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrcommgnt/getcicumentcuinfralllist/v1.20</entry>
+	<!-- 고객가입 1.00, 1.10, 1.20 존재함. 2021.10.25 옴니 전용으로 수정 -->
+	<entry key="external.cip.api.createcicuemcuinfrjoin">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrcommgnt/createcicuemcuinfrjoinexclomni/v1.00</entry>
+	<!-- 고객변경 -->
+	<entry key="external.cip.api.updatecicuemcuinfrfull">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrcommgnt/updatecicuemcuinfrfull/v1.00</entry>
+	<!-- 휴면고객조회 -->
+	<entry key="external.cip.api.getcustdrcsinq">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrmgnt/getcustdrcsinq/v1.00</entry>
+	<!-- 휴면복구신청 -->
+	<entry key="external.cip.api.createcicueldrcsrstrq">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custdrmgnt/createcicueldrcsrstrq/v1.00</entry>
+	<!-- 경로가입 2021.12.07 옴니 전용으로 수정 -->
+	<entry key="external.cip.api.createcustchnjoin">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custchmgnt/createcustchnjoinexclomni/v1.00</entry>
+	<!-- 고객상세조회(Front API용) -->
+	<entry key="external.cip.api.getcicuemcuinfrbyincsno">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrcommgnt/getcicuemcuinfrbyincsno/v1.20</entry> <!-- 2022-02-18 고객통합 API 기능개선 -->
+	<!-- 고객상세 배열 조회(Front API용) -->
+	<entry key="external.cip.api.getcicuemcuinfrarrayincsno">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrcommgnt/getcicuemcuinfrarrayincsno/v1.00</entry>
+	<!-- 고객정보 CI번호 수정 -->
+	<entry key="external.cip.api.updatecustcino">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrmgnt/updatecustcino/v1.00</entry>
+	<!-- 고객변경 -->
+	<entry key="external.cip.api.updatecicuemcuinfrfull">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrcommgnt/updatecicuemcuinfrfull/v1.00</entry>
+	<!-- 마케팅정보수신동의/철회 다건저장 -->
+	<entry key="external.cip.api.savecicuemcuoptilist">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custagreemgnt/savecicuemcuoptilist/v1.00</entry>
+	<!-- 서비스약관동의/철회 다건 저장 -->
+	<entry key="external.cip.api.savecicuedcutnca">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custagreemgnt/savecicuedcutnca/v1.00</entry>
+	<!-- 고객탈퇴 -->
+	<entry key="external.cip.api.createcicuelcuwt">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrmgnt/createcicuelcuwt/v1.00</entry>
+	<!-- 포인트조회 -->
+	<entry key="external.cip.api.getptinq">${external.cip.api.domain}/cip/cit/custmgnt/ptmgnt/svc/ptinq/getptinq/v1.00</entry>
+	<!-- 마케팅정보수신동의조회 -->
+	<entry key="external.cip.api.getcicuemcuoptilist">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custagreemgnt/getcicuemcuoptilist/v1.10</entry>
+	<!-- 통합고객가입경로정보조회 -->
+	<entry key="external.cip.api.getcustchlist">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custchmgnt/getcustchlist/v1.00</entry>
+	<!-- 경로탈퇴 -->
+	<entry key="external.cip.api.deletecicuedcuchcustwt">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrmgnt/deletecicuedcuchcustwt/v1.00</entry>
+	<!-- 통합고객동의약관정보조회 -->
+	<entry key="external.cip.api.getcicuehtncalist">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custagreemgnt/getcicuehtncalist/v1.10</entry>
+	
+	<!-- cip : 통합고객 - 임직원 인증 -->
+	<!-- 임직원 정보조회 -->
+	<entry key="external.cip.api.emp.getempinfrinq">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/empmgnt/getempinfrinq/v1.00</entry>
+	<!-- 제휴사 임직원 인증발송 -->
+	<entry key="external.cip.api.emp.sendprcnempathtinfr">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/empmgnt/sendprcnempathtinfr/v1.00</entry>
+	<!-- AP임직원 인증처리 -->
+	<entry key="external.cip.api.emp.handleapempatht">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/empmgnt/handleapempatht/v1.00</entry>
+	<!-- 제휴사 임직원 인증처리 -->
+	<entry key="external.cip.api.emp.handleprcnempatht">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/empmgnt/handleprcnempatht/v1.00</entry>
+	<!-- 제휴사 리스트 조회 -->
+	<entry key="external.cip.api.emp.getempcmpyinfrlist">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/empmgnt/getempcmpyinfrlist/v1.00</entry>
+	<!-- ci update -->
+	<entry key="external.cip.api.updateabusingcustcino">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrmgnt/updatecustcino/v1.10</entry>
+	
+	<!-- cip : 통합고객 - 제휴사 멤버십 연동 -->
+	<!-- 경로고객번호 존재유무확인 -->
+	<entry key="external.cip.api.membership.getCustbyChCsNo">${external.cip.api.domain}/cip/cit/custmgnt/custmgnt/svc/custinfrmgnt/getCustbyChCsNo/v1.00</entry>
+	
+	<!-- bp : 뷰티포인트 -->
+	<entry key="external.bp.api.domain"><!-- <![CDATA[https://join-on.amorepacific.com]]> --></entry>
+	<!-- 회원가입 -->
+	<entry key="external.bp.api.createuser"><!-- ${external.bp.api.domain}/member/onlinesign.do --></entry>
+	<!-- 회원가입취소 -->
+	<entry key="external.bp.api.canceluser"><!-- ${external.bp.api.domain}/member/onlinesigncancel.do --></entry>
+	<!-- 회원아이디유효성체크 -->
+	<entry key="external.bp.api.checkonlineid"><!-- ${external.bp.api.domain}/member/checkonlineid.do --></entry>
+	<!-- 회원아이디중복체크 -->
+	<entry key="external.bp.api.checkid"><!-- ${external.bp.api.domain}/member/idcheck.do --></entry>
+	<!-- 패스워드 변경 API -->
+	<entry key="external.bp.api.changepassword"><!-- ${external.bp.api.domain}/member/passwdchange.do --></entry>
+	<!-- 회원수정 -->
+	<entry key="external.bp.api.edit"><!-- ${external.bp.api.domain}/api/member/edit.do --></entry>
+
+	<!-- omni auth domain -->
+	<entry key="omni.auth.domain"><![CDATA[https://one3-ap.amorepacific.com/auth]]></entry>
+	<entry key="omni.auth.endpoint.membershipjoinurl">${omni.auth.domain}/join/membership</entry>
+	<!-- omni api -->
+	<entry key="omni.api.domain"><![CDATA[https://one3-ap.amorepacific.com/api]]></entry>
+	<entry key="omni.api.endpoint.changepassword">${omni.api.domain}/v1/mgmt/changepassword</entry>
+	<entry key="omni.api.endpoint.initpassword">${omni.api.domain}/v1/mgmt/initializepassword</entry>
+	<entry key="omni.api.endpoint.initpasswordcurrentpassword">${omni.api.domain}/v1/mgmt/initpasswordcurrentpassword</entry>
+	<entry key="omni.api.endpoint.createuser">${omni.api.domain}/v1/mgmt/createuser</entry>
+	<entry key="omni.api.endpoint.disableuser">${omni.api.domain}/v1/mgmt/disableuser</entry>
+	<entry key="omni.api.endpoint.enableuser">${omni.api.domain}/v1/mgmt/enableuser</entry>
+	<entry key="omni.api.endpoint.channelcreateuser">${omni.api.domain}/v1/channel/regist/{{chCd}}</entry>
+	<entry key="omni.api.endpoint.channelsearchuser">${omni.api.domain}/v1/channel/search/{{chCd}}</entry>
+		
+	<entry key="omni.api.endpoint.snsassociate">${omni.api.domain}/v1/mgmt/snsassociate</entry>
+	<entry key="omni.api.endpoint.snsdisconnect">${omni.api.domain}/v1/mgmt/snsdisconnect</entry>
+	<entry key="omni.api.endpoint.unlink">${omni.api.domain}/v1/sns/unlink/{{snsType}}</entry>
+	<entry key="omni.api.endpoint.verifypasswordpolicy">${omni.api.domain}/v1/mgmt/verifypasswordpolicy</entry>
+	<entry key="omni.api.endpoint.dscnctsnsass">${omni.api.domain}/v1/mgmt/dscnctsnsass</entry>
+	<entry key="omni.api.endpoint.lockusercheck">${omni.api.domain}/v1/mgmt/lockusercheck</entry>
+	<entry key="omni.api.endpoint.lockuserupdate">${omni.api.domain}/v1/mgmt/lockuserupdate</entry> 
+	
+</properties>

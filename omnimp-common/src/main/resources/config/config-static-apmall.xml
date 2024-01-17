@@ -1,0 +1,2584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<common>
+		<api>
+			<key defaultkey="false"><![CDATA[vwGNZJ19+DgmPPLo9CYa6DGcJJ3gM9Kx]]></key><!-- api-call -->
+			<key defaultkey="true"><![CDATA[IBweveYghKeE439odiNwcw==]]></key>
+		</api>
+		<skip>
+			<resources><![CDATA[.*.woff2|.*.woff|.*.js|.*.css|.*.png|.*.jpg|.*.gif|.*.ico|.*.properties]]></resources>
+		</skip>
+		<resoure>
+			<version>20201118</version>
+		</resoure>
+		<auth>
+			<type>POST</type>
+		</auth>
+		<local>
+			<manualcert>true</manualcert>
+			<sms>
+				<testsend>true</testsend>
+				<systemcheck>false</systemcheck> <!-- SMS 서버 점검 시 아이디 찾기, 휴대폰 로그인 점검 안내 팝업 -->
+			</sms>
+			<svclogging>true</svclogging>
+			<prclogging>true</prclogging>
+			<systemcheck>false</systemcheck>	
+		</local>
+		<dev>
+			<manualcert>true</manualcert>
+			<sms>
+				<testsend>true</testsend>
+				<systemcheck>false</systemcheck> <!-- SMS 서버 점검 시 아이디 찾기, 휴대폰 로그인 점검 안내 팝업 -->
+			</sms>
+			<svclogging>true</svclogging>
+			<prclogging>true</prclogging>
+			<systemcheck>false</systemcheck>
+		</dev>
+		<stg>
+			<manualcert>true</manualcert>
+			<sms>
+				<testsend>true</testsend>
+				<systemcheck>false</systemcheck> <!-- SMS 서버 점검 시 아이디 찾기, 휴대폰 로그인 점검 안내 팝업 -->
+			</sms>
+			<svclogging>false</svclogging>
+			<prclogging>false</prclogging>
+			<systemcheck>false</systemcheck>
+		</stg>
+		<prod>
+			<manualcert>false</manualcert>
+			<sms>
+				<testsend>false</testsend>
+				<systemcheck>false</systemcheck> <!-- SMS 서버 점검 시 아이디 찾기, 휴대폰 로그인 점검 안내 팝업 -->
+			</sms>
+			<svclogging>true</svclogging><!-- 테이블 생성 후 변경 -->
+			<prclogging>true</prclogging><!-- 테이블 생성 후 변경 -->
+			<systemcheck>false</systemcheck>
+		</prod>
+		<sns>
+			<type>KA</type>
+			<type>NA</type>
+			<type>FB</type>
+			<type>AP</type>
+			<type>LOCAL</type>
+		</sns>
+		<param>
+			<encoding>false</encoding>
+		</param>
+		<bp>
+			<code>
+				<chcd>030</chcd>
+				<chcd>031</chcd>
+				<chcd>043</chcd>
+				<chcd>070</chcd>
+				<chcd>099</chcd>
+				<chcd>100</chcd>
+			</code>
+			<chcd030>
+				<prtnnm>온라인 사이트</prtnnm>
+			</chcd030>
+			<chcd031>
+				<prtnnm>APMall</prtnnm>
+			</chcd031>
+			<chcd043>
+				<prtnnm>리리코스마린플러스</prtnnm>
+			</chcd043>
+			<chcd070>
+				<prtnnm>카운셀러앱</prtnnm>
+			</chcd070>
+			<chcd099>
+				<prtnnm>에스트라몰</prtnnm>
+			</chcd099>
+			<chcd100>
+				<prtnnm>아모레 성수</prtnnm>
+			</chcd100>
+		</bp>
+		<naver>	<!-- 네이버 스마트 스토어 제휴사 경로 코드 -->
+			<affiliate>
+				<chcd>402</chcd> <!-- 이니스프리 -->
+				<chcd>403</chcd> <!-- 에뛰드 -->
+				<chcd>404</chcd> <!-- 에스쁘아 -->
+				<chcd>405</chcd> <!-- 오설록 -->
+			</affiliate>
+		</naver>
+	</common>
+	
+	<!-- 카카오에서 보여질 태그 ( tags + marketing(뷰티포인트(030) + 경로(chCd)) + years ) -->
+	<snsterms>
+		<tags>service_201911,info_201911,third_201911,transfer_201911,ap_inform_202307</tags>
+		<marketing>
+			<ch030>bptext_201911</ch030> <!-- [선택] 뷰티포인트 문자 수신 동의 -->
+			<ch036>innisfree_text</ch036> <!-- [선택] 이니스프리 문자 수신 동의 -->
+			<ch042>espoir_text</ch042> <!-- [선택] 에스쁘아 문자 수신 동의 -->
+			<ch099>aestura_text</ch099> <!-- [선택] 에스트라 문자 수신 동의 -->
+			<ch006>innisfree_text</ch006> <!-- [선택] 이니스프리 문자 수신 동의 (오프라인에서 가져올 용도) -->
+			<ch016>espoir_text</ch016> <!-- [선택] 에스쁘아 문자 수신 동의 (오프라인에서 가져올 용도) -->
+			<ch039>osulloctext_202002</ch039> <!-- [선택] 오설록 문자 수신 동의 -->
+			<ch010>osulloctext_202002</ch010> <!-- [선택] 오설록 문자 수신 동의 (오프라인에서 가져올 용도) -->
+			<ch008>osulloctext_202002</ch008> <!-- [선택] 오설록 문자 수신 동의 (오프라인에서 가져올 용도) -->
+			<ch048>aritext_201911</ch048>	<!-- [선택] 아리따움몰 문자 수신 동의 -->
+			<ch005>aritext_201911</ch005>	<!-- [선택] 아리따움POS 문자 수신 동의 (오프라인에서 가져올 용도)-->
+			<ch070>coulselortext_201911</ch070>	<!-- [선택] 카운셀러몰(방판) APP 수신 동의 -->
+			<ch101>deptext_201911</ch101> <!-- [선택] 백화점 문자 수신 동의 -->
+			<ch017>etudetext_202001</ch017><!-- [선택] 에뛰드 문자 수신 동의 -->
+			<ch062>trtext_201911</ch062><!-- [선택] 면세점 문자 수신 동의(식스콘) -->
+		</marketing>
+		<privacy>
+			<ch036>innisfree_inform</ch036>	<!-- [선택] 개인정보 수집 및 이용 동의(마케팅)(이니스프리) -->
+			<ch006>innisfree_inform</ch006>	<!-- [선택] 개인정보 수집 및 이용 동의(마케팅)(이니스프리POS) -->
+			<ch039>osulloc_inform</ch039>	<!-- [선택] 개인정보 수집 및 이용 동의(마케팅)(오설록) -->
+			<ch012>osulloc_inform</ch012>	<!-- [선택] 개인정보 수집 및 이용 동의(마케팅)(오설록티하우스) -->
+			<ch008>osulloc_inform</ch008>	<!-- [선택] 개인정보 수집 및 이용 동의(마케팅)(백화점오설록) -->
+			<ch042>espoir_inform</ch042>	<!-- [선택] 개인정보 수집 및 이용 동의(마케팅)(에스쁘아) -->
+			<ch016>espoir_inform</ch016>	<!-- [선택] 개인정보 수집 및 이용 동의(마케팅)(에스쁘아POS) -->
+		</privacy>
+		
+		<years>14years_201911</years> <!-- [필수] 만 14세 이상 연령 동의 -->
+		
+		<service_201911> <!-- [필수] 뷰티포인트 서비스 이용  -->
+			<code>010</code>
+			<version>1.0</version>
+		</service_201911>
+		<info_201911> <!-- [필수] 개인정보 이용 및 수집 동의 -->
+			<code>030</code>
+			<version>1.0</version>
+		</info_201911>
+		<third_201911> <!-- [선택] 개인정보 제 3자 동의 -->
+			<code>070</code>
+			<version>1.1</version>
+		</third_201911>
+		<transfer_201911> <!-- [선택] 국외 이전 동의 -->
+			<code>060</code>
+			<version>1.0</version>
+		</transfer_201911>
+		<ap_inform_202307>	<!-- [선택] 개인정보 이용 및 수집 동의 -->
+			<code>050</code>
+			<version>1.0</version>
+		</ap_inform_202307>
+		<innisfree_inform> <!-- [선택] 개인정보 수집 및 이용 동의(마케팅)(이니스프리) -->
+			<code>106</code>
+			<version>1.0</version>
+		</innisfree_inform>
+		<osulloc_inform> <!-- [선택] 개인정보 수집 및 이용 동의(마케팅)(오설록) -->
+			<code>107</code>
+			<version>1.0</version>
+		</osulloc_inform>
+		<espoir_inform> <!-- [선택] 개인정보 수집 및 이용 동의(마케팅)(에스쁘아) -->
+			<code>105</code>
+			<version>1.0</version>		
+		</espoir_inform>
+	</snsterms>
+
+	<!-- 카카오 채널 수신 동의  -->
+	<snspublicids>
+		<dev>
+			<ch030><![CDATA[_clpYT]]></ch030> <!-- 뷰티포인트 -->
+			<ch036><![CDATA[_PKNGK]]></ch036> <!-- 이니스프리 -->
+			<ch042><![CDATA[_WFNxbxb]]></ch042> <!-- 에스쁘아 -->
+			<ch099><![CDATA[_xcSxgxjK]]></ch099> <!-- 에스트라 -->
+			<ch106><![CDATA[_rxaQxhs]]></ch106> <!-- M-ECP(일리윤) -->
+			<ch039><![CDATA[_xhKmCxb]]></ch039> <!-- 오설록 -->
+			<ch031><![CDATA[_iWebxb]]></ch031> <!-- APMall -->
+			<ch048><![CDATA[_TEuxgT]]></ch048> <!-- 아리따움몰 -->
+			<ch070><![CDATA[_XLhyT]]></ch070> <!-- 카운셀러몰 -->
+			<ch101><![CDATA[_xhDCxgT]]></ch101> <!-- 백화점 -->
+			<ch076><![CDATA[_xhDCxgT]]></ch076> <!-- 설화수(백화점) -->
+			<ch017><![CDATA[_IYxiAxb]]></ch017> <!-- 에뛰드 POS -->
+			<ch062><![CDATA[_VxbiQT]]></ch062> <!-- 면세점(식스콘) POS -->
+		</dev>
+		<stg>
+			<ch030><![CDATA[_clpYT]]></ch030> <!-- 뷰티포인트 -->
+			<ch036><![CDATA[_PKNGK]]></ch036> <!-- 이니스프리 -->
+			<ch042><![CDATA[_WFNxbxb]]></ch042> <!-- 에스쁘아 -->
+			<ch099><![CDATA[_xcSxgxjK]]></ch099> <!-- 에스트라 -->
+			<ch106><![CDATA[_rxaQxhs]]></ch106> <!-- M-ECP(일리윤) -->
+			<ch039><![CDATA[_xhKmCxb]]></ch039> <!-- 오설록 -->
+			<ch031><![CDATA[_iWebxb]]></ch031> <!-- APMall -->
+			<ch048><![CDATA[_TEuxgT]]></ch048> <!-- 아리따움몰 -->
+			<ch070><![CDATA[_XLhyT]]></ch070> <!-- 카운셀러몰 -->
+			<ch101><![CDATA[_xhDCxgT]]></ch101> <!-- 백화점 -->
+			<ch076><![CDATA[_xhDCxgT]]></ch076> <!-- 설화수(백화점) -->
+			<ch017><![CDATA[_IYxiAxb]]></ch017> <!-- 에뛰드 POS -->
+			<ch062><![CDATA[_VxbiQT]]></ch062> <!-- 면세점(식스콘) POS -->
+		</stg>
+		<prod>
+			<ch030><![CDATA[_SDBhu]]></ch030> <!-- 뷰티포인트 -->
+			<ch036><![CDATA[_xeMwLR]]></ch036> <!-- 이니스프리 -->
+			<ch042><![CDATA[_BEpRZ]]></ch042> <!-- 에스쁘아 -->
+			<ch099><![CDATA[_XRHcj]]></ch099> <!-- 에스트라 -->
+			<ch106><![CDATA[_rxavHK]]></ch106> <!-- M-ECP(일리윤) -->
+			<ch039><![CDATA[_iAIau]]></ch039> <!-- 오설록 -->
+			<ch031><![CDATA[_abMxaZ]]></ch031> <!-- APMall -->
+			<ch048><![CDATA[_QctuR]]></ch048> <!--아리따움몰 -->
+			<ch070><![CDATA[_KLYKT]]></ch070> <!-- 카운셀러몰 -->
+			<ch101><![CDATA[_qEuGE]]></ch101> <!-- 백화점 -->
+			<ch076><![CDATA[_mxehQxb]]></ch076> <!-- 설화수(백화점) -->
+			<ch017><![CDATA[_FRxjxfR]]></ch017> <!-- 에뛰드 POS -->
+			<ch062><![CDATA[_cBxlQT]]></ch062> <!-- 면세점(식스콘) POS -->
+		</prod>
+	</snspublicids>
+	
+	<!-- 비밀번호 만료 체크 기간(day) -->
+	<wso2>
+		<password>
+			<changeterms>90</changeterms>
+		</password>
+	</wso2>
+	
+	<web2app><!-- web2app expire time 분 단위 -->
+		<expiretime>
+			<dev>1</dev>
+			<stg>1</stg>
+			<prod>1</prod>
+		</expiretime>
+	</web2app>
+	
+	<security>
+		<xvalue>
+			<timecheck>
+				<enable>true</enable>
+				<terms>10</terms>
+			</timecheck>
+		</xvalue>
+		<!-- 반드시 application.properties 설정과 동기화해야함. -->
+		<jasypt>
+			<password>oneap2020626</password>
+			<prefix><![CDATA[ENC(]]></prefix>
+			<suffix><![CDATA[)]]></suffix>
+		</jasypt>
+		
+		<!-- 제휴몰 인증 시 고객통합번호 암/복호화 ENCRYPTION_KEY -->
+		<aes>
+			<encryptionkey>ishift7150tfihsi</encryptionkey>
+		</aes>
+		
+		<passsalt>0626</passsalt>
+		<passphrase><![CDATA[ENC(hX0uEEEDThGIhlLly6G/Qg==)]]></passphrase>
+		<aes>
+			<encoder><![CDATA[com.amorepacific.oneap.common.sec.aes.AesEncoder]]></encoder>
+			<decoder><![CDATA[com.amorepacific.oneap.common.sec.aes.AesDecoder]]></decoder>
+			<keysize>128</keysize>
+			<iteration>1000</iteration>
+			<salt>0000000626</salt>
+			<iv>202001262000000b000000000ab05302</iv>	
+		</aes>
+		<sha>
+			<encoder><![CDATA[com.amorepacific.oneap.common.sec.sha.ShaEncoder]]></encoder>
+			<decoder><![CDATA[com.amorepacific.oneap.common.sec.sha.ShaDecoder]]></decoder>		
+		</sha>
+	</security>
+	
+	<login>
+		<referers><![CDATA[**/plogin]]></referers>
+		<referers><![CDATA[**/login/**]]></referers>
+	</login>
+	
+	<!-- 온라인 회원가입시 POS회원 가입 매장코드 -->
+	<joinprtn>
+		<!-- 에스쁘아 쇼핑몰 11000494, 16000021 -->
+		<chcd042>
+			<code>16000021</code>
+			<name>에스쁘아 쇼핑몰</name>
+		</chcd042>
+		
+		<chcd016>
+			<code>16000021</code>
+			<name>에스쁘아 쇼핑몰</name>
+		</chcd016>
+				
+		<!-- 이니스프리 쇼핑몰 -->
+		<chcd036>
+			<code>13000001</code>
+			<name>이니스프리 쇼핑몰</name>
+		</chcd036>
+		
+		<chcd006>
+			<code>13000001</code>
+			<name>이니스프리 쇼핑몰</name>
+		</chcd006>
+		
+		<!-- M-ECP (일리윤) -->
+		<chcd106>
+			<code>11090346</code>
+			<name>DB_일리윤 직영몰</name>
+		</chcd106>
+		
+		<!-- 비레디몰 -->
+		<chcd111>
+			<code>11102804</code>
+			<name>비레디 직영몰</name>
+			<empcode></empcode>
+		</chcd111>
+		
+		<!-- eCris (백화점) -->
+		<chcd101>
+			<code>11054265</code> <!-- eCris는 필수값 이지만 뷰티엔젤로 회원가입 시 Default 값 -->
+			<name>뷰티엔젤</name> <!-- eCris는 필수값 이지만 뷰티엔젤로 회원가입 시 Default 값 -->
+			<empcode>AP000000</empcode> <!-- eCris는 필수값 이지만 뷰티엔젤로 회원가입 시 Default 값 -->
+			<codereq>true</codereq> <!-- Default 값 없는 경우 필수값 체크 -->
+			<empcodereq>true</empcodereq> <!-- Default 값 없는 경우 필수값 체크 -->
+		</chcd101>
+		
+		<!-- 설화수 (백화점) -->
+		<chcd076>
+			<code>11055181</code> <!-- eCris는 필수값 이지만 뷰티엔젤로 회원가입 시 Default 값 -->
+			<name>설화수 플래그십스토어 스파(제품)</name> <!-- eCris는 필수값 이지만 뷰티엔젤로 회원가입 시 Default 값 -->
+			<empcode>AE000000</empcode> <!-- eCris는 필수값 이지만 뷰티엔젤로 회원가입 시 Default 값 -->
+			<codereq>true</codereq> <!-- Default 값 없는 경우 필수값 체크 -->
+			<empcodereq>true</empcodereq> <!-- Default 값 없는 경우 필수값 체크 -->
+		</chcd076>
+		
+		<!-- 설화수 FSS -->
+		<chcd077>
+			<code>11098926</code> 
+			<name>설화수 플래그십 스토어 북촌점</name> 
+			<empcode></empcode> 
+		</chcd077>
+		
+		<!-- 아모레 용산 -->
+		<chcd097>
+			<code>11075868</code> 
+			<name>아모레용산</name> 
+			<empcode></empcode> 
+		</chcd097>
+		
+		<!-- 뷰티엔젤 -->
+		<chcdBTA>
+			<code>11054265</code>
+			<name>뷰티엔젤</name>
+			<empcode>AP000000</empcode>
+		</chcdBTA>
+		
+		<!-- 오설록 온라인 -->
+		<chcd039>
+			<code>17000100</code>
+			<name>오설록 쇼핑몰</name>
+			<empcode>17000100</empcode> <!-- 오설록티하우스, 백화점 오설록은 필수값 이지만 뷰티엔젤로 회원가입 시 Default 값 -->
+		</chcd039>
+		
+		<!-- 오설록티하우스 -->
+		<chcd012>
+			<code>17000106</code>
+			<name>오설록 쇼핑몰</name>
+			<empcode>17000106</empcode> <!-- 오설록티하우스, 백화점 오설록은 필수값 이지만 뷰티엔젤로 회원가입 시 Default 값 -->
+			<codereq>true</codereq> <!-- Default 값 없는 경우 필수값 체크 -->
+			<empcodereq>true</empcodereq> <!-- Default 값 없는 경우 필수값 체크 -->
+		</chcd012>
+		
+		<!-- 백화점 오설록 -->
+		<chcd008>
+			<code>17000041</code>
+			<name>현대중동</name>
+			<empcode>17000041</empcode> <!-- 오설록티하우스, 백화점 오설록은 필수값 이지만 뷰티엔젤로 회원가입 시 Default 값 -->
+			<codereq>true</codereq> <!-- Default 값 없는 경우 필수값 체크 -->
+			<empcodereq>true</empcodereq> <!-- Default 값 없는 경우 필수값 체크 -->
+		</chcd008>		
+		
+		<!-- 아모레퍼시픽 브랜드 -->
+		<chcdAOK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdAOK>
+		
+		<!-- 헤라 -->
+		<chcdAFK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdAFK>
+		
+		<!-- 설화수 -->
+		<chcdAEK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdAEK>
+		
+		<!-- 마몽드 -->
+		<chcdAHK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdAHK>
+		
+		<!-- 프리메라 -->
+		<chcdMCK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdMCK>
+		
+		<!-- 라네즈 -->
+		<chcdADK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdADK>
+		
+		<!-- 아이오페 -->
+		<chcdAGK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdAGK>
+		
+		<!-- CUSTOM.ME+ -->
+		<chcd107>
+			<code>11099405</code>
+			<name>커스텀미D2C_직영</name>
+		</chcd107>
+		
+		<!-- 바이탈뷰티 -->
+		<chcdVRK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdVRK>
+		
+		<!-- 미쟝센 -->
+		<chcdAJK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdAJK>
+		
+		<!-- 려 -->
+		<chcdMRK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdMRK>
+		
+		<!-- 해피바스 -->
+		<chcdMHK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdMHK>
+		
+		<!-- 스테디 -->
+		<chcdDRK>
+			<code>11054265</code>
+			<name>뷰티포인트</name>
+			<empcode></empcode>
+		</chcdDRK>
+		
+		<!-- SSG -->
+		<chcd202>
+			<code>11000553</code>
+			<name>(럭) 신세계몰 AP_#강남</name>
+			<empcode></empcode>		
+		</chcd202>
+		
+		<!-- APMall -->
+		<chcd031>
+			<code>11000494</code>
+			<name>AMORE MALL</name>
+			<empcode></empcode>		
+		</chcd031>
+	
+		<!-- 뷰티포인트 -->
+		<chcd030>
+			<code></code>
+			<name></name>
+			<empcode></empcode>
+		</chcd030>
+		
+		<!-- 아리따움몰 -->
+		<chcd048>
+			<code>11009029</code>
+			<name>아리따움몰</name>
+			<empcode></empcode>
+		</chcd048>
+		
+		<!-- 아리따움POS -->
+		<chcd005>
+			<code>11009029</code>
+			<name>아리따움 온라인쇼핑몰</name>
+			<empcode></empcode>
+		</chcd005>
+		
+		<!-- 카운셀러몰 (에딧샵)-->
+		<chcd070>
+			<code>11083314</code>
+			<name>방판 온라이프(자사)</name>
+			<empcode></empcode>
+		</chcd070>
+		
+		<!-- APMA(미술관홍보시스템) -->
+		<chcdAMA>
+			<code>11061390</code>
+			<name>미술관(고객판매)</name>
+			<empcode></empcode>
+		</chcdAMA>
+		
+		<!-- 디지털방판모객프로그램 -->
+		<chcd108>
+			<code>11083314</code>
+			<name>방판 온라이프(자사)</name>
+			<empcode></empcode>
+		</chcd108>
+		
+		<!-- 바이탈뷰티 -->
+		<chcd103>
+			<code>11088003</code>
+			<name>바이탈뷰티</name>
+			<empcode></empcode>
+		</chcd103>
+		
+		<!-- 톤워크닷컴 -->
+		<chcd307>
+			<code>S20903</code>
+			<name>넥스트 뷰티2팀</name>
+			<empcode></empcode>
+		</chcd307>
+		
+		<!-- 뷰티엔젤 -->
+		<chcdBAA>
+			<code>11054265</code> 
+			<name>뷰티엔젤</name> 
+			<empcode>AP000000</empcode> 
+		</chcdBAA>
+		
+		<!-- 에뛰드 POS -->
+		<chcd017>
+			<code>12000487</code> 
+			<name>에뛰드_신촌점</name> 
+			<empcode></empcode> 
+		</chcd017>
+		
+		<!-- 네이버 스마트 스토어 -->
+		<chcd401>
+			<code>11089784</code>
+			<name>e커머스3팀</name>
+			<empcode></empcode>
+		</chcd401>
+		
+		<!-- 네이버 스마트 스토어 - 이니스프리 -->
+		<chcd402>
+			<code>13002312</code>
+			<name><![CDATA[네이버_풀필먼트군포(직배송)]]></name>
+			<empcode></empcode>
+		</chcd402>
+		
+		<!-- 네이버 스마트 스토어 - 에뛰드 -->
+		<chcd403>
+			<code>12001778</code>
+			<name><![CDATA[쇼핑몰 네이버 군포 풀필먼트]]></name>
+			<empcode></empcode>
+		</chcd403>
+		
+		<!-- 네이버 스마트 스토어 - 에스쁘아 -->
+		<chcd404>
+			<code>16000681</code>
+			<name><![CDATA[ES 네이버[풀필먼트]]]></name>
+			<empcode></empcode>
+		</chcd404>
+		
+		<!-- 네이버 스마트 스토어 - 오설록 -->
+		<chcd405>
+			<code>17000115</code>
+			<name><![CDATA[네이버㈜]]></name>
+			<empcode></empcode>
+		</chcd405>
+		
+	</joinprtn>
+	
+	<!-- 가입완료 후 리다이렉트 필요시 사용 -->
+	<joinfinish>
+		<local>
+			<chcd042><![CDATA[https://ctdev.espoir.com/ko/user/jo/user_jo_join_end.do]]></chcd042> <!-- 에스쁘아 -->
+			<chcdAOK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAOK> <!-- 아모레퍼시픽 브랜드 -->
+			<chcdAFK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAFK> <!-- 헤라 -->
+			<chcdAEK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAEK> <!-- 설화수 -->
+			<chcdAHK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAHK> <!-- 마몽드 -->
+			<chcdMCK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdMCK> <!-- 프리메라 -->
+			<chcdADK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdADK> <!-- 라네즈 -->
+			<chcdAGK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAGK> <!-- 아이오페 -->
+			<chcdVRK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdVRK> <!-- 바이탈뷰티 -->
+			<chcdAJK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAJK> <!-- 미쟝셴 -->
+			<chcdMRK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdMRK> <!-- 려 -->
+			<chcdMHK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdMHK> <!-- 해피바스 -->
+			<chcdDRK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdDRK> <!-- 스테디 -->
+			<chcd107><![CDATA[https://dev.customme.com/joinInfo]]></chcd107> <!-- CUSTOM.ME+ -->
+		</local>
+		<dev>
+			<chcd042><![CDATA[https://ctdev.espoir.com/ko/user/jo/user_jo_join_end.do]]></chcd042> <!-- 에스쁘아 -->
+			<chcdAOK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAOK> <!-- 아모레퍼시픽 브랜드 -->
+			<chcdAFK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAFK> <!-- 헤라 -->
+			<chcdAEK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAEK> <!-- 설화수 -->
+			<chcdAHK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAHK> <!-- 마몽드 -->
+			<chcdMCK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdMCK> <!-- 프리메라 -->
+			<chcdADK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdADK> <!-- 라네즈 -->
+			<chcdAGK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAGK> <!-- 아이오페 -->
+			<chcdVRK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdVRK> <!-- 바이탈뷰티 -->
+			<chcdAJK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAJK> <!-- 미쟝셴 -->
+			<chcdMRK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdMRK> <!-- 려 -->
+			<chcdMHK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdMHK> <!-- 해피바스 -->
+			<chcdDRK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdDRK> <!-- 스테디 -->
+			<chcd107><![CDATA[https://dev.customme.com/joinInfo]]></chcd107> <!-- CUSTOM.ME+ -->
+		</dev>
+		<stg>
+			<chcd042><![CDATA[https://ctstg.espoir.com/ko/user/jo/user_jo_join_end.do]]></chcd042> <!-- 에스쁘아 -->
+			<chcdAOK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAOK> <!-- 아모레퍼시픽 브랜드 -->
+			<chcdAFK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAFK> <!-- 헤라 -->
+			<chcdAEK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAEK> <!-- 설화수 -->
+			<chcdAHK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAHK> <!-- 마몽드 -->
+			<chcdMCK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdMCK> <!-- 프리메라 -->
+			<chcdADK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdADK> <!-- 라네즈 -->
+			<chcdAGK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAGK> <!-- 아이오페 -->
+			<chcdVRK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdVRK> <!-- 바이탈뷰티 -->
+			<chcdAJK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdAJK> <!-- 미쟝셴 -->
+			<chcdMRK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdMRK> <!-- 려 -->
+			<chcdMHK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdMHK> <!-- 해피바스 -->
+			<chcdDRK><![CDATA[https://dev-join-on.amorepacific.com/member/step5.do]]></chcdDRK> <!-- 스테디 -->
+			<chcd107><![CDATA[https://stg.customme.com/joinInfo]]></chcd107> <!-- CUSTOM.ME+ -->
+		</stg>
+		<prod>
+			<chcd042><![CDATA[https://www.espoir.com/ko/user/jo/user_jo_join_end.do]]></chcd042> <!-- 에스쁘아 -->
+			<chcdAOK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdAOK> <!-- 아모레퍼시픽 브랜드 -->
+			<chcdAFK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdAFK> <!-- 헤라 -->
+			<chcdAEK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdAEK> <!-- 설화수 -->
+			<chcdAHK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdAHK> <!-- 마몽드 -->
+			<chcdMCK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdMCK> <!-- 프리메라 -->
+			<chcdADK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdADK> <!-- 라네즈 -->
+			<chcdAGK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdAGK> <!-- 아이오페 -->
+			<chcdVRK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdVRK> <!-- 바이탈뷰티 -->
+			<chcdAJK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdAJK> <!-- 미쟝셴 -->
+			<chcdMRK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdMRK> <!-- 려 -->
+			<chcdMHK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdMHK> <!-- 해피바스 -->
+			<chcdDRK><![CDATA[https://join-on.amorepacific.com/member/step5.do]]></chcdDRK> <!-- 스테디 -->
+			<chcd107><![CDATA[https://www.customme.com/joinInfo]]></chcd107> <!-- CUSTOM.ME+ -->
+		</prod>
+	</joinfinish>
+	
+	<api>
+		<!-- 에스트라 온라인 -->
+		<chcd099>
+			<local>
+				<apikey><![CDATA[MGQ1YThjZjAyN2I4MzJhYWQ1MzNjOWZlYWJlNTMxZWE=]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+			</local>		
+			<dev>
+				<apikey><![CDATA[MGQ1YThjZjAyN2I4MzJhYWQ1MzNjOWZlYWJlNTMxZWE=]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+			</dev>
+			<stg>
+				<apikey><![CDATA[NThjNTA4YWRiZTg5N2I1ZmUwNDZhOWUzNmU0N2U1ZTQ=]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+			</stg>			
+			<prod>
+				<apikey><![CDATA[NThjNTA4YWRiZTg5N2I1ZmUwNDZhOWUzNmU0N2U1ZTQ=]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+			</prod>
+		</chcd099>
+		
+		<!-- 에스쁘아 온라인 -->
+		<chcd042>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://ctdev.espoir.com/ko/api/regiUserOnline.do]]></url>
+				<search><![CDATA[https://ctdev.espoir.com/ko/api/userSearch.do]]></search>
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://ctdev.espoir.com/ko/api/regiUserOnline.do]]></url>
+				<search><![CDATA[https://ctdev.espoir.com/ko/api/userSearch.do]]></search>
+			</dev>
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://ctstg.espoir.com/ko/api/regiUserOnline.do]]></url>
+				<search><![CDATA[https://ctstg.espoir.com/ko/api/userSearch.do]]></search>			
+			</stg>
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://www.espoir.com/ko/api/regiUserOnline.do]]></url>
+				<search><![CDATA[https://www.espoir.com/ko/api/userSearch.do]]></search>
+			</prod>		
+		</chcd042>
+		
+		<!-- 에스쁘아 오프라인 -->
+		<chcd016>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://dev-s-pos.espoir.co.kr/EXEC_WPOS/OMNI/espPosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[http://10.155.8.24:8104/tablet/espMobileSelect.do]]></initurl>
+				<check>true</check> <!-- 해당값 true : 고객통합 API 검색 후 고객이 있으면 신규 생성하지 않음, false : 고객 신규 생성 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[https://dev-s-pos.espoir.co.kr/EXEC_WPOS/OMNI/espStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://dev-s-pos.espoir.co.kr/EXEC_WPOS/OMNI/espPosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[http://10.155.8.24:8104/tablet/espMobileSelect.do]]></initurl>
+				<check>true</check>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[https://dev-s-pos.espoir.co.kr/EXEC_WPOS/OMNI/espStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</dev>
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<check>true</check>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[https://stg-s-pos.espoir.co.kr/EXEC_WPOS/OMNI/espStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://s-pos.espoir.co.kr/EXEC_WPOS/OMNI/espPosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[http://join.amorepacific.com/tablet/espMobileSelect.do]]></initurl>
+				<check>true</check>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[https://s-pos.espoir.co.kr/EXEC_WPOS/OMNI/espStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</prod>
+		</chcd016>
+		
+		<!-- 아리따움POS 오프라인 -->
+		<chcd005>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://dev-aripos.amorepacific.com/EXEC_WPOS/OMNI/ariPosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[https://dev-aripos.amorepacific.com/EXEC_WPOS/OMNI/ariStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://dev-aripos.amorepacific.com/EXEC_WPOS/OMNI/ariPosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[https://dev-aripos.amorepacific.com/EXEC_WPOS/OMNI/ariStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</dev>
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[https://stg-aripos.amorepacific.com/EXEC_WPOS/OMNI/ariStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://aripos.amorepacific.com/EXEC_WPOS/OMNI/ariPosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[https://aripos.amorepacific.com/EXEC_WPOS/OMNI/ariStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</prod>
+		</chcd005>
+		
+		<!-- 이니스프리 온라인 -->
+		<chcd036>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://dev-front.innisfree.com/api/omni/inni_member_join.json]]></url>
+				<search><![CDATA[https://dev-front.innisfree.com/api/omni/user_list.json]]></search>
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://dev-front.innisfree.com/api/omni/inni_member_join.json]]></url>
+				<search><![CDATA[https://dev-front.innisfree.com/api/omni/user_list.json]]></search>
+			</dev>
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://stg1-fo.innisfree.com/api/omni/inni_member_join.json]]></url>
+				<search><![CDATA[https://stg1-fo.innisfree.com/api/omni/user_list.json]]></search>			
+			</stg>
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://api-kr.innisfree.com/kr/ko/api/omni/inni_member_join.json]]></url>
+				<search><![CDATA[https://api-kr.innisfree.com/kr/ko/api/omni/user_list.json]]></search>	
+				<!-- <url><![CDATA[https://www.innisfree.com/api/omni/inni_member_join.json]]></url>
+				<search><![CDATA[https://www.innisfree.com/api/omni/user_list.json]]></search> -->			
+			</prod>	
+		</chcd036>
+				
+		<!-- 이니스프리 오프라인 -->
+		<chcd006>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[http://dev-innipos.innisfree.co.kr/api/data/v1/customer]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[http://10.155.8.24:8104/tablet/inniMobileSelect.do]]></initurl>
+				<check>true</check> <!-- 해당값 true : 고객통합 API 검색 후 고객이 있으면 신규 생성하지 않음, false : 고객 신규 생성 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[http://dev-innipos.innisfree.co.kr/api/data/v1/customer]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[http://10.155.8.24:8104/tablet/inniMobileSelect.do]]></initurl>
+				<check>false</check>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<check>false</check>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://innipos.innisfree.co.kr/api/data/v1/customer]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[http://join.amorepacific.com/tablet/inniMobileSelect.do]]></initurl>
+				<check>false</check>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</prod>
+		</chcd006>
+		
+		<!-- eCris (백화점) 오프라인 -->
+		<chcd101>
+			<local>
+				<!-- <apikey><![CDATA[ANXfKYpVVM4JWpiCFtSujw==]]></apikey> -->
+				<!-- <url><![CDATA[https://dst-prv-api-ddev.amorepacific.com/dst/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://dst-prv-api-ddev.amorepacific.com/dst/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<thirdpartyconsent>false</thirdpartyconsent> <!-- 개인정보 제3자제공 동의 여부 (Default는 true) -->
+				<offliveapi><![CDATA[true]]></offliveapi> <!-- 20230419 백화점 실시간 api 호출 로직 변경 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</local>		
+			<dev>
+				<!-- <apikey><![CDATA[ANXfKYpVVM4JWpiCFtSujw==]]></apikey> -->
+				<!-- <url><![CDATA[https://dst-prv-api-ddev.amorepacific.com/dst/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://dst-prv-api-ddev.amorepacific.com/dst/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<thirdpartyconsent>false</thirdpartyconsent> <!-- 개인정보 제3자제공 동의 여부 (Default는 true) -->
+				<offliveapi><![CDATA[true]]></offliveapi> <!-- api 변경 오설록 백화점/백화점/설화수FSS -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</dev>	
+			<stg>
+				<!-- <apikey><![CDATA[ANXfKYpVVM4JWpiCFtSujw==]]></apikey> -->
+				<!-- <url><![CDATA[https://dst-prv-api-dstg.amorepacific.com/dst/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://dst-prv-api-dstg.amorepacific.com/dst/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<thirdpartyconsent>false</thirdpartyconsent> <!-- 개인정보 제3자제공 동의 여부 (Default는 true) -->
+				<offliveapi><![CDATA[true]]></offliveapi> <!-- api 변경 오설록 백화점/백화점/설화수FSS -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</stg>			
+			<prod>
+				<!-- <apikey><![CDATA[ANXfKYpVVM4JWpiCFtSujw==]]></apikey> -->
+				<!-- <url><![CDATA[https://dst-prv-api.amorepacific.com/dst/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://dst-prv-api.amorepacific.com/dst/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<thirdpartyconsent>false</thirdpartyconsent> <!-- 개인정보 제3자제공 동의 여부 (Default는 true) -->
+				<offliveapi><![CDATA[true]]></offliveapi> <!-- api 변경 오설록 백화점/백화점/설화수FSS -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</prod>
+		</chcd101>
+		
+		<!-- 설화수 (백화점) 오프라인 -->
+		<chcd076>
+			<local>
+				<!-- <apikey><![CDATA[ANXfKYpVVM4JWpiCFtSujw==]]></apikey> -->
+				<!-- <url><![CDATA[https://dst-prv-api-ddev.amorepacific.com/dst/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://dst-prv-api-ddev.amorepacific.com/dst/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<thirdpartyconsent>false</thirdpartyconsent> <!-- 개인정보 제3자제공 동의 여부 (Default는 true) -->
+				<offliveapi><![CDATA[true]]></offliveapi><!-- api 변경 오설록 백화점/백화점/설화수FSS -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</local>		
+			<dev>
+				<!-- <apikey><![CDATA[ANXfKYpVVM4JWpiCFtSujw==]]></apikey> -->
+				<!-- <url><![CDATA[https://dst-prv-api-ddev.amorepacific.com/dst/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://dst-prv-api-ddev.amorepacific.com/dst/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<thirdpartyconsent>false</thirdpartyconsent> <!-- 개인정보 제3자제공 동의 여부 (Default는 true) -->
+				<offliveapi><![CDATA[true]]></offliveapi>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</dev>	
+			<stg>
+				<!-- <apikey><![CDATA[ANXfKYpVVM4JWpiCFtSujw==]]></apikey> -->
+				<!-- <url><![CDATA[https://dst-prv-api-dstg.amorepacific.com/dst/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://dst-prv-api-dstg.amorepacific.com/dst/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<thirdpartyconsent>false</thirdpartyconsent> <!-- 개인정보 제3자제공 동의 여부 (Default는 true) -->
+				<offliveapi><![CDATA[true]]></offliveapi>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</stg>			
+			<prod>
+				<!-- <apikey><![CDATA[ANXfKYpVVM4JWpiCFtSujw==]]></apikey> -->
+				<!-- <url><![CDATA[https://dst-prv-api.amorepacific.com/dst/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://dst-prv-api.amorepacific.com/dst/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<thirdpartyconsent>false</thirdpartyconsent> <!-- 개인정보 제3자제공 동의 여부 (Default는 true) -->
+				<offliveapi><![CDATA[true]]></offliveapi>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</prod>
+		</chcd076>
+		
+		<!-- 설화수 FSS 오프라인 -->
+		<chcd077>
+			<local>
+				<url><![CDATA[http://dev-amorestore.amorepacific.com:8080/EXEC_WPOS/OMNI/thePosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</local>		
+			<dev>
+				<url><![CDATA[http://dev-amorestore.amorepacific.com:8080/EXEC_WPOS/OMNI/thePosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</dev>	
+			<stg>
+				<url><![CDATA[http://stg-amorestore.amorepacific.com:8080/EXEC_WPOS/OMNI/thePosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</stg>			
+			<prod>
+				<url><![CDATA[http://amorestore.amorepacific.com/EXEC_WPOS/OMNI/thePosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</prod>
+		</chcd077>
+		
+		<!-- 아모레 용산 오프라인 -->
+		<chcd097>
+			<local>
+				<url><![CDATA[http://dev-amorestore.amorepacific.com:8080/EXEC_WPOS/OMNI/thePosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</local>		
+			<dev>
+				<url><![CDATA[http://dev-amorestore.amorepacific.com:8080/EXEC_WPOS/OMNI/thePosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</dev>	
+			<stg>
+				<url><![CDATA[http://stg-amorestore.amorepacific.com:8080/EXEC_WPOS/OMNI/thePosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</stg>			
+			<prod>
+				<url><![CDATA[http://amorestore.amorepacific.com/EXEC_WPOS/OMNI/thePosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</prod>
+		</chcd097>
+		
+		<!-- 일리윤 (M-ECP) 온라인 -->
+		<chcd106>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcd106>
+		
+		<!-- 비레디몰 (BEREADY) 온라인 -->
+		<chcd111>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcd111>
+		
+		<!-- 아리따움몰 (048) 온라인 -->
+		<chcd048>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+			</prod>
+		</chcd048>
+		
+		<!-- 카운셀러몰 (070) 온라인 (에딧샵) -->
+		<chcd070>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<isloginheader>false</isloginheader>  <!-- 로그인 페이지 헤더 제거 -->
+				<headertype><![CDATA[cancelbtn]]></headertype>
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<isloginheader>false</isloginheader>  <!-- 로그인 페이지 헤더 제거 -->
+				<headertype><![CDATA[cancelbtn]]></headertype>
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<isloginheader>false</isloginheader>  <!-- 로그인 페이지 헤더 제거 -->
+				<headertype><![CDATA[cancelbtn]]></headertype>
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<isloginheader>false</isloginheader>  <!-- 로그인 페이지 헤더 제거 -->
+				<headertype><![CDATA[cancelbtn]]></headertype>
+			</prod>
+		</chcd070>
+		
+				<!-- 디지털방판모객프로그램 -->
+		<chcd108>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcd108>
+		
+		<!-- 바이탈뷰티 -->
+		<chcd103>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+			</prod>
+		</chcd103>
+		
+		<!-- 톤워트닷컴 -->
+		<chcd307>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcd307>
+		
+		<!-- 에뛰드POS -->
+		<chcd017>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[http://dev-epos.etude.co.kr:8115/EXEC_WPOS/OMNI/etdPosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[http://dev-epos.etude.co.kr:8115/EXEC_WPOS/OMNI/etdStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[http://dev-epos.etude.co.kr:8115/EXEC_WPOS/OMNI/etdPosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[http://dev-epos.etude.co.kr:8115/EXEC_WPOS/OMNI/etdStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[https://stg-epos.etude.co.kr/EXEC_WPOS/OMNI/etdStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[http://e-pos.etude.co.kr/EXEC_WPOS/OMNI/etdPosJoin.jsp]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offlinelogin>true</offlinelogin> <!-- 해당값 true : 오프라인 매장 로그인 페이지 사용 가능 -->
+				<offlineloginurl><![CDATA[https://e-pos.etude.co.kr/EXEC_WPOS/OMNI/etdStorLogin.jsp]]></offlineloginurl>
+				<aeskey>mobilebp9292#M@a</aeskey>
+			</prod>
+		</chcd017>
+		
+		<!-- 식스콘(면세점) -->
+		<chcd062>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://trt-prv-api-ddev.amorepacific.com/trt/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offliveapi><![CDATA[true]]></offliveapi> <!-- 오프라인 신규 회원가입 경로 등록 api  -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://trt-prv-api-ddev.amorepacific.com/trt/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offliveapi><![CDATA[true]]></offliveapi> <!-- 오프라인 신규 회원가입 경로 등록 api  -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://trt-prv-api-dstg.amorepacific.com/trt/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offliveapi><![CDATA[true]]></offliveapi> <!-- 오프라인 신규 회원가입 경로 등록 api  -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://trt-prv-api.amorepacific.com/trt/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+				<offliveapi><![CDATA[true]]></offliveapi> <!-- 오프라인 신규 회원가입 경로 등록 api  -->
+			</prod>
+		</chcd062>
+		
+		<!-- APMA(미술관홍보시스템) -->
+		<chcdAMA>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<loginurl><![CDATA[https://dev-apma.amorepacific.com/secure/login.do]]></loginurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<issnssignup>false</issnssignup> <!-- 회원가입 시 SNS 회원가입 사용 여부 (eq: 카카오싱크) -->
+				<isconfirmbtn>true</isconfirmbtn> <!-- 메인으로 이동 버튼을 확인 버튼으로 -->
+			</local>
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<loginurl><![CDATA[https://dev-apma.amorepacific.com/secure/login.do]]></loginurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<issnssignup>false</issnssignup> <!-- 회원가입 시 SNS 회원가입 사용 여부 (eq: 카카오싱크) -->
+				<isconfirmbtn>true</isconfirmbtn> <!-- 메인으로 이동 버튼을 확인 버튼으로 -->
+			</dev>
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<loginurl><![CDATA[https://stg-apma.amorepacific.com/secure/login.do]]></loginurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<issnssignup>false</issnssignup> <!-- 회원가입 시 SNS 회원가입 사용 여부 (eq: 카카오싱크) -->
+				<isconfirmbtn>true</isconfirmbtn> <!-- 메인으로 이동 버튼을 확인 버튼으로 -->
+			</stg>
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<loginurl><![CDATA[https://apma.amorepacific.com/secure/login.do]]></loginurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+				<issnssignup>false</issnssignup> <!-- 회원가입 시 SNS 회원가입 사용 여부 (eq: 카카오싱크) -->
+				<isconfirmbtn>true</isconfirmbtn> <!-- 메인으로 이동 버튼을 확인 버튼으로 -->
+			</prod>
+		</chcdAMA>
+		
+		<chcdBAA>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<joinchcd><![CDATA[101]]></joinchcd> <!-- 가입채널 값 (채널코드가 없는 아모레퍼시픽 브랜드 사이트 일 경우) -->
+				<marketingchcd><![CDATA[101]]></marketingchcd> <!-- 광고성 수신동의 추가 처리 시 채널코드 (뷰티엔젤은 101채널) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<joinchcd><![CDATA[101]]></joinchcd> <!-- 가입채널 값 (채널코드가 없는 아모레퍼시픽 브랜드 사이트 일 경우) -->
+				<marketingchcd><![CDATA[101]]></marketingchcd> <!-- 광고성 수신동의 추가 처리 시 채널코드 (뷰티엔젤은 101채널) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<joinchcd><![CDATA[101]]></joinchcd> <!-- 가입채널 값 (채널코드가 없는 아모레퍼시픽 브랜드 사이트 일 경우) -->
+				<marketingchcd><![CDATA[101]]></marketingchcd> <!-- 광고성 수신동의 추가 처리 시 채널코드 (뷰티엔젤은 101채널) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<joinchcd><![CDATA[101]]></joinchcd> <!-- 가입채널 값 (채널코드가 없는 아모레퍼시픽 브랜드 사이트 일 경우) -->
+				<marketingchcd><![CDATA[101]]></marketingchcd> <!-- 광고성 수신동의 추가 처리 시 채널코드 (뷰티엔젤은 101채널) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdBAA>
+		
+		<!-- 오설록 온라인 -->
+		<chcd039>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://dev.osulloc.com/kr/ko/login/osullocCheckUserId]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmembername><![CDATA[비회원 주문/예약 조회]]></nonmembername> <!-- 비회원 주문/조회 명칭 변경 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://dev.osulloc.com/kr/ko/login/osullocCheckUserId]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmembername><![CDATA[비회원 주문/예약 조회]]></nonmembername> <!-- 비회원 주문/조회 명칭 변경 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://stg.osulloc.com/kr/ko/login/osullocCheckUserId]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<nonmembername><![CDATA[비회원 주문/예약 조회]]></nonmembername> <!-- 비회원 주문/조회 명칭 변경 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://www.osulloc.com/kr/ko/login/osullocCheckUserId]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+			</prod>
+		</chcd039>
+		
+		<!-- 오설록티하우스 -->
+		<chcd012>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url> <!--  오설록pos 경로 회원 관리 안함 -->
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url> <!--  오설록pos 경로 회원 관리 안함 -->
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url> <!--  오설록pos 경로 회원 관리 안함 -->
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url> <!--  오설록pos 경로 회원 관리 안함 -->
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</prod>
+		</chcd012>
+		
+		<!-- 백화점 오설록 -->
+		<chcd008>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<!-- <url><![CDATA[http://10.155.8.15:8104/ctr/nfcCTRInfoMstSav.do?method=insCTRInfoOmni]]></url> 2022.07.04 오설록 백화점 프로젝트 요청으로 수정 -->
+				<!-- <url><![CDATA[https://ost-prv-api-ddev.amorepacific.com/ost/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://ost-prv-api-ddev.amorepacific.com/ost/saveomnicustinfoomni/v1.00]]></url> <!-- 2023.04.18 오설록 백화점 api 로직 변경 -->
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<offliveapi><![CDATA[true]]></offliveapi> <!-- 20230419 백화점 실시간 api 호출 로직 변경 -->
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<!-- <url><![CDATA[http://10.155.8.15:8104/ctr/nfcCTRInfoMstSav.do?method=insCTRInfoOmni]]></url> 2022.07.04 오설록 백화점 프로젝트 요청으로 수정 -->
+				<!-- <url><![CDATA[https://ost-prv-api-ddev.amorepacific.com/ost/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://ost-prv-api-ddev.amorepacific.com/ost/saveomnicustinfoomni/v1.00]]></url> <!-- 2023.04.18 오설록 백화점 api 로직 변경 -->
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<offliveapi><![CDATA[true]]></offliveapi>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<!-- <url><![CDATA[http://10.155.8.15:8104/ctr/nfcCTRInfoMstSav.do?method=insCTRInfoOmni]]></url> 2022.07.04 오설록 백화점 프로젝트 요청으로 수정 -->
+				<!-- <url><![CDATA[https://ost-prv-api-dstg.amorepacific.com/ost/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://ost-prv-api-dstg.amorepacific.com/ost/saveomnicustinfoomni/v1.00]]></url><!-- 2023.04.18 오설록 백화점 api 로직 변경 -->
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<offliveapi><![CDATA[true]]></offliveapi>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<!-- <url><![CDATA[https://ost-prv-api.amorepacific.com/ost/saveomnicustinfo/v1.00]]></url> -->
+				<url><![CDATA[https://ost-prv-api.amorepacific.com/ost/saveomnicustinfoomni/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<offliveapi><![CDATA[true]]></offliveapi>
+				<iskakaosync>true</iskakaosync> <!-- 해당값 true : 오프라인 회원가입 페이지에서 카카오 싱크 회원가입 활성화 -->
+			</prod>
+		</chcd008>
+		
+		<!-- 아모레퍼시픽 브랜드 -->
+		<chcdAOK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdAOK>
+		
+		<!-- 헤라 -->
+		<chcdAFK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdAFK>
+		
+		<!-- 설화수 -->
+		<chcdAEK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdAEK>
+		
+		<!-- 마몽드 -->
+		<chcdAHK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdAHK>
+		
+		<!-- 프리메라 -->
+		<chcdMCK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdMCK>
+		
+		<!-- 라네즈 -->
+		<chcdADK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdADK>
+		
+		<!-- 아이오페 -->
+		<chcdAGK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdAGK>
+		
+		<!-- CUSTOM.ME+  -->
+		<chcd107>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://dev.customme.com/createJoinInfo]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://dev.customme.com/createJoinInfo]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://stg.customme.com/createJoinInfo]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://www.customme.com/createJoinInfo]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<marketingsyncbp><![CDATA[true]]></marketingsyncbp> <!-- 광고성 수신동의는 030채널 광고성 수신동의와 동기화 -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcd107>
+		
+		<!-- 바이탈뷰티1 -->
+		<chcdVRK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<!--  <nonmember>false</nonmember> 바이탈뷰티 요청에 의해 비회원 주문/조회 활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<!--  <nonmember>false</nonmember> 바이탈뷰티 요청에 의해 비회원 주문/조회 활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<!-- <nonmember>false</nonmember> 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<!-- <nonmember>false</nonmember> 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdVRK>
+		
+	    <!-- 미쟝셴  -->
+		<chcdAJK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdAJK>
+		
+		<!-- 려  -->
+		<chcdMRK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdMRK>
+		
+		<!-- 해피바스  -->
+		<chcdMHK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdMHK>			
+		
+		<!-- 스테디  -->
+		<chcdDRK>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<brandsite><![CDATA[true]]></brandsite> <!-- 아모레퍼시픽 브랜드 사이트 여부 (별도 채널코드 없음) -->
+				<nonmember>false</nonmember> <!-- 비회원 주문/조회 비활성화 -->
+			</prod>
+		</chcdDRK>
+		
+		<!-- SSG (제휴사 멤버십)  -->
+		<chcd202>
+			<local>
+				<membershipid>3003</membershipid>
+				<apikey><![CDATA[e455ad0f-7a89-491e-a779-97008b231eb0]]></apikey>
+				<authcodeurl>https://dev-api.ssg.com/member/alln/v1/oauth/token</authcodeurl>
+				<userinfourl>https://dev-api.ssg.com/member/alln/v1/user/me</userinfourl>
+				<linkurl>https://dev-api.ssg.com/member/alln/v1/mbr-link</linkurl>
+				<unlinkurl>https://dev-api.ssg.com/member/alln/v1/mbr-link/cancel</unlinkurl>
+				<aeskey>PFdDXuIaRLHxW4vf</aeskey>
+				<iv>31aIQsPnzPShrudp</iv>
+			</local>		
+			<dev>
+				<membershipid>3003</membershipid>
+				<apikey><![CDATA[e455ad0f-7a89-491e-a779-97008b231eb0]]></apikey>
+				<authcodeurl>https://dev-api.ssg.com/member/alln/v1/oauth/token</authcodeurl>
+				<userinfourl>https://dev-api.ssg.com/member/alln/v1/user/me</userinfourl>
+				<linkurl>https://dev-api.ssg.com/member/alln/v1/mbr-link</linkurl>
+				<unlinkurl>https://dev-api.ssg.com/member/alln/v1/mbr-link/cancel</unlinkurl>
+				<aeskey>PFdDXuIaRLHxW4vf</aeskey>
+				<iv>31aIQsPnzPShrudp</iv>
+			</dev>	
+			<stg>
+				<membershipid>3003</membershipid>
+				<apikey><![CDATA[e455ad0f-7a89-491e-a779-97008b231eb0]]></apikey>
+				<authcodeurl>https://stg-api.ssg.com/member/alln/v1/oauth/token</authcodeurl>
+				<userinfourl>https://stg-api.ssg.com/member/alln/v1/user/me</userinfourl>
+				<linkurl>https://stg-api.ssg.com/member/alln/v1/mbr-link</linkurl>
+				<unlinkurl>https://stg-api.ssg.com/member/alln/v1/mbr-link/cancel</unlinkurl>
+				<aeskey>PFdDXuIaRLHxW4vf</aeskey>
+				<iv>31aIQsPnzPShrudp</iv>
+			</stg>			
+			<prod>
+				<membershipid>3003</membershipid>
+				<apikey><![CDATA[d3db34de-8fd1-40fd-b46c-dbf5c50fbb26]]></apikey>
+				<authcodeurl>https://api.ssg.com/member/alln/v1/oauth/token</authcodeurl>
+				<userinfourl>https://api.ssg.com/member/alln/v1/user/me</userinfourl>
+				<linkurl>https://api.ssg.com/member/alln/v1/mbr-link</linkurl>
+				<unlinkurl>https://api.ssg.com/member/alln/v1/mbr-link/cancel</unlinkurl>
+				<aeskey>dm3ZX3Hyh0NI4C1T</aeskey>
+				<iv>1rWP7anoXNYWVJZn</iv>
+			</prod>
+		</chcd202>
+		
+		<!-- APMall  -->
+		<chcd031>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://ect-prv-api-ddev.amorepacific.com/ect/signupapmember/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<ismarketing>true</ismarketing> <!-- 해당 채널 미 가입 상태 시 문자 수신 동의 여부 추가 -->
+				<nonmemberparam>true</nonmemberparam> <!-- 비회원 주문/조회 선택 시 파라미터 전달(redirectUri, cancelUri) -->
+				<isecpapi>true</isecpapi> <!-- ecp api인 경우 파라미터 수정 -->
+				<isconfirmbtn>true</isconfirmbtn> <!-- 메인으로 이동 버튼을 확인 버튼으로 -->
+				<applogin><![CDATA[https://www-ecp-stgrenew.amoremall.com/kr/ko/onelink.html?t=auth&authkey=]]></applogin> <!-- 웹에서 로그인 시 앱 로그인 버튼 노출 및 실행 앱링크 -->
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://ect-prv-api-ddev.amorepacific.com/ect/signupapmember/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<ismarketing>true</ismarketing> <!-- 해당 채널 미 가입 상태 시 문자 수신 동의 여부 추가 -->
+				<nonmemberparam>true</nonmemberparam> <!-- 비회원 주문/조회 선택 시 파라미터 전달(redirectUri, cancelUri) -->
+				<isecpapi>true</isecpapi> <!-- ecp api인 경우 파라미터 수정 -->
+				<isconfirmbtn>true</isconfirmbtn> <!-- 메인으로 이동 버튼을 확인 버튼으로 -->
+				<applogin><![CDATA[https://www-ecp-stgrenew.amoremall.com/kr/ko/onelink.html?t=auth&authkey=]]></applogin> <!-- 웹에서 로그인 시 앱 로그인 버튼 노출 및 실행 앱링크 -->
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://ect-prv-api-dstg.amorepacific.com/ect/signupapmember/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<ismarketing>true</ismarketing> <!-- 해당 채널 미 가입 상태 시 문자 수신 동의 여부 추가 -->
+				<nonmemberparam>true</nonmemberparam> <!-- 비회원 주문/조회 선택 시 파라미터 전달(redirectUri, cancelUri) -->
+				<isecpapi>true</isecpapi> <!-- ecp api인 경우 파라미터 수정 -->
+				<isconfirmbtn>true</isconfirmbtn> <!-- 메인으로 이동 버튼을 확인 버튼으로 -->
+				<applogin><![CDATA[https://www-ecp-stgrenew.amoremall.com/kr/ko/onelink.html?t=auth&authkey=]]></applogin> <!-- 웹에서 로그인 시 앱 로그인 버튼 노출 및 실행 앱링크 -->
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[https://ect-prv-api.amorepacific.com/ect/signupapmember/v1.00]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+				<ismarketing>true</ismarketing> <!-- 해당 채널 미 가입 상태 시 문자 수신 동의 여부 추가 -->
+				<nonmemberparam>true</nonmemberparam> <!-- 비회원 주문/조회 선택 시 파라미터 전달(redirectUri, cancelUri) -->
+				<isecpapi>true</isecpapi> <!-- ecp api인 경우 파라미터 수정 -->
+				<isconfirmbtn>true</isconfirmbtn> <!-- 메인으로 이동 버튼을 확인 버튼으로 -->
+				<applogin><![CDATA[https://www.amoremall.com/kr/ko/onelink.html?t=auth&authkey=]]></applogin> <!-- 웹에서 로그인 시 앱 로그인 버튼 노출 및 실행 앱링크 -->
+			</prod>
+		</chcd031>
+		
+		<!-- 네이버 스마트 스토어 (제휴사 멤버십)  -->
+		<chcd401>
+			<local>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey>3e6f3ef30c9311c7086582f5a7f015c3<![CDATA[]]></apikey>
+				<sellerno>PWeO1oa9SWuKdu4tqqzxew</sellerno>
+				<channelno>100770445</channelno>
+				<channeluid>2si9zkoLUXREr537ZRFS</channeluid>
+				<url>https://dev.smartstore.naver.com/affiliate/callback</url>
+				<authcodeurl></authcodeurl>
+				<userinfourl>https://dev.apis.naver.com/affiliate/marketing-members/interlock</userinfourl>
+				<linkurl>https://dev.apis.naver.com/affiliate/marketing-members/interlock</linkurl>
+				<unlinkurl>https://dev.apis.naver.com/affiliate/marketing-members/interlock</unlinkurl>
+				<withdraw>https://dev.apis.naver.com/affiliate/marketing-members/receive-marketing/withdraw</withdraw>
+				<aeskey></aeskey>
+				<iv></iv>
+			</local>
+			<dev>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey>3e6f3ef30c9311c7086582f5a7f015c3<![CDATA[]]></apikey>
+				<sellerno>PWeO1oa9SWuKdu4tqqzxew</sellerno>
+				<channelno>100770445</channelno>
+				<channeluid>2si9zkoLUXREr537ZRFS</channeluid>
+				<url>https://dev.smartstore.naver.com/affiliate/callback</url>
+				<authcodeurl></authcodeurl>
+				<userinfourl>https://dev.apis.naver.com/affiliate/marketing-members/interlock</userinfourl>
+				<linkurl>https://dev.apis.naver.com/affiliate/marketing-members/interlock</linkurl>
+				<unlinkurl>https://dev.apis.naver.com/affiliate/marketing-members/interlock</unlinkurl>
+				<withdraw>https://dev.apis.naver.com/affiliate/marketing-members/receive-marketing/withdraw</withdraw>
+				<aeskey></aeskey>
+				<iv></iv>
+			</dev>
+			<stg>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</stg>			
+			<prod>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey>3e6f3ef30c9311c7086582f5a7f015c3<![CDATA[]]></apikey>
+				<sellerno>BIcr4GOCRSafEYuxc_93cA</sellerno>
+				<channelno>100770445</channelno>
+				<channeluid>2sWDz2YCMY4Gyf6AdRQpf</channeluid>
+				<url>https://smartstore.naver.com/affiliate/callback</url>
+				<authcodeurl></authcodeurl>
+				<userinfourl>https://apis.naver.com/affiliate/marketing-members/interlock</userinfourl>
+				<linkurl>https://apis.naver.com/affiliate/marketing-members/interlock</linkurl>
+				<unlinkurl>https://apis.naver.com/affiliate/marketing-members/interlock</unlinkurl>
+				<withdraw>https://apis.naver.com/affiliate/marketing-members/receive-marketing/withdraw</withdraw>
+				<aeskey></aeskey>
+				<iv></iv>
+			</prod>
+		</chcd401>
+		
+		<!-- 네이버 스마트 스토어 - 이니스프리 (제휴사 멤버십)  -->
+		<chcd402>
+			<local>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</local>
+			<dev>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</dev>
+			<stg>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</stg>
+			<prod>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey>3e6f3ef30c9311c7086582f5a7f015c3<![CDATA[]]></apikey>
+				<sellerno>sG8bYodTTH2-xTaT1jt-wQ</sellerno>
+				<channelno>500005528</channelno>
+				<channeluid>2sWDvO9wNpzpjWHBitooI</channeluid>
+				<url>https://smartstore.naver.com/affiliate/callback</url>
+				<authcodeurl></authcodeurl>
+				<userinfourl>https://apis.naver.com/affiliate/marketing-members/interlock</userinfourl>
+				<linkurl>https://apis.naver.com/affiliate/marketing-members/interlock</linkurl>
+				<unlinkurl>https://apis.naver.com/affiliate/marketing-members/interlock</unlinkurl>
+				<withdraw>https://apis.naver.com/affiliate/marketing-members/receive-marketing/withdraw</withdraw>
+				<aeskey></aeskey>
+				<iv></iv>
+			</prod>
+		</chcd402>
+		
+		<!-- 네이버 스마트 스토어 - 에뛰드 (제휴사 멤버십)  -->
+		<chcd403>
+			<local>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</local>
+			<dev>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</dev>
+			<stg>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</stg>
+			<prod>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey>3e6f3ef30c9311c7086582f5a7f015c3<![CDATA[]]></apikey>
+				<sellerno>8W5BejRDSWGsh5iXuEC_GQ</sellerno>
+				<channelno>500017094</channelno>
+				<channeluid>2sWDvPbcZsaAZPK0fZ1oi</channeluid>
+				<url>https://smartstore.naver.com/affiliate/callback</url>
+				<authcodeurl></authcodeurl>
+				<userinfourl>https://apis.naver.com/affiliate/marketing-members/interlock</userinfourl>
+				<linkurl>https://apis.naver.com/affiliate/marketing-members/interlock</linkurl>
+				<unlinkurl>https://apis.naver.com/affiliate/marketing-members/interlock</unlinkurl>
+				<withdraw>https://apis.naver.com/affiliate/marketing-members/receive-marketing/withdraw</withdraw>
+				<aeskey></aeskey>
+				<iv></iv>
+			</prod>
+		</chcd403>
+		
+		<!-- 네이버 스마트 스토어 - 에스쁘아 (제휴사 멤버십)  -->
+		<chcd404>
+			<local>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</local>
+			<dev>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</dev>
+			<stg>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</stg>
+			<prod>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey>3e6f3ef30c9311c7086582f5a7f015c3<![CDATA[]]></apikey>
+				<sellerno>bTH5ky_IRC64-d6S5mJHfg</sellerno>
+				<channeluid>2sWDvTdMkaGtAUU00umGz</channeluid>
+				<channelno>500035474</channelno>
+				<url>https://smartstore.naver.com/affiliate/callback</url>
+				<authcodeurl></authcodeurl>
+				<userinfourl>https://apis.naver.com/affiliate/marketing-members/interlock</userinfourl>
+				<linkurl>https://apis.naver.com/affiliate/marketing-members/interlock</linkurl>
+				<unlinkurl>https://apis.naver.com/affiliate/marketing-members/interlock</unlinkurl>
+				<withdraw>https://apis.naver.com/affiliate/marketing-members/receive-marketing/withdraw</withdraw>
+				<aeskey></aeskey>
+				<iv></iv>
+			</prod>
+		</chcd404>
+		
+		<!-- 네이버 스마트 스토어 - 오설록 (제휴사 멤버십)  -->
+		<chcd405>
+			<local>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</local>
+			<dev>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</dev>
+			<stg>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey><![CDATA[]]></apikey>
+				<authcodeurl></authcodeurl>
+				<userinfourl></userinfourl>
+				<linkurl></linkurl>
+				<unlinkurl></unlinkurl>
+				<aeskey></aeskey>
+				<iv></iv>
+			</stg>
+			<prod>
+				<ismembershipopenapi>true</ismembershipopenapi> <!-- 뷰티포인트 제휴사 Open API 사용 여부 -->
+				<apikey>3e6f3ef30c9311c7086582f5a7f015c3<![CDATA[]]></apikey>
+				<sellerno>nwkiOIeFQxGpCltJFAqfxQ</sellerno>
+				<channelno>500135478</channelno>
+				<channeluid>2sWDvmyrRJvMNIhySW8gk</channeluid>
+				<url>https://smartstore.naver.com/affiliate/callback</url>
+				<authcodeurl></authcodeurl>
+				<userinfourl>https://apis.naver.com/affiliate/marketing-members/interlock</userinfourl>
+				<linkurl>https://apis.naver.com/affiliate/marketing-members/interlock</linkurl>
+				<unlinkurl>https://apis.naver.com/affiliate/marketing-members/interlock</unlinkurl>
+				<withdraw>https://apis.naver.com/affiliate/marketing-members/receive-marketing/withdraw</withdraw>
+				<aeskey></aeskey>
+				<iv></iv>
+			</prod>
+		</chcd405>		
+		
+		<!-- 뷰티포인트 -->
+		<chcd030>
+			<local>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+			</local>		
+			<dev>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+			</dev>	
+			<stg>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+			</stg>			
+			<prod>
+				<apikey><![CDATA[]]></apikey>
+				<url><![CDATA[]]></url>
+				<search><![CDATA[]]></search>
+				<initurl><![CDATA[]]></initurl>
+			</prod>
+		</chcd030>
+	</api>
+	
+	<sns>
+		<ka>
+			<local>
+				<appid></appid>
+				<restkey>d91599a5b6134202ee863f938e0be769</restkey>
+				<secretkey>bpMDtqxV1xs8bfRw53stWicmZLqIDwMw</secretkey>
+				<sdkkey>18d13d9ecf5f21a51ecb424e50eb4b76</sdkkey>
+				<adminkey>3e7714d75196624e38505b60ecb07532</adminkey>
+				<callback><![CDATA[http://localhost:8081/authenticated/sns/kakao]]></callback>
+				<joinon><![CDATA[http://dev-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>
+				<authenticator>true</authenticator>
+			</local>		
+			<dev>
+				<appid></appid>
+				<restkey>d91599a5b6134202ee863f938e0be769</restkey>
+				<secretkey>bpMDtqxV1xs8bfRw53stWicmZLqIDwMw</secretkey>
+				<sdkkey>18d13d9ecf5f21a51ecb424e50eb4b76</sdkkey>
+				<adminkey>3e7714d75196624e38505b60ecb07532</adminkey>
+				<callback><![CDATA[https://dev-one3-ap.amorepacific.com/auth/authenticated/sns/kakao]]></callback>
+				<joinon><![CDATA[http://dev-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>
+				<authenticator>true</authenticator>
+			</dev>
+			<stg>
+				<appid></appid>
+				<restkey>d91599a5b6134202ee863f938e0be769</restkey>
+				<secretkey>bpMDtqxV1xs8bfRw53stWicmZLqIDwMw</secretkey>
+				<sdkkey>18d13d9ecf5f21a51ecb424e50eb4b76</sdkkey>
+				<adminkey>3e7714d75196624e38505b60ecb07532</adminkey>
+				<callback><![CDATA[https://stg-one3-ap.amorepacific.com/auth/authenticated/sns/kakao]]></callback>
+				<joinon><![CDATA[http://dev-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>
+				<authenticator>true</authenticator>
+			</stg>
+			<prod>
+				<appid></appid>
+				<restkey>ca19a288d41c99fdeb8b9d689d4a3b6c</restkey>
+				<secretkey>EaV8TeFScdZuF0e67uim2rjBZukzrmlW</secretkey>
+				<sdkkey>2f4d28fc753f5c9267ef98c3fa7d8179</sdkkey>
+				<adminkey>0b608b831550fa4c622c2ba187edfcbe</adminkey>
+				<callback><![CDATA[https://one3-ap.amorepacific.com/auth/authenticated/sns/kakao]]></callback>
+				<joinon><![CDATA[https://join-on.amorepacific.com/snsConnect.do]]></joinon>
+				<authenticator>true</authenticator>		
+			</prod>
+		</ka>
+		<na>
+			<local>
+				<appid></appid>
+				<restkey>U4BPIBM3JdeMFMb60YYR</restkey>
+				<secretkey>eWOWDnPymF</secretkey>
+				<callback><![CDATA[http://localhost:8081/authenticated/sns/naver]]></callback>
+				<joinon><![CDATA[http://dev-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>
+			</local>		
+			<dev>
+				<appid></appid>
+				<restkey>U4BPIBM3JdeMFMb60YYR</restkey>
+				<secretkey>eWOWDnPymF</secretkey>
+				<callback><![CDATA[https://dev-one3-ap.amorepacific.com/auth/authenticated/sns/naver]]></callback>
+				<joinon><![CDATA[http://dev-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>
+			</dev>
+			<stg>
+				<appid></appid>
+				<restkey>U4BPIBM3JdeMFMb60YYR</restkey>
+				<secretkey>eWOWDnPymF</secretkey>
+				<callback><![CDATA[https://stg-one3-ap.amorepacific.com/auth/authenticated/sns/naver]]></callback>
+				<joinon><![CDATA[http://stg-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>			
+			</stg>
+			<prod>
+				<appid></appid>
+				<restkey>r0l11J1rdC1XwBemv7PU</restkey>
+				<secretkey>10Zjf9kwTc</secretkey>
+				<callback><![CDATA[https://one3-ap.amorepacific.com/auth/authenticated/sns/naver]]></callback>
+				<joinon><![CDATA[https://join-on.amorepacific.com/snsConnect.do]]></joinon>			
+			</prod>
+		</na>
+		<fb>
+			<local>
+				<appid></appid>
+				<restkey>169871046795871</restkey>
+				<secretkey>27740a0956960b43a16b28f5ecf04a7f</secretkey>
+				<callback><![CDATA[http://localhost:8081/authenticated/sns/facebookfinish]]></callback>
+				<rmcallback><![CDATA[http://localhost:8081/sns/confirm/facebook/callback]]></rmcallback>
+				<rmrequesturl><![CDATA[http://localhost:8081/v1/sns/callback/rm/facebook/FB]]></rmrequesturl>
+				<joinon><![CDATA[http://dev-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>
+			</local>		
+			<dev>
+				<appid></appid>
+				<restkey>169871046795871</restkey>
+				<secretkey>27740a0956960b43a16b28f5ecf04a7f</secretkey>
+				<callback><![CDATA[https://dev-one3-ap.amorepacific.com/auth/authenticated/sns/facebook]]></callback>
+				<rmcallback><![CDATA[https://dev-one3-ap.amorepacific.com/auth/sns/confirm/facebook/callback]]></rmcallback>
+				<rmrequesturl><![CDATA[http://dev-one3-ap.amorepacific.com/api/v1/sns/callback/rm/facebook/FB]]></rmrequesturl>
+				<joinon><![CDATA[http://dev-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>
+			</dev>
+			<stg>
+				<appid></appid>
+				<restkey>169871046795871</restkey>
+				<secretkey>27740a0956960b43a16b28f5ecf04a7f</secretkey>
+				<callback><![CDATA[https://stg-one3-ap.amorepacific.com/auth/authenticated/sns/facebook]]></callback>
+				<rmcallback><![CDATA[https://stg-one3-ap.amorepacific.com/auth/sns/confirm/facebook/callback]]></rmcallback>
+				<rmrequesturl><![CDATA[http://stg-one3-ap.amorepacific.com/api/v1/sns/callback/rm/facebook/FB]]></rmrequesturl>
+				<joinon><![CDATA[http://dev-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>			
+			</stg>
+			<prod>
+				<appid></appid>
+				<restkey>911792662299160</restkey>
+				<secretkey>ee8110b8fff2c5e560cb2a14c6df5ddf</secretkey>
+				<callback><![CDATA[https://one3-ap.amorepacific.com/auth/authenticated/sns/facebook]]></callback>
+				<rmcallback><![CDATA[https://one3-ap.amorepacific.com/auth/sns/confirm/facebook/callback]]></rmcallback>
+				<rmrequesturl><![CDATA[http://one3-ap.amorepacific.com/api/v1/sns/callback/rm/facebook/FB]]></rmrequesturl>
+				<joinon><![CDATA[https://join-on.amorepacific.com/snsConnect.do]]></joinon>		
+			</prod>
+		</fb>
+		<fbt>
+			<local>
+				<appid></appid>
+				<restkey>169871046795871</restkey>
+				<secretkey>27740a0956960b43a16b28f5ecf04a7f</secretkey>
+				<callback><![CDATA[http://localhost:8081/authenticated/sns/facebookfinish]]></callback>
+				<rmcallback><![CDATA[http://localhost:8081/sns/confirm/facebook/callback]]></rmcallback>
+				<rmrequesturl><![CDATA[http://localhost:8081/v1/sns/callback/rm/facebook/FB]]></rmrequesturl>
+				<joinon><![CDATA[http://dev-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>
+			</local>		
+			<dev>
+				<appid></appid>
+				<restkey>169871046795871</restkey>
+				<secretkey>27740a0956960b43a16b28f5ecf04a7f</secretkey>
+				<callback><![CDATA[https://dev-one3-ap.amorepacific.com/auth/authenticated/sns/facebookfinish]]></callback>
+				<rmcallback><![CDATA[https://dev-one3-ap.amorepacific.com/auth/sns/confirm/facebook/callback]]></rmcallback>
+				<rmrequesturl><![CDATA[http://dev-one3-ap.amorepacific.com/api/v1/sns/callback/rm/facebook/FB]]></rmrequesturl>
+				<joinon><![CDATA[http://dev-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>
+			</dev>
+			<stg>
+				<appid></appid>
+				<restkey>169871046795871</restkey>
+				<secretkey>27740a0956960b43a16b28f5ecf04a7f</secretkey>
+				<callback><![CDATA[https://stg-one3-ap.amorepacific.com/auth/authenticated/sns/facebookfinish]]></callback>
+				<rmcallback><![CDATA[https://stg-one3-ap.amorepacific.com/auth/sns/confirm/facebook/callback]]></rmcallback>
+				<rmrequesturl><![CDATA[http://stg-one3-ap.amorepacific.com/api/v1/sns/callback/rm/facebook/FB]]></rmrequesturl>
+				<joinon><![CDATA[http://dev-join-on.amorepacific.com:8207/snsConnect.do]]></joinon>			
+			</stg>
+			<prod>
+				<appid></appid>
+				<restkey>911792662299160</restkey>
+				<secretkey>ee8110b8fff2c5e560cb2a14c6df5ddf</secretkey>
+				<callback><![CDATA[https://one3-ap.amorepacific.com/auth/authenticated/sns/facebookfinish]]></callback>
+				<rmcallback><![CDATA[https://one3-ap.amorepacific.com/auth/sns/confirm/facebook/callback]]></rmcallback>
+				<rmrequesturl><![CDATA[http://one3-ap.amorepacific.com/api/v1/sns/callback/rm/facebook/FB]]></rmrequesturl>
+				<joinon><![CDATA[https://join-on.amorepacific.com/snsConnect.do]]></joinon>		
+			</prod>
+		</fbt>
+		<ap>
+			<local>
+				<appid></appid>
+				<restkey>com.amorepacific.oneap</restkey>
+				<secretkey></secretkey>
+				<state>oneap.appleid</state>
+				<callback><![CDATA[https://local.amorepacific.com:8443/authenticated/sns/apple]]></callback>
+			</local>		
+			<dev>
+				<appid></appid>
+				<restkey>com.amorepacific.oneap</restkey>
+				<secretkey></secretkey>
+				<state>oneap.appleid</state>
+				<callback><![CDATA[https://dev-one3-ap.amorepacific.com/auth/authenticated/sns/apple]]></callback>
+			</dev>
+			<stg>
+				<appid></appid>
+				<restkey>com.amorepacific.oneap</restkey>
+				<secretkey></secretkey>
+				<state>oneap.appleid</state>
+				<callback><![CDATA[https://stg-one3-ap.amorepacific.com/auth/authenticated/sns/apple]]></callback>			
+			</stg>
+			<prod>
+				<appid></appid>
+				<restkey>com.amorepacific.oneap</restkey>
+				<secretkey></secretkey>
+				<state>oneap.appleid</state>
+				<callback><![CDATA[https://one3-ap.amorepacific.com/auth/authenticated/sns/apple]]></callback>
+			</prod>
+		</ap>
+	</sns>
+	
+	<!-- 임직원 인증 관련 -->
+	<emp>
+		<mail>
+			<confirm>
+				<url>
+					<local>https://dev-one-ap.amorepacific.com/emp-auth/mail/confirm</local>
+					<dev>https://dev-one-ap.amorepacific.com/emp-auth/mail/confirm</dev>
+					<stg>https://stg-one-ap.amorepacific.com/emp-auth/mail/confirm</stg>
+					<prod>https://one-ap.amorepacific.com/emp-auth/mail/confirm</prod>
+				</url>
+			</confirm>
+		</mail>
+	</emp>
+	
+	<!-- 카카오 알림톡 관련 -->
+	<kakao>
+		<notice>
+			<chcd006>
+				<prtnname><![CDATA[이니스프리]]></prtnname>
+				<id>71009304</id>
+				<templatecode>CEM0495</templatecode>
+			</chcd006>
+			<chcd016>
+				<prtnname><![CDATA[에스쁘아]]></prtnname>
+				<id>71009156</id>
+				<templatecode>CEM0495</templatecode>
+			</chcd016>
+			<chcd017>
+				<prtnname><![CDATA[에뛰드]]></prtnname>
+				<id>71009176</id>
+				<templatecode>CEM0495</templatecode>
+			</chcd017>
+			<chcd005>
+				<prtnname><![CDATA[아리따움]]></prtnname>
+				<id>1009157</id>
+				<templatecode>CEM0495</templatecode>
+			</chcd005>
+		</notice>
+	</kakao>	
+</configuration>

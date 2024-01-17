@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- logging 레벨은 TRACE < DEBUG < INFO < WARN < ERROR and FATAL 1) FATAL : 
+	가장 크리티컬한 에러가 났을 때 사용. 2) ERROR : 일반 에러가 났을 경우 사용. 3) WARN : 에러는 아니지만 주의할 
+	필요있을 때 사용. 4) INFO : 일반 정보를 나타날 때 사용. 5) DEBUG : 일반 정보를 상세히 나타낼 때 사용. debug 
+	레벨로 했다면 INFO~FATAL까지 모두 logging이 됨 운영모드라면 INFO레벨 권장 -->
+<!-- automatic reconfiguration : monitorInterval="30" -->
+<Configuration status="info" monitorInterval="30">
+	<Properties>
+		<Property name="LOG_FORMAT">%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%X{trx-uuid}] [%1.25t] %logger{1.}.%M[%L] : %msg%n</Property>
+		<Property name="BASE_DIR">/data/was/tomcat9/logs</Property>
+	</Properties>
+
+	<Appenders>
+		<Console name="consoleout" target="SYSTEM_OUT" follow="true">
+			<PatternLayout pattern="${LOG_FORMAT}" />
+		</Console>
+
+		<RollingRandomAccessFile name="omnimp-log"
+			fileName="${BASE_DIR}/omnimp.log"
+			filePattern="${BASE_DIR}/omnimp.%d{yyyyMMdd}.log.gz"
+			immediateFlush="true" append="true">
+			<PatternLayout pattern="${LOG_FORMAT}" />
+			<Policies>
+				<OnStartupTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="2 MB" />
+				<TimeBasedTriggeringPolicy interval="6"
+					modulate="true" />
+			</Policies>
+			<DefaultRolloverStrategy max="20">
+				<Delete basePath="${BASE_DIR}">
+					<IfFileName glob="*.log.gz" />
+					<IfLastModified age="30d">
+						<IfAny>
+							<IfAccumulatedFileSize exceeds="200 MB" />
+							<IfAccumulatedFileCount exceeds="10" />
+						</IfAny>
+					</IfLastModified>
+				</Delete>
+			</DefaultRolloverStrategy>
+		</RollingRandomAccessFile>
+
+		<Async name="async-omnimp-log" includeLocation="true">
+			<AppenderRef ref="omnimp-log" />
+		</Async>
+
+	</Appenders>
+
+	<Loggers>
+		<Logger name="com.amorepacific.oneap.common" level="error"
+			additivity="false">
+			<AppenderRef ref="consoleout" />
+			<AppenderRef ref="async-omnimp-log" />
+		</Logger>
+
+		<Logger name="com.amorepacific.oneap.admin" level="error"
+			additivity="false">
+			<AppenderRef ref="consoleout" />
+			<AppenderRef ref="async-omnimp-log" />
+		</Logger>
+
+		<Logger name="com.amorepacific.oneap.api" level="error"
+			additivity="false">
+			<AppenderRef ref="consoleout" />
+			<AppenderRef ref="async-omnimp-log" />
+		</Logger>
+
+		<Logger name="com.amorepacific.oneap.auth" level="debug"
+			additivity="false">
+			<AppenderRef ref="consoleout" />
+			<AppenderRef ref="async-omnimp-log" />
+		</Logger>
+
+		<Logger name="org.springframework.web.filter" level="ERROR" />
+		<Logger name="org.springframework.security.web.util" level="ERROR" />
+		<Logger name="org.springframework.core" level="ERROR" />
+		<Logger name="org.springframework.context.support"
+			level="ERROR" />
+		<Logger name="org.springframework.context.annotation"
+			level="ERROR" />
+		<Logger name="org.springframework.beans.factory.support"
+			level="ERROR" />
+		<Logger name="org.springframework.jmx" level="ERROR" />
+		<Logger name="org.springframework.scheduling" level="ERROR" />
+
+		<Logger name="org.springframework.boot.admin" level="ERROR" />
+		<Logger name="org.springframework.boot.context.config"
+			level="ERROR" />
+		<Logger name="org.springframework.boot.context.logging"
+			level="ERROR" />
+		<Logger name="org.springframework.boot.devtools" level="ERROR" />
+		<Logger name="org.springframework.boot.autoconfigure"
+			level="ERROR" />
+
+		<Logger name="com.ulisesbocchio" level="ERROR" /> <!-- jasypt -->
+
+		<Logger name="springfox.documentation.schema" level="ERROR" /> <!-- swagger -->
+		
+		<Logger name="io.netty.util" level="ERROR" /> <!-- netty -->
+
+		<Logger name="org.mybatis.spring" level="ERROR" />
+		<Logger name="org.apache.ibatis" level="OFF" />
+
+		<Logger name="org.quartz" level="ERROR" />
+		<Logger name="org.hibernate" level="OFF" />
+		<Logger name="org.apache.commons.beanutils" level="OFF" />
+		<Logger name="org.apache.http" level="ERROR" />
+
+		<Logger name="jdbc" level="INFO" />
+
+		<Logger name="jdbc.sqlonly" level="OFF" />
+		<Logger name="jdbc.sqltiming" level="DEBUG" />
+		<Logger name="jdbc.audit" level="OFF" />
+		<Logger name="jdbc.resultset" level="OFF" />
+		<Logger name="jdbc.resultsettable" level="OFF" />
+		<Logger name="jdbc.connection" level="OFF" />
+
+		<Root level="error">
+			<AppenderRef ref="consoleout" />
+			<AppenderRef ref="async-omnimp-log" />
+		</Root>
+	</Loggers>
+</Configuration>
