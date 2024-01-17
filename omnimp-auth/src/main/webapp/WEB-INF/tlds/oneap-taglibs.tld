@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+
+	<description>One Ap Tag Library</description>
+	<tlib-version>2.0</tlib-version>
+
+	<short-name>otl</short-name>
+	
+	<function>
+		<description>휴대폰 번호 설정</description>
+		<name>mpn</name>
+		<function-class>com.amorepacific.oneap.common.taglib.OneApTlds</function-class>
+		<function-signature>
+			java.lang.String getMergePhoneNumber(com.amorepacific.oneap.common.vo.user.Customer, java.util.Locale)
+		</function-signature>
+	</function>
+	
+	<function>
+		<description>휴대폰 번호 설정 및 마스킹</description>
+		<name>mmp</name>
+		<function-class>com.amorepacific.oneap.common.taglib.OneApTlds</function-class>
+		<function-signature>
+			java.lang.String getMergeMaskingPhoneNumber(com.amorepacific.oneap.common.vo.user.Customer, java.util.Locale)
+		</function-signature>
+	</function>
+	
+	<function>
+		<description>휴대폰 번호 포맷 변경</description>
+		<name>phn</name>
+		<function-class>com.amorepacific.oneap.common.taglib.OneApTlds</function-class>
+		<function-signature>
+			java.lang.String getPhoneNumber(java.lang.String, java.util.Locale)
+		</function-signature>
+	</function>
+	
+	<function>
+		<description>생년월일 포맷 변경</description>
+		<name>bdt</name>
+		<function-class>com.amorepacific.oneap.common.taglib.OneApTlds</function-class>
+		<function-signature>
+			java.lang.String getBirthDate(java.lang.String)
+		</function-signature>
+	</function>
+	
+	<function>
+		<description>사용자 이름 마스킹</description>
+		<name>nmm</name>
+		<function-class>com.amorepacific.oneap.common.taglib.OneApTlds</function-class>
+		<function-signature>
+			java.lang.String getNameMask(java.lang.String, java.util.Locale)
+		</function-signature>
+	</function>	
+		
+	<function>
+		<description>사용자 휴대폰 마스킹</description>
+		<name>phm</name>
+		<function-class>com.amorepacific.oneap.common.taglib.OneApTlds</function-class>
+		<function-signature>
+			java.lang.String getPhoneMask(java.lang.String, java.util.Locale)
+		</function-signature>
+	</function>	
+	
+	<function>
+		<description>사용자 아이디 마스킹</description>
+		<name>idm</name>
+		<function-class>com.amorepacific.oneap.common.taglib.OneApTlds</function-class>
+		<function-signature>
+			java.lang.String getIdMask(java.lang.String)
+		</function-signature>
+	</function>				
+		
+</taglib>    
+ 

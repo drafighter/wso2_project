@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.auth.social.mapper.SocialMapper">
+
+	<select id="getIDNAssociatedId" parameterType="map" resultType="String">
+		SELECT 
+			  isi.user_name
+		FROM 
+			  ocp.idn_associated_id isi
+		JOIN  
+			  ocp.idp i
+		ON	  
+			  isi.idp_id = i.id
+		WHERE 
+			  isi.idp_user_id = #{snsId}
+		AND   i.name = #{snsType}
+	</select>
+	
+	<select id="getSnsMappingIncsNo" parameterType="com.amorepacific.oneap.common.vo.sns.SnsParam" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+	
+		select 
+			uu.um_user_name, uu.um_user_incsno as incs_no
+		from 
+		(
+			select 
+				*
+			from 
+				ocp.um_user uu 
+			where um_user_name in ( 
+				select user_name from ocp.idn_associated_id iai 
+				where idp_id in (select id from ocp.idp i where name = #{snsType}) 
+				and idp_user_id = #{snsId})
+		) uu
+			left join ocp.um_user_attribute uua
+			on uu.um_id = uua.um_user_id
+			and uua.um_attr_name = 'accountDisabled' and uua.um_attr_value != 'true' 
+			where (uua.um_attr_value is null or uua.um_attr_value = 'false') 
+	
+	</select>
+	
+	<update id="updateSnsMapping" parameterType="com.amorepacific.oneap.common.vo.sns.SnsParam">
+		UPDATE 
+			ocp.idn_associated_id
+			SET user_name = #{loginId}, 
+			time_created = now()
+		WHERE idp_user_id = #{snsId}
+		AND idp_id in (select id from ocp.idp i where name = #{snsType}) 
+	</update>
+</mapper>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!-- member -->
+<html lang="ko">
+<head>
+	<title>휴면 회원 해제 안내 | 옴니통합회원</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="expires" content="-1">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="format-detection" content="telephone=no">
+	<meta name="author" content="">
+	<meta name="keywords" content="" />
+	<meta name="description" content="">
+  	<link rel="shortcut icon" href="../images/favicon/favicon.ico" type="image/x-icon" />
+  	<link rel="apple-touch-icon-precomposed" href="../images/favicon/apple-touch-icon-57x57.png" />
+  	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="../images/favicon/apple-touch-icon-114x114.png" />
+	<link rel="stylesheet" type="text/css" href="../css/dormancy_release.css">
+	<script type="text/javascript" src="../js/lib/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="../js/lib/jquery-ui-1.12.1.min.js"></script>
+	<script type="text/javascript" src="../js/lib/jquery.easing.1.3.min.js"></script>
+	<script type="text/javascript" src="../js/lib/jquery.i18n.properties-1.2.7.min.js"></script>
+	<script type="text/javascript" src="../js/lib/jquery-key.0.2.js"></script>
+	<script type="text/javascript" src="../js/lib/aes.min.js"></script>
+</head>
+<body>
+	<div id="wrap" class="wrap">
+		<section class="container">
+			<img src="../images/common/img_beautypointLogo.png" class="logo_beautypoint">
+			<div class="page_top_area">
+				<h2>아모레퍼시픽 일반 회원 전환 안내</h2>
+				<p class="fs14">23년 9월 15일 시행된 개인정보보호법(개정 전 39조의 6, 개인정보 유효 기간제 폐지)에 따라 회원 휴면 정책이 변경되어 안내 드립니다.</p>
+			</div>
+			<div class="dormancy_area">
+				<div class="box">
+					<h3>휴면으로 분류되었던 회원 계정은<br> <span>23년 12월 26일</span> 부터 순차적으로 일반회원으로<br>전환됩니다.</h3>
+				</div>
+				<div class="box1">
+					<ul>
+						<li>휴면계정으로 전환되기 전 광고성 정보 수신 동의 내역은 유지됩니다.</li>
+						<li>전환에 동의하지 않거나 회원탈퇴를 원하시는 경우, 하단의 버튼을 통해 로그인하셔서 [회원정보 수정] 화면에서 가능합니다. 그 외 문의는 고객센터로 연락 주시면 처리를 도와드리도록 하겠습니다.</li>
+						<li>온라인 회원 아이디가 없는 계정의 경우 고객센터로 문의주세요.</li>
+					</ul>
+				</div>
+				<div class="btn_submit">
+        			<button type="button" class="btnA btn_indigo" id="btn_login">회원정보 수정</button>
+        		</div>
+			</div>
+		</section>
+		<section class="container_white">
+			<div class="cs_cont">
+        		<a href="tel:0800235454" class="cs_phone">
+          			<strong>고객상담센터<br>080-023-5454 (ARS 2번)</strong>
+          			<span>평일 09:00~18:00<br />점심 12:00~13:00<br />(주말/공휴일 휴무)</span>
+        		</a>
+      		</div>
+      		<ul class="terms">
+      			<li><a href="javascript:;" id='terms_of_service'>이용약관</a></li>
+      			<li style="font-weight: bold;color: #666;"><a href="javascript:;" id='privacy_policy'>개인정보처리방침</a></li>
+      		</ul>
+      		<div class="dormancy_footer">
+      			<span>ⓒ AMOREPACIFIC CORPORATION. ALL RIGHTS RESERVED</span>
+      		</div>
+		</section>
+	</div>
+</body>
+<script>
+$(document).ready(function() {
+	$('#btn_login').on('click', function() {
+		//location.href = 'https://www.amoremall.com/kr/ko/my/page/info/myPouch';
+		location.href='https://www.amoremall.com/kr/ko/beautypoint/app/account/accountPw.do';
+	});	
+	
+	$('#terms_of_service').on('click', function() {
+		location.href = 'https://www.amoremall.com/kr/ko/beautypoint/app/footer/agreement.do';
+	});
+	
+	$('#privacy_policy').on('click', function() {
+		location.href = 'https://www.amoremall.com/kr/ko/beautypoint/app/footer/privacy.do';
+	});	
+});
+</script>
+</html>

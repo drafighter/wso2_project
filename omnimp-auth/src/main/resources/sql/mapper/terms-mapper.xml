@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.auth.terms.mapper.TermsMapper">
+
+	<select id="getCorpTerms" resultType="com.amorepacific.oneap.auth.terms.vo.TermsVo" parameterType="com.amorepacific.oneap.auth.terms.vo.TermsVo">
+	select 
+		a.tcat_cd,
+		a.tncv_no,
+		a.ch_cd,
+		a.mk_sn,
+		a.tnc_ttl,
+		a.tnc_txt_url,
+		a.tnc_agr_mand_yn,
+		a.tnc_agr_mand_yn_txt,
+		a.aply_bgn_dt,
+		a.aply_end_dt
+	from 
+	(	
+		SELECT
+			tcat_cd, 
+			tncv_no, 
+			ch_cd, 
+			mk_sn, 
+			tnc_ttl, 
+			tnc_txt_url, 
+			tnc_agr_mand_yn, 
+			tnc_agr_mand_yn_txt,
+			aply_bgn_dt, 
+			aply_end_dt
+		FROM
+		(	
+			SELECT 
+				tcat_cd, 
+				tncv_no, 
+				ch_cd, 
+				mk_sn, 
+				tnc_ttl, 
+				tnc_txt_url, 
+				tnc_agr_mand_yn,
+				(CASE WHEN tnc_agr_mand_yn = 'Y' THEN '필수' ELSE '선택' END) as tnc_agr_mand_yn_txt,  
+				aply_bgn_dt, 
+				aply_end_dt,
+				to_date(aply_bgn_dt, 'YYYYMMDD') as aply_bgn_dt1, 
+				to_date(aply_end_dt, 'YYYYMMDD') as aply_end_dt1 
+			FROM 
+				ocp.occuem_tnc
+			WHERE
+				ch_cd = #{chCd}
+				AND mk_sn = 0
+				<!--   AND tncv_no = (select max(tncv_no) from ocp.occuem_tnc where ch_cd = #{chCd} and mk_sn = 0) -->	
+		) a
+		WHERE aply_bgn_dt1 <![CDATA[<]]> now() and aply_end_dt1 <![CDATA[>]]> now()
+	) a,
+	(select max(tncv_no) as tncv_no, tcat_cd from ocp.occuem_tnc where ch_cd = #{chCd} and mk_sn = 0 group by tcat_cd ) b
+	where a.tncv_no = b.tncv_no and a.tcat_cd = b.tcat_cd
+	order by a.mk_sn asc			
+	</select>
+	
+	<select id="getTermsChoice" resultType="com.amorepacific.oneap.auth.terms.vo.TermsVo" parameterType="com.amorepacific.oneap.auth.terms.vo.TermsVo">
+	select 
+		a.tcat_cd,
+		a.tncv_no,
+		a.ch_cd,
+		a.mk_sn,
+		a.tnc_ttl,
+		a.tnc_txt_url,
+		a.tnc_agr_mand_yn,
+		a.tnc_agr_mand_yn_txt,
+		a.aply_bgn_dt,
+		a.aply_end_dt,
+		a.kasy_tnc_idnt_vl
+	from 
+	(	
+		SELECT
+			a.tcat_cd, 
+			a.tncv_no, 
+			a.ch_cd, 
+			a.mk_sn, 
+			a.tnc_ttl, 
+			a.tnc_txt_url, 
+			a.tnc_agr_mand_yn, 
+			a.tnc_agr_mand_yn_txt,
+			a.aply_bgn_dt, 
+			a.aply_end_dt,
+			a.kasy_tnc_idnt_vl
+		FROM
+		(	
+			SELECT 
+				tcat_cd, 
+				tncv_no, 
+				ch_cd, 
+				mk_sn, 
+				tnc_ttl, 
+				tnc_txt_url, 
+				tnc_agr_mand_yn,
+				(CASE WHEN tnc_agr_mand_yn = 'Y' THEN '필수' ELSE '선택' END) as tnc_agr_mand_yn_txt,  
+				aply_bgn_dt, 
+				aply_end_dt,
+				to_date(aply_bgn_dt, 'YYYYMMDD') as aply_bgn_dt1, 
+				to_date(aply_end_dt, 'YYYYMMDD') as aply_end_dt1,
+				kasy_tnc_idnt_vl
+			FROM 
+				ocp.occuem_tnc
+			WHERE
+				ch_cd = #{chCd}
+				AND mk_sn <![CDATA[<]]> 0
+		) a
+		<if test="chCd.equals('039') and !('').equals(incsNo) and incsNo != null">
+			LEFT OUTER JOIN ocp.occued_cust_tnc oct ON a.tcat_cd = oct.tcat_cd AND a.ch_cd = oct.chg_ch_cd AND oct.incs_no = cast(coalesce(#{incsNo}, '0') as integer)
+		</if>
+		WHERE aply_bgn_dt1 <![CDATA[<]]> now() and aply_end_dt1 <![CDATA[>]]> now() 
+		<if test="chCd.equals('039') and !('').equals(incsNo) and incsNo != null">
+			AND (oct.tnc_agr_yn is null or oct.tnc_agr_yn = 'D')
+		</if>
+	) a,
+	(select max(tncv_no) as tncv_no, tcat_cd from ocp.occuem_tnc where ch_cd = #{chCd} and mk_sn <![CDATA[<]]> 0 group by tcat_cd ) b	
+	where a.tncv_no = b.tncv_no and a.tcat_cd = b.tcat_cd
+	order by a.mk_sn asc	
+	</select>
+
+	<select id="getTerms" resultType="com.amorepacific.oneap.auth.terms.vo.TermsVo" parameterType="com.amorepacific.oneap.auth.terms.vo.TermsVo">
+	select 
+		a.tcat_cd,
+		a.tncv_no,
+		a.ch_cd,
+		a.mk_sn,
+		a.tnc_ttl,
+		a.tnc_txt_url,
+		a.tnc_agr_mand_yn,
+		a.tnc_agr_mand_yn_txt,
+		a.aply_bgn_dt,
+		a.aply_end_dt,
+		a.kasy_tnc_idnt_vl
+	from 
+	(	
+		SELECT
+			a.tcat_cd, 
+			a.tncv_no, 
+			a.ch_cd, 
+			a.mk_sn, 
+			a.tnc_ttl, 
+			a.tnc_txt_url, 
+			a.tnc_agr_mand_yn, 
+			a.tnc_agr_mand_yn_txt,
+			a.aply_bgn_dt, 
+			a.aply_end_dt,
+			a.kasy_tnc_idnt_vl
+		FROM
+		(	
+			SELECT 
+				tcat_cd, 
+				tncv_no, 
+				ch_cd, 
+				mk_sn, 
+				tnc_ttl, 
+				tnc_txt_url, 
+				tnc_agr_mand_yn,
+				(CASE WHEN tnc_agr_mand_yn = 'Y' THEN '필수' ELSE '선택' END) as tnc_agr_mand_yn_txt,  
+				aply_bgn_dt, 
+				aply_end_dt,
+				to_date(aply_bgn_dt, 'YYYYMMDD') as aply_bgn_dt1, 
+				to_date(aply_end_dt, 'YYYYMMDD') as aply_end_dt1,
+				kasy_tnc_idnt_vl
+			FROM 
+				ocp.occuem_tnc
+			WHERE
+				ch_cd = #{chCd}
+				AND mk_sn <![CDATA[>]]> 0
+				<!-- AND tncv_no = (select max(tncv_no) from ocp.occuem_tnc where ch_cd = #{chCd} and mk_sn <![CDATA[>]]> 0)  -->	
+		) a
+		<if test="chCd.equals('039') and !('').equals(incsNo) and incsNo != null">
+			LEFT OUTER JOIN ocp.occued_cust_tnc oct ON a.tcat_cd = oct.tcat_cd AND a.ch_cd = oct.chg_ch_cd AND oct.incs_no = cast(coalesce(#{incsNo}, '0') as integer)
+		</if>
+		WHERE aply_bgn_dt1 <![CDATA[<]]> now() and aply_end_dt1 <![CDATA[>]]> now() 
+		<if test="chCd.equals('039') and !('').equals(incsNo) and incsNo != null">
+			AND (oct.tnc_agr_yn is null or oct.tnc_agr_yn = 'D')
+		</if>
+	) a,
+	(select max(tncv_no) as tncv_no, tcat_cd from ocp.occuem_tnc where ch_cd = #{chCd} and mk_sn <![CDATA[>]]> 0 group by tcat_cd ) b	
+	where a.tncv_no = b.tncv_no and a.tcat_cd = b.tcat_cd
+	order by a.mk_sn asc	
+	</select>
+	
+	<select id="getTermsByTags" resultType="com.amorepacific.oneap.auth.terms.vo.TermsVo" parameterType="com.amorepacific.oneap.auth.social.vo.SnsTermsVo">
+		SELECT
+			tcat_cd, 
+			tncv_no, 
+			ch_cd, 
+			mk_sn, 
+			tnc_ttl, 
+			tnc_txt_url, 
+			tnc_agr_mand_yn, 
+			tnc_agr_mand_yn_txt,
+			aply_bgn_dt, 
+			aply_end_dt,
+			kasy_tnc_idnt_vl
+		FROM
+		(	
+			SELECT 
+				tcat_cd, 
+				tncv_no, 
+				ch_cd, 
+				mk_sn, 
+				tnc_ttl, 
+				tnc_txt_url, 
+				tnc_agr_mand_yn,
+				(CASE WHEN tnc_agr_mand_yn = 'Y' THEN '필수' ELSE '선택' END) as tnc_agr_mand_yn_txt,  
+				aply_bgn_dt, 
+				aply_end_dt,
+				to_date(aply_bgn_dt, 'YYYYMMDD') as aply_bgn_dt1, 
+				to_date(aply_end_dt, 'YYYYMMDD') as aply_end_dt1,
+				kasy_tnc_idnt_vl
+			FROM 
+				ocp.occuem_tnc
+			WHERE
+				ch_cd = #{chCd}
+				AND mk_sn <![CDATA[>]]> 0
+				ORDER BY mk_sn asc
+		) a
+		WHERE
+			kasy_tnc_idnt_vl in
+		<foreach collection="termsTag" index="index" item="tag" open="(" separator="," close=")">
+			#{tag}
+		</foreach>
+	</select>
+	
+	<select id="existTerms" parameterType="com.amorepacific.oneap.common.vo.Terms" resultType="int">
+	 	SELECT
+	 		count(*) as cnt
+	 	FROM
+	 		ocp.occuem_tnc as ot
+	 	WHERE
+	 		tcat_cd = #{tcatCd}
+	 		AND tncv_no = 
+	 		(
+				SELECT 
+					MAX(tncv_no)
+				FROM 
+					ocp.occuem_tnc ot 
+				WHERE 
+					TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ >= ]]> aply_bgn_dt::integer
+					AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ < ]]> aply_end_dt::integer
+					AND tcat_cd	= #{tcatCd}
+			)	
+	</select>
+	
+	<insert id="insertTerms" parameterType="java.util.Map">
+		INSERT INTO 
+			ocp.occued_cust_tnc
+		(
+			incs_no, 
+			tcat_cd, 
+			tncv_no, 
+			tnc_agr_yn, 
+			tnca_dttm, 
+			chg_ch_cd, 
+			fscr_id, 
+			fscr_tsp, 
+			lsch_id, 
+			lsch_tsp
+		) VALUES
+		<foreach collection="list" item="item" open="" close="" separator=",">
+			(
+				#{item.incsNo},	
+				#{item.tcatCd},	
+				#{item.tncvNo},	
+				#{item.tncAgrYn},	
+				statement_timestamp(),	
+				#{item.chgChCd},	
+				'OCP',	
+				statement_timestamp(), 
+				'OCP',	
+				statement_timestamp()
+			)
+		</foreach>
+	</insert>
+	
+	<update id="mergeTerms"
+		parameterType="com.amorepacific.oneap.common.vo.Terms">
+		WITH upsert AS (
+			UPDATE 	ocp.occued_cust_tnc
+			SET 	tnc_agr_yn		= #{tncAgrYn}
+			WHERE	incs_no  		= #{incsNo}
+			AND		tcat_cd 		= #{tcatCd}
+			AND		tncv_no			= (
+										SELECT 
+											MAX(tncv_no)    
+										FROM 
+											ocp.occuem_tnc ot 
+										WHERE 
+											TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ >= ]]> aply_bgn_dt::integer
+											AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ < ]]> aply_end_dt::integer
+											AND tcat_cd = #{tcatCd}					 
+									  )
+			RETURNING *
+		) INSERT INTO ocp.occued_cust_tnc (
+				incs_no
+				, tcat_cd
+				, tnc_agr_yn
+				, tnca_dttm
+				, chg_ch_cd
+				, tncv_no
+				, fscr_id
+				, fscr_tsp
+				, lsch_id
+				, lsch_tsp
+			) SELECT 
+				#{incsNo}
+				, #{tcatCd}				
+				, #{tncAgrYn}
+				, COALESCE( #{tncaDttm}::timestamptz, current_timestamp )
+				, #{chgChCd}
+				, #{tncvNo}
+				, ot.fscr_id 
+				, current_timestamp
+				, ot.lsch_id
+				, current_timestamp
+			FROM
+				ocp.occuem_tnc AS ot
+			WHERE
+				NOT EXISTS (SELECT * FROM upsert)
+				AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ >= ]]> aply_bgn_dt::integer
+				AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ < ]]> aply_end_dt::integer
+				AND tcat_cd = #{tcatCd}
+	</update>	
+	
+	
+	<!-- CREATE SEQUENCE seq_terms_hist_seq START 1; -->
+
+	<insert id="insertTermsHist" parameterType="java.util.Map">
+		INSERT INTO 
+			ocp.occueh_cust_tnc_hist
+		(
+			incs_no, 
+			tcat_cd, 
+			tnca_chg_dt, 
+			tnc_agr_hist_sn, 
+			tncv_no, 
+			tnc_agr_yn, 
+			tnca_dttm, 
+			chg_ch_cd, 
+			fscr_id, 
+			fscr_tsp, 
+			lsch_id, 
+			lsch_tsp
+		)
+		VALUES
+		<foreach collection="list" item="item" open="" close="" separator=",">
+			(
+				#{item.incsNo},	
+				#{item.tcatCd},	
+				#{item.tncaChgDt},
+				<!-- nextval('ocp.seq_terms_hist'), 2021.01.04 채번 오류 수정 -->
+				(SELECT coalesce(max(tnc_agr_hist_sn) + 1, 1) FROM ocp.occueh_cust_tnc_hist WHERE incs_no = #{incsNo} AND tcat_cd = #{tcatCd} AND TO_CHAR(tnca_dttm, 'YYYYMMDD')::integer = TO_CHAR(current_timestamp, 'YYYYMMDD')::integer),
+				#{item.tncvNo},	
+				#{item.tncAgrYn},	
+				current_timestamp,	
+				#{item.chgChCd},	
+				'OCP',	
+				current_timestamp, 
+				'OCP',	
+				current_timestamp
+			)
+		</foreach>		
+	
+	</insert>
+	
+	<insert id="insertTermHist" parameterType="com.amorepacific.oneap.common.vo.Terms">
+		INSERT INTO 
+			ocp.occueh_cust_tnc_hist
+		(
+			incs_no, 
+			tcat_cd, 
+			tnca_chg_dt, 
+			tnc_agr_hist_sn, 
+			tncv_no, 
+			tnc_agr_yn, 
+			tnca_dttm, 
+			chg_ch_cd, 
+			fscr_id, 
+			fscr_tsp, 
+			lsch_id, 
+			lsch_tsp
+		)
+		VALUES
+			(
+				#{incsNo},	
+				#{tcatCd},	
+				#{tncaChgDt},
+				<!-- nextval('ocp.seq_terms_hist'), 2021.01.04 채번 오류 수정 -->
+				(SELECT coalesce(max(tnc_agr_hist_sn) + 1, 1) FROM ocp.occueh_cust_tnc_hist WHERE incs_no = #{incsNo} AND tcat_cd = #{tcatCd} AND TO_CHAR(tnca_dttm, 'YYYYMMDD')::integer = TO_CHAR(current_timestamp, 'YYYYMMDD')::integer),
+				#{tncvNo},	
+				#{tncAgrYn},	
+				current_timestamp,	
+				#{chgChCd},	
+				'OCP',	
+				current_timestamp, 
+				'OCP',	
+				current_timestamp
+			)
+	</insert>
+	
+	<select id="hasTermsAgree" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser" resultType="int">
+		SELECT 
+			CASE WHEN termcnt = agreecnt THEN 1
+			ELSE 0 END AS flag
+		FROM
+		(
+			SELECT 	
+				(SELECT COUNT(*) from ocp.occuem_tnc AS ot where ot.ch_cd = #{chCd} and ot.tnc_agr_mand_yn = 'Y' AND ot.mk_sn <![CDATA[>]]> 0) as termcnt,
+				count(*) as agreecnt
+			FROM 	
+				ocp.occued_cust_tnc	AS oct
+			JOIN
+				ocp.occuem_tnc AS ot
+			ON		
+				ot.tcat_cd = oct.tcat_cd 
+				AND ot.tncv_no = oct.tncv_no 
+			WHERE
+				oct.chg_ch_cd = #{chCd}
+				<!--  2020-10.27 hjw0228 Query 튜닝
+				AND TO_CHAR(oct.incs_no, 'FM999999999') = #{incsNo}
+				-->
+				AND oct.incs_no = cast(coalesce(#{incsNo}, '0') as integer)
+				AND ot.tnc_agr_mand_yn = 'Y'
+				AND oct.tnc_agr_yn = 'A'
+				AND ot.mk_sn <![CDATA[>]]> 0
+		) a
+	</select>
+	
+	<select id="hasCorpTermsAgree" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser" resultType="int">
+		SELECT 
+			CASE WHEN termcnt = agreecnt THEN 1
+			ELSE 0 END AS flag
+		FROM
+		(
+			SELECT 	
+				(SELECT COUNT(*) from ocp.occuem_tnc AS ot where ot.ch_cd = #{chCd} and ot.tnc_agr_mand_yn = 'Y' AND ot.mk_sn = 0) as termcnt,
+				count(*) as agreecnt
+			FROM 	
+				ocp.occued_cust_tnc	AS oct
+			JOIN
+				ocp.occuem_tnc AS ot
+			ON		
+				ot.tcat_cd = oct.tcat_cd 
+				AND ot.tncv_no = oct.tncv_no 
+			WHERE
+				oct.chg_ch_cd = #{chCd}
+				<!--  2020-10.27 hjw0228 Query 튜닝
+				AND TO_CHAR(oct.incs_no, 'FM999999999') = #{incsNo}
+				-->
+				AND oct.incs_no = cast(coalesce(#{incsNo}, '0') as integer)
+				AND ot.tnc_agr_mand_yn = 'Y'
+				AND oct.tnc_agr_yn = 'A'
+				AND ot.mk_sn = 0
+		) a	
+	</select>
+	
+	<delete id="deleteCustTerms" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		DELETE FROM ocp.occued_cust_tnc
+		<!--  2020-10.27 hjw0228 Query 튜닝
+		WHERE TO_CHAR(incs_no, 'FM999999999') = #{incsNo}
+		-->
+		WHERE incs_no = cast(coalesce(#{incsNo}, '0') as integer)		
+		AND chg_ch_cd = #{chCd}
+		AND tcat_cd IN
+		(
+			SELECT tcat_cd from ocp.occuem_tnc AS ot where ot.ch_cd = #{chCd} and ot.tnc_agr_mand_yn = 'Y' AND ot.mk_sn <![CDATA[>]]> 0
+		)
+	</delete>
+	
+	<delete id="deleteCustCorpTerms" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		DELETE FROM ocp.occued_cust_tnc
+		<!--  2020-10.27 hjw0228 Query 튜닝
+		WHERE TO_CHAR(incs_no, 'FM999999999') = #{incsNo}
+		-->
+		WHERE incs_no = cast(coalesce(#{incsNo}, '0') as integer)
+		AND chg_ch_cd = #{chCd}
+		AND tcat_cd IN
+		(
+			SELECT tcat_cd from ocp.occuem_tnc AS ot where ot.ch_cd = #{chCd} and ot.tnc_agr_mand_yn = 'Y' AND ot.mk_sn = 0
+		)
+	</delete>	
+	
+	<!-- 약관 태그명 -->
+	<select id="getTermsTagList" parameterType="String" resultType="String">
+		SELECT
+			kasy_tnc_idnt_vl
+		FROM
+			ocp.occuem_tnc ot
+		WHERE
+			ch_cd = #{chCd}
+	</select>
+	
+	<!-- 네이버 스마트 스토어 멤버십 동의 약관 목록 조회 -->
+	<select id="getNaverMembershipAgreeTerms" parameterType="hashmap" resultType="com.amorepacific.oneap.auth.membership.vo.naver.NaverMembershipTermsVo">
+		SELECT ch_cd, 
+		       (SELECT ch_cd_nm FROM ocp.occdem_chn_infr_mgnt ocim WHERE ch_cd = opt.ch_cd) as ch_nm,
+		       prcn_tcat_cd, 
+		       tncv_no, 
+		       mk_sn, 
+		       tnc_ttl, 
+		       tnc_txt_url,
+		       tnc_agr_mand_yn, 
+		       (CASE WHEN tnc_agr_mand_yn = 'Y' THEN '필수' ELSE '선택' END) as tnc_agr_mand_yn_txt
+		 FROM ocp.occuem_prcn_tnc opt
+		WHERE prcn_tcat_cd IN 
+					<foreach collection="prcnTcatCdList" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>		
+		  AND prcn_ch_cd = #{prcnChCd}		<!-- 401 채널 약관 Query -->
+		UNION ALL
+		SELECT ch_cd, 
+			   (SELECT ch_cd_nm FROM ocp.occdem_chn_infr_mgnt ocim WHERE ch_cd = opt.ch_cd) as ch_nm,
+		       prcn_tcat_cd, 
+		       tncv_no, 
+		       mk_sn, 
+		       tnc_ttl, 
+		       tnc_txt_url,
+		       tnc_agr_mand_yn, 
+		       (CASE WHEN tnc_agr_mand_yn = 'Y' THEN '필수' ELSE '선택' END) as tnc_agr_mand_yn_txt
+		FROM ocp.occuem_prcn_tnc opt
+		WHERE prcn_tcat_cd IN 
+					<foreach collection="prcnTcatCdList" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>		
+		  AND prcn_tcat_cd NOT IN (SELECT prcn_tcat_cd FROM ocp.occuem_prcn_tnc WHERE prcn_ch_cd = #{prcnChCd})		<!-- 401 채널 제외한 약관 Query -->
+		ORDER BY ch_cd, mk_sn ASC
+	</select>
+	
+	<!-- 네이버 스마트 스토어 멤버십 제휴사 약관 목록 조회 -->
+	<select id="getNaverMembershipAffiliateTerms" parameterType="java.util.List" resultType="com.amorepacific.oneap.auth.membership.vo.naver.NaverMembershipTermsVo">
+		SELECT ch_cd, 
+			   (SELECT ch_cd_nm FROM ocp.occdem_chn_infr_mgnt ocim WHERE ch_cd = opt.ch_cd) as ch_nm,
+		       prcn_tcat_cd, 
+		       tncv_no, 
+		       mk_sn, 
+		       tnc_ttl, 
+		       tnc_txt_url,
+		       tnc_agr_mand_yn, 
+		       (CASE WHEN tnc_agr_mand_yn = 'Y' THEN '필수' ELSE '선택' END) as tnc_agr_mand_yn_txt
+		FROM ocp.occuem_prcn_tnc opt
+		WHERE ch_cd in 
+			<foreach collection="afltChCdList" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		  AND ch_cd != '401'
+		ORDER BY ch_cd, mk_sn ASC
+	</select>
+	
+</mapper>

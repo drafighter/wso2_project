@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.auth.login.mapper.WSO2Mapper">
+
+	<!-- 사용자 정보 조회 : 필요시 사용 -->
+	<select id="getWso2UserInfo" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		SELECT 
+			um_id						AS umId,
+			um_user_id					AS umUserId,
+			um_user_name				AS umUserName,
+			um_user_password			AS umUserPassword,
+			um_user_dormancy			AS umUserDormancy,	
+			um_user_password_reset		AS umUserPasswordReset,
+			uid							AS uid,
+			incs_no						AS incsNo,
+			created_date,				<!-- 매핑 대상 없음 -->
+			full_name					AS fullName,
+			account_lock				AS accountLock,
+			account_state				AS accountState,
+			account_disabled			AS accountDisabled,
+			disabled_date				AS disabledDate
+		FROM 
+		(			
+			SELECT 
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name,
+				uu.um_user_password,
+				uu.um_user_dormancy,
+				uu.um_user_password_reset,
+				uua.uid,
+				uua.incs_no,
+				uua.created_date,
+				uua.full_name,
+				uua.account_lock,
+				uua.account_state,
+				uua.account_disabled,
+				uua.disabled_date
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='incsNo' THEN um_attr_value END), '') AS incs_no,
+					COALESCE( MAX(CASE WHEN um_attr_name='createdDate' THEN  TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') END), '') AS created_date,
+					COALESCE( MAX(CASE WHEN um_attr_name='cn' THEN um_attr_value END), '') AS full_name,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountLock' THEN um_attr_value END), '') AS account_lock,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountState' THEN um_attr_value END), '') AS account_state,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountDisabled' THEN um_attr_value END), '') AS account_disabled,
+					COALESCE( MAX(CASE WHEN um_attr_name='disabledDate' THEN case when (um_attr_value is null or um_attr_value = '') then '' else TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') end END), '') AS disabled_date
+					
+				FROM 
+					ocp.um_user_attribute
+				WHERE 1 = 1	
+		<if test="umAttrName != null and umAttrName != null">
+			<choose>
+				<when test="umAttrName eq 'umUserName'">
+				AND um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_name = #{umAttrValue})
+				</when>
+				<when test="umAttrName eq 'uid'">
+				AND um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_name = #{umAttrValue})
+				</when>
+				<when test="umAttrName eq 'incsNo'">
+				AND um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_incsno = #{umAttrValue})
+				</when>
+				<when test="umAttrName eq 'fullName'">
+				AND full_name = #{umAttrValue}
+				</when>				
+			</choose>
+		</if>					
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id)
+		) u
+		WHERE 1 = 1
+		<if test="umAttrName != null and umAttrName != null">
+			<choose>
+				<when test="umAttrName eq 'umUserName'">
+				AND um_user_name = #{umAttrValue}
+				</when>		
+				<when test="umAttrName eq 'uid'">
+				AND uid = #{umAttrValue}
+				</when>
+				<when test="umAttrName eq 'incsNo'">
+				AND incs_no = #{umAttrValue}
+				</when>
+				<when test="umAttrName eq 'fullName'">
+				AND full_name = #{umAttrValue}
+				</when>				
+			</choose>
+		</if>			
+	
+	</select>
+	
+	<select id="getChannelUserInfo" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser" resultType="com.amorepacific.oneap.common.vo.user.UmChUser">
+		SELECT
+			ch_cd,
+			chcs_web_id,
+			incs_no
+		FROM
+			ocp.occued_chcs_lin_acct
+		WHERE
+			incs_no = #{incsNo}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')
+	</select>
+	
+	<select id="isExistChannelUser" parameterType="map" resultType="int">
+		SELECT
+			count(*)
+		FROM 
+			ocp.occued_chcs_lin_acct
+		WHERE
+			ch_cd = #{chCd}
+			AND incs_no = CAST(#{incsNo} as integer)
+	</select>
+
+</mapper>

@@ -1,0 +1,523 @@
+@charset "utf-8";
+
+@font-face {
+    font-family: AppleSDGothicNeo;
+    font-weight: 100;
+    src: url(../fonts/AppleSDGothicNeoT.woff2) format("woff2"),
+    	 url(../fonts/AppleSDGothicNeoT.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: AppleSDGothicNeo;
+    font-weight: 200;
+    src: url(../fonts/AppleSDGothicNeoUL.woff2) format("woff2"),
+    	 url(../fonts/AppleSDGothicNeoUL.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: AppleSDGothicNeo;
+    font-weight: 300;
+    src: url(../fonts/AppleSDGothicNeoL.woff2) format("woff2"),
+    	 url(../fonts/AppleSDGothicNeoL.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: AppleSDGothicNeo;
+    font-weight: 400;
+    src: url(../fonts/AppleSDGothicNeoR.woff2) format("woff2"),
+    	 url(../fonts/AppleSDGothicNeoR.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: AppleSDGothicNeo;
+    font-weight: 500;
+    src: url(../fonts/AppleSDGothicNeoM.woff2) format("woff2"),
+    	 url(../fonts/AppleSDGothicNeoM.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: AppleSDGothicNeo;
+    font-weight: 600;
+    src: url(../fonts/AppleSDGothicNeoSB.woff2) format("woff2"),
+    	 url(../fonts/AppleSDGothicNeoSB.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: AppleSDGothicNeo;
+    font-weight: 700;
+    src: url(../fonts/AppleSDGothicNeoB.woff2) format("woff2"),
+    	 url(../fonts/AppleSDGothicNeoB.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: AppleSDGothicNeo;
+    font-weight: 800;
+    src: url(../fonts/AppleSDGothicNeoEB.woff2) format("woff2"),
+    	 url(../fonts/AppleSDGothicNeoEB.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: AppleSDGothicNeo;
+    font-weight: 900;
+    src: url(../fonts/AppleSDGothicNeoH.woff2) format("woff2"),
+    	 url(../fonts/AppleSDGothicNeoH.ttf) format('truetype');
+}
+
+/*  reset  */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: 0;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "AppleSDGothicNeo", "돋움", dotum, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.8px;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: none;
+  color: #252525;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ol,
+ul,
+li,
+dl,
+dt,
+dd,
+p,
+form,
+fieldset,
+input,
+table,
+tr,
+th,
+td,
+button,
+textarea,
+select {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: 400;
+}
+
+img {
+  width: 100%;
+  border: 0;
+  vertical-align: top;
+}
+
+hr {
+  display: none;
+}
+
+ul,
+ol,
+dl,
+dt,
+dd,
+li {
+  list-style: none;
+}
+
+table,
+th,
+td {
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-weight: 400;
+}
+
+caption {
+  text-indent: -9999em;
+  overflow: hidden;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
+}
+
+fieldset,
+blockquote,
+iframe,
+button {
+  border: none;
+}
+
+i,
+em,
+u,
+cite {
+  font-style: normal;
+}
+
+p {
+  vertical-align: middle;
+}
+
+strong,
+em,
+b {
+  font-weight: 400;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:link,
+a:active,
+a:visited {
+  color: inherit;
+}
+
+a:hover {
+  color: inherit;
+}
+
+label {
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+button {
+  background: transparent;
+  cursor: pointer;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-image-width: 0;
+  font-family: inherit;
+  font-weight: 400;
+  color: #252525;
+}
+
+button:focus {
+  /*outline:0;*/
+}
+
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+section,
+nav,
+article,
+aside,
+header,
+footer,
+main {
+  display: block;
+}
+
+input,
+select,
+textarea,
+button {
+  font-family: "AppleSDGothicNeo", "돋움", Dotum, Sans-serif;
+  vertical-align: middle;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+html.is-scr-block {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+html.is-scr-block,
+html.is-scr-block body,
+html.is-scr-block .wrap {
+  height: 100%;
+  overflow: hidden;
+}
+
+.container {
+  padding: 10px 20px 20px;
+  margin: 0 auto;
+  max-width: 768px;
+  background-color: #f5f6f8;
+}
+
+.container_white {
+  padding: 10px 20px 20px;
+  margin: 0 auto;
+  max-width: 768px;
+  background-color: #fff;
+}
+
+.page_top_area {
+  padding: 10px 0 0px;
+  /*word-break:keep-all;*/
+}
+
+.page_top_area h2 {
+  margin-bottom: 30px;
+  font-size: 22px;
+  line-height: 1.4;
+  letter-spacing: -1px;
+  font-weight: 700;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.09;
+  letter-spacing: normal;
+  text-align: left;
+  color: #191919;  
+}
+
+.page_top_area p {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.44;
+  color: #000;
+}
+
+.page_top_area p.fs14 {
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.7px;
+}
+
+img.logo_beautypoint {
+  width: 140px;
+  height: 43px;
+  margin: 30px 215px 30px 0px;
+  object-fit: contain;
+}
+
+/* dormancy_area */
+.dormancy_area {
+  padding-top: 40px;
+  padding-bottom: 20px;
+}
+
+.dormancy_area .box {
+  padding: 30px 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.dormancy_area .box h3 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 21px;
+  color: #3a416f;
+}
+
+.dormancy_area .box span {
+  color: #457cdb;
+}
+
+.dormancy_area .box1 {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.dormancy_area .box1 li {
+  position: relative;
+  margin-top: 12px;
+  padding-left: 10px;
+  font-size: 12px;
+  color: #888888;
+}
+
+.dormancy_area .box1 li:first-child {
+  margin-top: 0;
+}
+
+.dormancy_area .box1 li:before {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 2px;
+  height: 2px;
+  background-color: #888888;
+  border-radius: 50%;
+  content: "";
+}
+
+/* cs_cont */
+.cs_cont {
+	margin: 30px 0px 20px;
+	border-radius: 12px;
+	background-color: #f5f6ff;
+}
+
+.cs_cont .cs_phone {
+  display: block;
+  padding: 25px 0 25px 96px;
+  color: #888;
+  font-size: 12px;
+  letter-spacing: -0.65px;
+  line-height: 1.54;
+  background: url('../images/common/icon_phone.png') no-repeat 20px 50%;
+  -webkit-background-size: auto 56px;
+  background-size: auto 56px;
+}
+
+.cs_cont .cs_phone strong {
+  display: block;
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.13;
+  letter-spacing: normal;
+  font-weight: 700;
+  text-align: left;
+  color: #000;  
+}
+
+.cs_cont .cs_phone span {
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;	
+}
+
+.terms {
+  margin-top: 20px;
+  padding: 10px 17px;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  border-top: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.terms li {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  position: relative;
+  font-size: 11px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.91;
+  letter-spacing: normal;
+  text-align: center;
+  color: #888;  
+}
+
+.dormancy_footer {
+  margin: 22px 0 0 0;
+  font-family: AppleSDGothicNeo;
+  font-size: 11px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.27;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
+}
+
+.btn_submit {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  margin: 30px -5px 0;
+}
+
+.btn_submit .btnA {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  margin: 0 5px;
+}
+
+.btnA {
+  width: 100%;
+  height: 52px;
+  border-radius: 6px;
+  font-size: 16px;
+  letter-spacing: -0.8px;
+}
+
+.btn_indigo {
+  border: solid 1px #3a416f;
+  background-color: #3a416f;
+  color: #f5f6f8
+}
+
+@media only all and (min-width: 768px) {
+  .container {
+    max-width: 520px;
+  }
+  
+  .container_white {
+    max-width: 520px;
+  }  
+  
+  /*  page_top_area  */
+  .page_top_area h2 {
+    font-size: 22px;
+  }
+
+  .page_top_area p {
+    font-size: 18px;
+  }
+  
+  .page_top_area p.fs14 {
+    font-size: 16px;
+  }  
+}

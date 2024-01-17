@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.auth.common.mapper.CommonMapper">
+
+	<select id="getChannels" resultType="com.amorepacific.oneap.common.vo.Channel">
+	
+		SELECT 
+			ch_cd, 
+			ch_cd_nm, 
+			hmpg_url, 
+			pc_nmbr_ord_url,
+			mbl_nmbr_ord_url,
+			ofln_chn_yn, 
+			api_call_chn_atht_vl, 
+			kmc_chn_id, 
+			kmc_chn_url_cd_vl, 
+			ipin_site_cd_vl, 
+			kmc_sms_cost_admt_id,
+			chn_lout_url,
+			prms_chn_rdrc_url_lv
+		FROM 
+			ocp.occdem_chn_infr_mgnt
+	
+	</select>
+
+	<select id="getChannel" parameterType="java.lang.String" resultType="com.amorepacific.oneap.common.vo.Channel">
+	
+		SELECT 
+			ch_cd, 
+			ch_cd_nm, 
+			hmpg_url, 
+			pc_nmbr_ord_url,
+			mbl_nmbr_ord_url,
+			ofln_chn_yn, 
+			api_call_chn_atht_vl, 
+			kmc_chn_id, 
+			kmc_chn_url_cd_vl, 
+			ipin_site_cd_vl, 
+			kmc_sms_cost_admt_id,
+			chn_lout_url,
+			prms_chn_rdrc_url_lv
+		FROM 
+			ocp.occdem_chn_infr_mgnt
+		WHERE
+			ch_cd = #{chCd}	
+	
+	</select>
+	
+	<!-- 서비스 로그 기록 -->
+	<insert id="insertServiceLog" parameterType="com.amorepacific.oneap.common.vo.ServiceVo">
+		INSERT INTO ocp.svc_log
+		(
+			svc_seq,
+			svc_id, svc_name, 
+			svc_class, svc_method, 
+			svc_type, svc_error, 
+			svc_execute_dt, svc_input,
+			svc_output, svc_result, svc_msg
+		) VALUES (
+			nextval('ocp.seq_svc_log'),
+			#{svcId}, #{svcName}, 
+			#{svcClass}, #{svcMethod}, 
+			#{svcType}, #{svcError}, 
+			#{svcExecuteDt}, #{svcInput},
+			#{svcOutput}, #{svcResult}, #{svcMsg}
+		)
+	</insert>
+	
+	<!-- 프로세스 로그 기록, 테이블 스키마 변경 -->
+	<insert id="insertProcessLog" parameterType="com.amorepacific.oneap.common.vo.ProcessVo">
+		INSERT INTO ocp.OCCDEG_PRCE_EXCT_LOG
+		(
+			MBPF_PRCE_EXCT_LOG_NO,
+			MBPF_PRCE_NO, MBPF_PRCE_NM, 
+			MBPF_JVCS_NM, MBPF_JVMT_NM, 
+			MBPF_PRCE_TP_CD, MBPF_PRCE_EXCT_RSLT_CD, 
+			MBPF_PRCE_EXCT_RSLT_MSG, IN_PARM_LV,
+			TLMS_PARM_LV, MBPF_PRCE_EXCT_BGN_DTTM, 
+			FSCR_ID, LSCH_ID
+		) VALUES (
+			nextval('ocp.SEQ_OCCDEG_PRCE_EXCT_LOG'),
+			#{mbpfPrceNo}, #{mbpfPrceNm}, 
+			#{mbpfJvcsNm}, #{mbpfJvmtNm}, 
+			#{mbpfPrceTpCd}, #{mbpfPrceExctRsltCd}, 
+			#{mbpfPrceExctRsltMsg}, #{inParmLv},
+			#{tlmsParmLv}, now(), 
+			'OCP', 'OCP'
+		)
+	</insert>
+	
+	<!-- 프로세스 태스크별 수행 시간 기록, 테이블 스키마 변경 -->
+	<insert id="insertProcessTask" parameterType="java.util.Map">
+		INSERT INTO ocp.OCCDEG_TASK_EXCT_LOG
+		(
+			MBPF_UNIT_BSNS_EXCT_LOG_NO,
+			MBPF_UNIT_BSNS_NO, MBPF_UNIT_BSNS_NM, 
+			MBPF_UNIT_BSNS_EXCT_NSS, MBPF_UNIT_BSNS_EXCT_NMSS, 
+			MBPF_UNIT_BSNS_EXCT_PRT, MBPF_UNIT_BSNS_EXCT_BGN_DTTM,
+			FSCR_ID, LSCH_ID
+		) VALUES 
+		<foreach collection="list" item="item" open="" close="" separator=",">
+			(
+				#{item.mbpfUnitBsnsExctLogNo},	
+				#{item.mbpfUnitBsnsNo}, #{item.mbpfUnitBsnsNm},	
+				#{item.mbpfUnitBsnsExctNss}, #{item.mbpfUnitBsnsExctNmss},
+				${item.mbpfUnitBsnsExctPrt}, now(),
+				'OCP', 'OCP'
+			)
+		</foreach>		
+		
+	</insert>
+		
+</mapper>

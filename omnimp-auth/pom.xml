@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.amorepacific.oneap</groupId>
+		<artifactId>omnimp-pjt</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	<artifactId>omnimp-auth</artifactId>
+	<packaging>war</packaging>
+	<name>omnimp-auth</name>
+	<description>옴니회원플랫폼 회원가입 및 인증</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<spring-boot-admin.version>2.1.6</spring-boot-admin.version>
+	</properties>
+	<!-- <dependencyManagement> <dependencies> <dependency> <groupId>org.apache.httpcomponents</groupId> 
+		<artifactId>httpclient</artifactId> <version>4.5.12</version> </dependency> 
+		<dependency> <groupId>org.apache.httpcomponents</groupId> <artifactId>httpcore</artifactId> 
+		<version>4.4.13</version> </dependency> </dependencies> </dependencyManagement> -->
+
+	<dependencies>
+		<dependency>
+			<groupId>com.amorepacific.oneap</groupId>
+			<artifactId>omnimp-common</artifactId>
+			<version>1.0.0</version>
+			<!-- <scope>provided</scope> -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>2.1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.navercorp.lucy</groupId>
+			<artifactId>lucy-xss-servlet</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.cache</groupId>
+			<artifactId>cache-api</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>kr.co.niceid</groupId>
+			<artifactId>ipin-check</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.icert</groupId>
+			<artifactId>icert-secu-jdk18</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.3.3</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>com.nimbusds</groupId>
+		    <artifactId>nimbus-jose-jwt</artifactId>
+		    <version>8.4</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt</artifactId>
+		    <version>0.9.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk16 -->
+		<dependency>
+		    <groupId>org.bouncycastle</groupId>
+		    <artifactId>bcpkix-jdk15on</artifactId>
+		    <version>1.50</version>
+		</dependency>
+	</dependencies>
+
+	<!-- profile 추가 : dev, prod -->
+	<profiles>
+		<profile>
+			<id>local</id>
+			<properties>
+				<env>local</env>
+				<maven.test.skip>true</maven.test.skip>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+				<maven.test.skip>true</maven.test.skip>
+			</properties>
+		</profile>
+		<profile>
+			<id>stg</id>
+			<properties>
+				<env>stg</env>
+				<maven.test.skip>true</maven.test.skip>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<env>prod</env>
+				<maven.test.skip>true</maven.test.skip>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources/env/${env}</directory>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

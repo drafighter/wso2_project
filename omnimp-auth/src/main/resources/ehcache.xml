@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+	xmlns='http://www.ehcache.org/v3'
+	xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core.xsd">
+
+	<cache alias="findChannelInfos">
+		<key-type>org.springframework.cache.interceptor.SimpleKey</key-type>
+		<value-type>java.util.List</value-type>
+		<!-- cache 만료에 관한 설정 -->
+		<!-- cache 안에서 생성된지 30분이 지난 entry는 삭제 -->
+		<expiry>
+			<!-- <ttl unit="minutes">30</ttl> -->
+			<tti unit="minutes">5</tti>
+		</expiry>
+		<resources>
+			<heap unit="kB">500</heap>
+			<offheap unit="MB">30</offheap>
+		</resources>
+		<heap-store-settings>
+			<max-object-graph-size>2000</max-object-graph-size>
+			<max-object-size unit="kB">100</max-object-size>
+		</heap-store-settings>
+	</cache>
+	
+	<cache alias="findChannelInfo">
+		<key-type>java.lang.String</key-type>
+		<value-type>com.amorepacific.oneap.common.vo.Channel</value-type>
+		<expiry>
+			<!-- <ttl unit="minutes">15</ttl> -->
+			<tti unit="minutes">5</tti>
+		</expiry>
+		<resources>
+			<heap unit="kB">500</heap>
+			<offheap unit="MB">30</offheap>
+		</resources>
+		<heap-store-settings>
+			<max-object-graph-size>2000</max-object-graph-size>
+			<max-object-size unit="kB">100</max-object-size>
+		</heap-store-settings>
+	</cache>
+	
+</config>

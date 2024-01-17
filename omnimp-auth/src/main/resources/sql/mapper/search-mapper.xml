@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.auth.search.mapper.SearchMapper">
+
+	<!-- 아이디로 검색 -->
+	<select id="hasLoginid" parameterType="String" resultType="int">
+		SELECT 
+			SUM(cnt) as cnt 
+		FROM 
+		(
+			SELECT 
+				COUNT(*) AS cnt
+			FROM 
+				ocp.um_user uu
+			WHERE uu.um_user_name = #{loginid}
+
+			UNION ALL 
+
+			SELECT 
+				COUNT(*) AS cnt
+			FROM 
+				ocp.occued_chcs_lin_acct ocla 
+			WHERE chcs_web_id = #{loginid} AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')
+		) a
+	
+	</select>
+
+	<sql id="getUmIdInfo">
+		SELECT 
+			um_id,
+			um_user_id,
+			um_user_name,
+			um_user_password,
+			um_user_dormancy,
+			um_user_password_reset,
+			uid,
+			incs_no,
+			full_name,
+			last_password_update
+		FROM 
+		(			
+			SELECT 
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name,
+				uu.um_user_password,
+				uu.um_user_dormancy,
+				uu.um_user_password_reset,
+				uua.uid,
+				uua.incs_no,
+				uua.full_name,
+				uua.last_password_update
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='incsNo' THEN um_attr_value END), '') AS incs_no,
+					COALESCE( MAX(CASE WHEN um_attr_name='cn' THEN um_attr_value END), '') AS full_name,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastPasswordUpdate' THEN um_attr_value END), '') AS last_password_update
+				FROM 
+					ocp.um_user_attribute
+					where um_user_id in (select um_id from ocp.um_user where um_user_name = #{loginId})
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id)
+		) u
+		WHERE 
+		um_user_name = #{loginId}
+		AND incs_no = #{incsNo}
+		
+ 		UNION ALL	
+ 			
+ 		SELECT 
+ 			0 as um_id,
+ 			'' as um_user_id,
+ 			chcs_web_id as um_user_name,
+ 			lin_pwd_ec as um_user_password,
+ 			to_char(incs_no, 'FM999999999') as incs_no,
+ 			'' as full_name
+ 		FROM  
+ 			ocp.occued_chcs_lin_acct ocla 
+ 		WHERE ch_cd = #{chCd} 
+ 		AND chcs_web_id = #{loginId} 
+ 		AND incs_no = #{incsNo} 				
+	</sql>	
+	
+	<!-- 사용자 조회 -->
+	<select id="getUserInfo" parameterType="com.amorepacific.oneap.common.vo.user.UserData" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		<include refid="getUmIdInfo"/>
+	</select>
+	
+	<select id="getOmniUserInfo" parameterType="com.amorepacific.oneap.common.vo.user.UserData" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		SELECT 
+			um_id,
+			um_user_id,
+			um_user_name,
+			um_user_password,
+			um_user_dormancy,
+			um_user_password_reset,
+			uid,
+			incs_no,
+			full_name,
+			last_password_update
+		FROM 
+		(			
+			SELECT 
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name,
+				uu.um_user_password,
+				uu.um_user_dormancy,
+				uu.um_user_password_reset,
+				uua.uid,
+				uua.incs_no,
+				uua.full_name,
+				uua.last_password_update
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='incsNo' THEN um_attr_value END), '') AS incs_no,
+					COALESCE( MAX(CASE WHEN um_attr_name='cn' THEN um_attr_value END), '') AS full_name,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastPasswordUpdate' THEN um_attr_value END), '') AS last_password_update
+				FROM 
+					ocp.um_user_attribute
+					where um_user_id in (select um_id from ocp.um_user where um_user_name = #{loginId})
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id)
+		) u
+		WHERE 
+		um_user_name = #{loginId}
+		AND incs_no = #{incsNo}
+	</select>
+	
+	<select id="getChannelUserInfo" parameterType="com.amorepacific.oneap.common.vo.user.UserData" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+	 	SELECT 
+ 			0 as umId,
+ 			'' as umUserId,
+ 			chcs_web_id as umUserName,
+ 			lin_pwd_ec as umUserPassword,
+ 			to_char(incs_no, 'FM999999999') as incsNo,
+ 			'' as fullName
+ 		FROM  
+ 			ocp.occued_chcs_lin_acct ocla 
+ 		WHERE 
+ 			ch_cd = #{chCd} 
+ 			AND chcs_web_id = #{loginId}
+ 			AND incs_no = #{incsNo}::integer
+ 			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')
+	</select>
+	
+	
+</mapper>

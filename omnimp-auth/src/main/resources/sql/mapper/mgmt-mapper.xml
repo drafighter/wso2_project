@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.auth.mgmt.mapper.MgmtMapper">
+
+	<select id="getIntegratedExtraId" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT 
+			um_user_name 
+		FROM 
+			ocp.um_user 
+		WHERE 
+			um_user_incsno 
+		IN 
+		(
+			SELECT 
+				um_user_incsno 
+			FROM 
+				ocp.um_user 
+			WHERE 
+				um_user_name = #{loginid}
+		) AND um_user_name != #{loginid}
+	</select>
+	<select id="hasSameLoginId" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser" resultType="int">	
+		SELECT 
+			COUNT(*) 
+		FROM 
+			ocp.um_user 
+		WHERE um_user_name IN 
+		(
+			SELECT 
+				chcs_web_id 
+			FROM 
+				ocp.occued_chcs_lin_acct ocla 
+			WHERE 
+				ch_cd = #{chCd} 
+				AND incs_no = #{incsNo}
+		)
+	</select>
+	
+	<select id="hasSameLoginIdByLoginId" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser" resultType="int">	
+		SELECT 
+			COUNT(*) 
+		FROM 
+			ocp.um_user 
+		WHERE um_user_name IN 
+		(
+			SELECT 
+				chcs_web_id 
+			FROM 
+				ocp.occued_chcs_lin_acct ocla 
+			WHERE 
+				ch_cd = #{chCd} 
+				AND chcs_web_id = #{chcsWebId}
+		)
+	</select>	
+	
+	<!-- 로그인아이디로 고객정보 조회 : 튜닝 완료 -->
+	<select id="getUserLoginInfoListByLoginId" parameterType="com.amorepacific.oneap.common.vo.user.UserData" resultType="com.amorepacific.oneap.common.vo.user.UserData">
+		SELECT 
+			login_id, password, password_reset, incs_no, ch_cd 
+		FROM 
+		(			
+			SELECT 
+				uu.um_user_name as login_id,
+				uu.um_user_password as password,
+				uu.um_user_password_reset as password_reset,
+				uua.incs_no,
+				'030' as ch_cd
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name = 'incsNo' THEN um_attr_value END), '') AS incs_no
+				FROM 
+					ocp.um_user_attribute
+				WHERE
+					um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_name = #{loginId})	
+				GROUP BY um_user_id
+			) uua
+			ON (uu.um_id = uua.um_user_id )
+		) u WHERE login_id = #{loginId}
+	 			
+		UNION ALL
+						
+		SELECT 
+			chcs_web_id as login_id, 
+			lin_pwd_ec as password,
+			'N' as password_reset,
+			TO_CHAR(incs_no, 'FM999999999') AS incs_no,
+			ch_cd
+		FROM 
+			ocp.occued_chcs_lin_acct ocla 
+		WHERE
+			ch_cd = #{chCd}
+			AND chcs_web_id = #{loginId}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')		
+	</select>
+	
+	<select id="getOmniUserDataList" parameterType="com.amorepacific.oneap.common.vo.user.UserData" resultType="com.amorepacific.oneap.common.vo.user.UserData">
+		SELECT 
+			login_id, password, password_reset, incs_no, ch_cd 
+		FROM 
+		(			
+			SELECT 
+				uu.um_user_name as login_id,
+				uu.um_user_password as password,
+				uu.um_user_password_reset as password_reset,
+				uua.incs_no,
+				'030' as ch_cd
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name = 'incsNo' THEN um_attr_value END), '') AS incs_no
+				FROM 
+					ocp.um_user_attribute
+				WHERE
+					um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_name = #{loginId})	
+				GROUP BY um_user_id
+			) uua
+			ON (uu.um_id = uua.um_user_id )
+		) u WHERE login_id = #{loginId}
+	</select>	
+
+	<!-- 통합고객번호로 옴니 사용자 정보 조회 -->
+	<select id="getOmniUserLoginIdList" parameterType="com.amorepacific.oneap.common.vo.user.UserData" resultType="com.amorepacific.oneap.common.vo.user.UserData">
+		SELECT 
+			login_id, password_reset, incs_no, ch_cd 
+		FROM 
+		(			
+			SELECT 
+				uu.um_user_name as login_id,
+				uu.um_user_password_reset as password_reset,
+				uua.incs_no as incs_no,
+				'030' as ch_cd
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name = 'incsNo' THEN um_attr_value END), '') AS incs_no
+				FROM 
+					ocp.um_user_attribute
+				WHERE
+					um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_incsno = #{incsNo})
+				GROUP BY um_user_id
+			) uua
+			ON (uu.um_id = uua.um_user_id)
+		) u WHERE incs_no = #{incsNo}
+	 			
+	</select>
+	
+	<!-- 통합고객번호로 경로 사용자 정보 조회 -->
+	<select id="getChannelUserLoginIdList" parameterType="com.amorepacific.oneap.common.vo.user.UserData" resultType="com.amorepacific.oneap.common.vo.user.UserData">
+		SELECT 
+			chcs_web_id as login_id, 'N' as password_reset,TO_CHAR(incs_no, 'FM999999999') as incs_no, ch_cd
+		FROM 
+			ocp.occued_chcs_lin_acct ocla 
+		WHERE
+			ch_cd = #{chCd}
+			AND TO_CHAR(incs_no, 'FM999999999') = #{incsNo}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')			
+	</select>
+	
+	<!-- 사용자 아이디로 경로 사용자 정보 조회 -->
+	<select id="getChannelUserLoginIdByChId" parameterType="com.amorepacific.oneap.common.vo.user.UserData" resultType="com.amorepacific.oneap.common.vo.user.UserData">
+		SELECT 
+			chcs_web_id as login_id, 'N' as password_reset,TO_CHAR(incs_no, 'FM999999999') as incs_no, ch_cd
+		FROM 
+			ocp.occued_chcs_lin_acct ocla 
+		WHERE
+			ch_cd = #{chCd}
+			AND chcs_web_id = #{chLoginId}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')			
+	</select>
+	
+	<!-- 전환가입 고객 목록 조회  -->
+	<select id="getOmniConversionUserList" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		SELECT 
+			um_id,
+			um_user_id,
+			um_user_name,
+			um_user_password,
+			um_user_dormancy,
+			um_user_password_reset,
+			uid,
+			incs_no,
+			created_date,
+			full_name,
+			last_login_time,
+			last_password_update,
+			account_lock,
+			failed_login_attempts,
+			unlock_time,
+			account_state,
+			account_disabled,
+			disabled_date 
+		FROM 
+		(			
+			SELECT 
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name,
+				uu.um_user_password,
+				uu.um_user_dormancy,
+				uu.um_user_password_reset,
+				uua.uid,
+				uua.incs_no,
+				uua.created_date,
+				uua.full_name,
+				uua.last_login_time,
+				uua.last_password_update,
+				uua.account_lock,
+				uua.failed_login_attempts,
+				uua.unlock_time,
+				uua.account_state,
+				uua.account_disabled,
+				uua.disabled_date
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='incsNo' THEN um_attr_value END), '') AS incs_no,
+					COALESCE( MAX(CASE WHEN um_attr_name='createdDate' THEN  TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') END), '') AS created_date,
+					COALESCE( MAX(CASE WHEN um_attr_name='cn' THEN um_attr_value END), '') AS full_name,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastLoginTime' THEN um_attr_value END), '') AS last_login_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastPasswordUpdate' THEN um_attr_value END), '') AS last_password_update,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountLock' THEN um_attr_value END), '') AS account_lock,
+					COALESCE( MAX(CASE WHEN um_attr_name='failedLoginAttempts' THEN um_attr_value END), '') AS failed_login_attempts,
+					COALESCE( MAX(CASE WHEN um_attr_name='unlockTime' THEN um_attr_value END), '') AS unlock_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountState' THEN um_attr_value END), '') AS account_state,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountDisabled' THEN um_attr_value END), '') AS account_disabled,
+					COALESCE( MAX(CASE WHEN um_attr_name='disabledDate' THEN case when (um_attr_value is null or um_attr_value = '') then '' else TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') end END), '') AS disabled_date
+				FROM 
+					ocp.um_user_attribute
+				WHERE
+					um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_incsno = #{umAttrValue})	
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id)
+		) u
+		WHERE incs_no = #{umAttrValue}
+		ORDER BY last_login_time DESC, um_id			
+	</select>
+	
+	<!-- 전환가입 목록 조회 -->
+	<select id="getChannelConversionUserList" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser" resultType="com.amorepacific.oneap.common.vo.user.UmChUser">
+		SELECT 
+			ch_cd,
+			chcs_web_id,
+			incs_no,
+			incs_web_id_swt_yn,
+			incs_web_id_swt_dttm
+		FROM 
+			ocp.occued_chcs_lin_acct ocla 
+		WHERE
+			ch_cd = #{chCd}
+			AND incs_no = #{incsNo}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')	
+	</select>
+	
+	<select id="getChannelUserIdList" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser" resultType="com.amorepacific.oneap.common.vo.user.UmChUser">
+		SELECT 
+			ch_cd,
+			chcs_web_id,
+			incs_no,
+			incs_web_id_swt_yn,
+			incs_web_id_swt_dttm
+		FROM 
+			ocp.occued_chcs_lin_acct ocla 
+		WHERE
+			ch_cd = #{chCd}
+			AND chcs_web_id = #{chcsWebId}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')	
+	</select>
+	
+	<!-- 로그인 omni 회원 정보 조회 : 속도 문제 없음 -->
+	<!-- 잠김 사용자가 아닌 경우 : accountLock == null || accountLock == false -->
+	<!-- 잠김 사용자가 아닌 경우 : accountState == null || accountState == UNLOCKED -->
+	<!-- 탈퇴된 사용자가 아닌 경우 : accountDisabled == null || accountDisabled == false -->
+	<!-- 휴면 사용자가 아닌 경우 : ? -->
+	<select id="getOmniLoginUserList" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		SELECT 
+			um_id,
+			um_user_id,
+			um_user_name,
+			um_user_password,
+			um_user_dormancy,
+			um_user_password_reset,
+			uid,
+			incs_no,
+			created_date,
+			full_name,
+			last_login_time,
+			last_password_update,
+			account_lock,
+			failed_login_attempts,
+			unlock_time,
+			account_state,
+			account_disabled,
+			disabled_date 
+		FROM 
+		(			
+			SELECT 
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name,
+				uu.um_user_password,
+				uu.um_user_dormancy,
+				uu.um_user_password_reset,
+				uua.uid,
+				uua.incs_no,
+				uua.created_date,
+				uua.full_name,
+				uua.last_login_time,
+				uua.last_password_update,
+				uua.account_lock,
+				uua.failed_login_attempts,
+				uua.unlock_time,
+				uua.account_state,
+				uua.account_disabled,
+				uua.disabled_date
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='incsNo' THEN um_attr_value END), '') AS incs_no,
+					COALESCE( MAX(CASE WHEN um_attr_name='createdDate' THEN  TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') END), '') AS created_date,
+					COALESCE( MAX(CASE WHEN um_attr_name='cn' THEN um_attr_value END), '') AS full_name,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastLoginTime' THEN um_attr_value END), '') AS last_login_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastPasswordUpdate' THEN um_attr_value END), '') AS last_password_update,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountLock' THEN um_attr_value END), '') AS account_lock,
+					COALESCE( MAX(CASE WHEN um_attr_name='failedLoginAttempts' THEN um_attr_value END), '') AS failed_login_attempts,
+					COALESCE( MAX(CASE WHEN um_attr_name='unlockTime' THEN um_attr_value END), '') AS unlock_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountState' THEN um_attr_value END), '') AS account_state,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountDisabled' THEN um_attr_value END), '') AS account_disabled,
+					COALESCE( MAX(CASE WHEN um_attr_name='disabledDate' THEN case when (um_attr_value is null or um_attr_value = '') then '' else TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') end END), '') AS disabled_date
+				FROM 
+					ocp.um_user_attribute
+				WHERE
+					um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_name = #{umUserName} AND um_user_password = #{umUserPassword})		
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id)
+		) u
+		WHERE um_user_name = #{umUserName}
+		AND um_user_password = #{umUserPassword}
+		AND uid = #{umUserName}
+		ORDER BY last_login_time DESC, um_id 
+	</select>
+	
+	<!-- 로그인 경로 회원 정보 조회 -->
+	<!-- 통합회원으로 전환되지 않은 사용자 대상 -->
+	<select id="getChannelLoginUserList" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser" resultType="com.amorepacific.oneap.common.vo.user.UmChUser">
+		SELECT 
+			ch_cd,
+			chcs_web_id,
+			incs_no,
+			incs_web_id_swt_yn,
+			incs_web_id_swt_dttm
+		FROM 
+			ocp.occued_chcs_lin_acct ocla 
+		WHERE
+			ch_cd = #{chCd}
+			AND chcs_web_id = #{chcsWebId} 
+			AND lin_pwd_ec = #{linPwdEc}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')
+	</select>
+
+	<select id="getChannelLoginUserListByFlag" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser" resultType="com.amorepacific.oneap.common.vo.user.UmChUser">
+		SELECT 
+			ch_cd,
+			chcs_web_id,
+			incs_no,
+			incs_web_id_swt_yn,
+			incs_web_id_swt_dttm
+		FROM 
+			ocp.occued_chcs_lin_acct ocla 
+		WHERE
+			ch_cd = #{chCd}
+			AND chcs_web_id = #{chcsWebId} 
+			AND lin_pwd_ec = #{linPwdEc}
+	</select>
+
+	<!-- 회원가입 omni 회원 정보 조회 -->
+	<select id="getOmniJoinUserList" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		SELECT 
+			um_id,
+			um_user_id,
+			um_user_name,
+			um_user_password,
+			um_user_dormancy,
+			um_user_password_reset,
+			uid,
+			incs_no,
+			created_date,
+			full_name,
+			last_login_time,
+			last_password_update,
+			account_lock,
+			failed_login_attempts,
+			unlock_time,
+			account_state,
+			account_disabled,
+			disabled_date 
+		FROM 
+		(			
+			SELECT 
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name,
+				uu.um_user_password,
+				uu.um_user_dormancy,
+				uu.um_user_password_reset,
+				uua.uid,
+				uua.incs_no,
+				uua.created_date,
+				uua.full_name,
+				uua.last_login_time,
+				uua.last_password_update,
+				uua.account_lock,
+				uua.failed_login_attempts,
+				uua.unlock_time,
+				uua.account_state,
+				uua.account_disabled,
+				uua.disabled_date
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='incsNo' THEN um_attr_value END), '') AS incs_no,
+					COALESCE( MAX(CASE WHEN um_attr_name='createdDate' THEN  TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') END), '') AS created_date,
+					COALESCE( MAX(CASE WHEN um_attr_name='cn' THEN um_attr_value END), '') AS full_name,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastLoginTime' THEN um_attr_value END), '') AS last_login_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastPasswordUpdate' THEN um_attr_value END), '') AS last_password_update,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountLock' THEN um_attr_value END), '') AS account_lock,
+					COALESCE( MAX(CASE WHEN um_attr_name='failedLoginAttempts' THEN um_attr_value END), '') AS failed_login_attempts,
+					COALESCE( MAX(CASE WHEN um_attr_name='unlockTime' THEN um_attr_value END), '') AS unlock_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountState' THEN um_attr_value END), '') AS account_state,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountDisabled' THEN um_attr_value END), '') AS account_disabled,
+					COALESCE( MAX(CASE WHEN um_attr_name='disabledDate' THEN case when (um_attr_value is null or um_attr_value = '') then '' else TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') end END), '') AS disabled_date
+				FROM 
+					ocp.um_user_attribute
+				WHERE 1 = 1	
+		<if test="umAttrName != null and umAttrName != null">
+			<choose>
+				<when test="umAttrName eq 'umUserName'">
+				AND um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_name = #{umAttrValue})
+				</when>
+				<when test="umAttrName eq 'uid'">
+				AND um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_name = #{umAttrValue})
+				</when>
+				<when test="umAttrName eq 'incsNo'">
+				AND um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_incsno = #{umAttrValue})				
+				</when>
+				<when test="umAttrName eq 'fullName'">
+				AND full_name = #{umAttrValue}
+				</when>				
+			</choose>
+		</if>					
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id)
+		) u
+		WHERE 1 = 1
+		<if test="umAttrName != null and umAttrName != null">
+			<choose>
+				<when test="umAttrName eq 'umUserName'">
+				AND um_user_name = #{umAttrValue}
+				</when>
+				<when test="umAttrName eq 'uid'">
+				AND uid = #{umAttrValue}
+				</when>
+				<when test="umAttrName eq 'incsNo'">
+				AND incs_no = #{umAttrValue}
+				</when>
+				<when test="umAttrName eq 'fullName'">
+				AND full_name = #{umAttrValue}
+				</when>				
+			</choose>
+		</if>
+		ORDER BY last_login_time DESC, um_id 
+	</select>
+	
+	<!-- 회원가입 경로 회원 정보 조회 -->
+	<!-- 통합회원으로 전환되지 않은 사용자 대상 -->
+	<select id="getChannelJoinUserList" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser" resultType="com.amorepacific.oneap.common.vo.user.UmChUser">
+		SELECT 
+			ch_cd,
+			chcs_web_id,
+			incs_no,
+			incs_web_id_swt_yn,
+			incs_web_id_swt_dttm
+		FROM 
+			ocp.occued_chcs_lin_acct ocla 
+		WHERE
+			ch_cd = #{chCd}
+			AND incs_no = #{incsNo}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')			
+	</select>
+
+	<!-- 로그인 시 이미 전환된 사용자 -->
+	<select id="getChannelTransferUserList" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser" resultType="com.amorepacific.oneap.common.vo.user.UmChUser">
+		SELECT 
+			ch_cd,
+			chcs_web_id,
+			incs_no,
+			incs_web_id_swt_yn,
+			incs_web_id_swt_dttm
+		FROM 
+			ocp.occued_chcs_lin_acct ocla 
+		WHERE
+			ch_cd = #{chCd}
+			AND chcs_web_id = #{chcsWebId}
+			AND lin_pwd_ec = #{linPwdEc}
+			AND incs_web_id_swt_yn = 'Y'			
+	</select>
+	
+	<!-- 탈퇴 대상 중에 30일 경과한 사용자 목록 -->
+	<select id="getWithdrawedUserList" resultType="com.amorepacific.oneap.auth.mgmt.vo.WithdrawUserVo">
+		SELECT 
+	 		UM_ID,
+	 		UM_USER_ID,
+	 		UM_USER_PASSWORD,
+	 		UM_USER_NAME,
+	 		DISABLED_DATE,
+	 		(EXTRACT(EPOCH from TERMS) / (60 * 60 * 24)) AS TERMS,
+	 		ACCOUNT_DISABLED
+	 	FROM	
+	 	(		
+			 SELECT 
+	 			UM_ID,
+	 			UM_USER_ID,
+	 			UM_USER_PASSWORD,
+	 			UM_USER_NAME,
+	 			DISABLED_DATE,
+	 			TERMS,
+	 			ACCOUNT_DISABLED
+	 		FROM  
+			(
+				SELECT 
+					uu.UM_ID, 
+					uu.UM_USER_ID,
+					uu.UM_USER_PASSWORD,
+					uu.UM_USER_NAME, 
+					uua.UM_ATTR_NAME,
+					uua.UM_ATTR_VALUE::timestamp AS DISABLED_DATE,
+					DATE_TRUNC('day', (NOW() - uua.um_attr_value::date)) AS TERMS,
+					(SELECT um_attr_value FROM ocp.um_user_attribute uuad WHERE uuad.um_attr_name = 'accountDisabled' AND uuad.um_user_id = uu.um_id limit 1) AS ACCOUNT_DISABLED
+				FROM 
+					ocp.UM_USER uu
+					LEFT OUTER JOIN ocp.UM_USER_ATTRIBUTE uua
+				ON (uu.UM_ID = uua.UM_USER_ID)
+				WHERE 
+	 				uua.UM_ATTR_NAME = 'disabledDate' 
+	 				AND uua.UM_ATTR_VALUE IS NOT NULL
+	 		) um
+	 		WHERE 
+	 			um.TERMS <![CDATA[ > ]]> ('30 day'::interval)
+	 		 	AND (um.ACCOUNT_DISABLED is null or um.ACCOUNT_DISABLED = '' or um.ACCOUNT_DISABLED = 'false')
+	 	) uw
+	</select>
+	
+	<!-- 탈퇴 대상자 disable 처리 -->
+	<update id="updateWithdrawedUser" parameterType="com.amorepacific.oneap.auth.mgmt.vo.WithdrawUserVo">
+		UPDATE UM_USER
+			SET UM_USER_PASSWORD = #{umUserPassword}
+		WHERE
+			UM_ID = #{umId}
+			AND UM_USER_ID = #{umUserId}
+	</update>
+	
+	<!-- 탈퇴회원 중에 accountDisabled 있는지 체크, 있으면 update, 없으면 insert  -->
+	<select id="existWithdrawFlagUser" parameterType="com.amorepacific.oneap.auth.mgmt.vo.WithdrawUserVo" resultType = "int">
+		SELECT
+			COUNT(*)
+		FROM
+			ocp.um_user_attribute
+		WHERE
+			um_user_id = #{umId}
+			AND um_attr_name = 'accountDisabled'		
+	</select>
+	
+	<!--  탈퇴 플래그 INSERT 처리하기 : accountDisabled  -->
+	<insert id="insertWithdrawFlagUser" parameterType="com.amorepacific.oneap.auth.mgmt.vo.WithdrawUserVo">
+		INSERT INTO ocp.um_user_attribute
+			(um_attr_name, um_attr_value, um_profile_id, um_user_id, um_tenant_id)
+		VALUES
+			('accountDisabled', 'true', 'default', #{umId}, -1234)
+	</insert>
+	
+	<!--  탈퇴 플래그 UPDATE 처리하기 : accountDisabled  -->
+	<update id="updateWithdrawFlagUser" parameterType="com.amorepacific.oneap.auth.mgmt.vo.WithdrawUserVo">
+		UPDATE ocp.um_user_attribute
+			SET um_attr_value = 'true'
+		WHERE
+			um_user_id = #{umId} 
+			AND um_attr_name = 'accountDisabled' 
+	</update>
+	
+	<!-- 탈퇴 대상자 disable 처리후 탈퇴대상자 정보 삭제(배치 처리 시 중복으로 탈퇴대상자에 포함되므로) -->
+	<delete id="deleteWithdrawedUserDisabledAfter" parameterType="com.amorepacific.oneap.auth.mgmt.vo.WithdrawUserVo">
+		DELETE 
+		FROM 
+			ocp.um_user_attribute
+		WHERE 
+			um_id = #{umId}
+			AND um_attr_name = 'disabledDate'
+			AND um_user_id = #{umUserId}
+	</delete>
+
+	<select id="hasLoginid" parameterType="String" resultType="int">
+		SELECT 
+			SUM(cnt) as cnt 
+		FROM 
+		(
+			SELECT 
+				COUNT(*) AS cnt
+			FROM 
+				ocp.um_user uu
+			WHERE uu.um_user_name = #{loginid}
+
+			UNION ALL 
+
+			SELECT 
+				COUNT(*) AS cnt
+			FROM 
+				ocp.occued_chcs_lin_acct ocla 
+			WHERE chcs_web_id = #{loginid} AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')
+		) a
+	
+	</select>
+	
+	<update id="updateConversionComplete" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser">
+		UPDATE ocp.occued_chcs_lin_acct
+			SET incs_web_id_swt_yn = 'Y',
+				incs_web_id_swt_dttm = statement_timestamp()
+		<if test="incsNo != null and incsNo != ''">
+				,incs_no = #{incsNo}
+		</if>					
+		WHERE
+			ch_cd = #{chCd}
+			AND incs_no = #{incsNo}
+	</update>
+	
+		<update id="updateConversionCompleteById" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser">
+		UPDATE ocp.occued_chcs_lin_acct
+			SET incs_web_id_swt_yn = 'Y',
+				incs_web_id_swt_dttm = statement_timestamp()
+		<if test="incsNo != null and incsNo != ''">
+				,incs_no = #{incsNo}
+		</if>			
+		WHERE
+			ch_cd = #{chCd}
+			AND chcs_web_id = #{chcsWebId}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')
+	</update>
+	
+	
+	<!-- 휴면해제 -->
+	<update id="updateUserDormancyRelease" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		UPDATE ocp.um_user
+			SET um_user_dormancy = 'N'
+		WHERE 
+			um_user_name = #{umUserName}
+			AND um_user_incsno  =  #{incsNo}
+	</update>
+	
+	<!-- 비밀번호 리셋 플래그 초기화 -->
+	<update id="updateUserPasswordResetFlagInit" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		UPDATE ocp.um_user
+			SET um_user_password_reset = 'N'
+		WHERE
+			um_user_name = #{umUserName}
+			AND um_user_password = #{umUserPassword}
+			AND um_user_incsno =  #{incsNo}
+	</update>
+	
+	<select id="getSnsMappingTime" parameterType="com.amorepacific.oneap.common.vo.sns.SnsParam" resultType="String">
+		SELECT 
+			iai.time_created
+		FROM 
+			ocp.idn_associated_id AS iai 
+		JOIN
+			ocp.idp AS i 
+		ON
+			iai.idp_id = i.id
+		WHERE 
+			i.name = #{snsType}
+		AND
+			iai.user_name = (
+				SELECT
+					uu.um_user_name
+				FROM
+					ocp.um_user AS uu
+				WHERE
+					uu.um_user_incsno = #{incsNo}
+				LIMIT 1	
+			)
+	</select>
+	
+	
+	<select id="getOmniUserByLoginUserName" parameterType="java.lang.String" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		SELECT 
+			um_id						AS umId,
+			um_user_id					AS umUserId,
+			um_user_name				AS umUserName,
+			um_user_password			AS umUserPassword,
+			um_user_dormancy			AS umUserDormancy,
+			um_user_password_reset		AS umUserPasswordReset,
+			uid							AS uid,
+			incs_no						AS incsNo,
+			created_date,				
+			full_name					AS fullName,
+			last_login_time				AS lastLoginTime,
+			last_password_update		AS lastPasswordUpdate,
+			account_lock				AS accountLock,
+			failed_login_attempts		AS failedLoginAttempts,
+			unlock_time					AS unlockTime,
+			account_state				AS accountState,
+			account_disabled			AS accountDisabled,
+			disabled_date 				AS disabledDate
+		FROM
+		(			
+			SELECT 
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name,
+				uu.um_user_password,
+				uu.um_user_dormancy,
+				uu.um_user_password_reset,
+				uua.uid,
+				uua.incs_no,
+				uua.created_date,
+				uua.full_name,
+				uua.last_login_time,
+				uua.last_password_update,
+				uua.account_lock,
+				uua.failed_login_attempts,
+				uua.unlock_time,
+				uua.account_state,
+				uua.account_disabled,
+				uua.disabled_date
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='incsNo' THEN um_attr_value END), '') AS incs_no,
+					COALESCE( MAX(CASE WHEN um_attr_name='createdDate' THEN  TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') END), '') AS created_date,
+					COALESCE( MAX(CASE WHEN um_attr_name='cn' THEN um_attr_value END), '') AS full_name,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastLoginTime' THEN um_attr_value END), '') AS last_login_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastPasswordUpdate' THEN um_attr_value END), '') AS last_password_update,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountLock' THEN um_attr_value END), '') AS account_lock,
+					COALESCE( MAX(CASE WHEN um_attr_name='failedLoginAttempts' THEN um_attr_value END), '') AS failed_login_attempts,
+					COALESCE( MAX(CASE WHEN um_attr_name='unlockTime' THEN um_attr_value END), '') AS unlock_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountState' THEN um_attr_value END), '') AS account_state,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountDisabled' THEN um_attr_value END), '') AS account_disabled,
+					COALESCE( MAX(CASE WHEN um_attr_name='disabledDate' THEN case when (um_attr_value is null or um_attr_value = '') then '' else TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') end END), '') AS disabled_date
+				FROM 
+					ocp.um_user_attribute
+				WHERE
+					um_user_id IN (SELECT um_id FROM ocp.um_user WHERE um_user_name = #{umUserName})	
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id)
+		) u
+		WHERE um_user_name = #{umUserName} AND uid = #{umUserName}
+	</select>
+	
+	<update id="updateChannelPassword" parameterType="com.amorepacific.oneap.common.vo.user.UserData">
+		UPDATE 
+			ocp.occued_chcs_lin_acct
+		SET 
+			lin_pwd_ec = #{password}
+		WHERE 
+			ch_cd = #{chCd} 
+			AND chcs_web_id = #{loginId}
+	</update>
+	
+	<!-- 통합고객 이름변경, 휴면 변경용 수신데이터 존재여부 체크 -->
+	<select id="existRcvData" parameterType="com.amorepacific.oneap.common.vo.api.IncsRcvData" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			ocp.occuei_incs_rcv
+		WHERE
+			incs_no = #{incsNo}		
+	</select>
+	
+	<!-- 이름변경, 휴면 변경용 수신데이터 입력하면 incs_rcv_trigger trigger 의 insup_omni_update_value function 에서 처리 -->
+	<insert id="insertRcvName" parameterType="com.amorepacific.oneap.common.vo.api.IncsRcvData">
+	
+		INSERT INTO ocp.occuei_incs_rcv
+		(
+		incs_no, cust_nm, 
+		drcc_cd, 
+		fscr_id, fscr_tsp, 
+		lsch_id, lsch_tsp) VALUES
+		(
+		#{incsNo}, #{custNm}, 
+		#{drccCd}, 
+		'OCP', statement_timestamp(), 
+		'OCP', statement_timestamp())
+	
+	</insert>
+	
+	<!-- 이름변경, 휴면 변경용 수신데이터 수정하면 incs_rcv_trigger trigger 의 insup_omni_update_value function 에서 처리 -->
+	<update id="updateRcvName" parameterType="com.amorepacific.oneap.common.vo.api.IncsRcvData">
+		
+		UPDATE ocp.occuei_incs_rcv
+		SET 
+			cust_nm = #{custNm}, 
+			drcc_cd =  #{drccCd}, 
+			lsch_id = 'OCP',
+			lsch_tsp = statement_timestamp()
+		WHERE 
+			incs_no = #{incsNo}
+	
+	</update>
+	
+	
+	<!-- 휴면 변경용 수신데이터 입력하면 incs_rcv_trigger trigger 의 insup_omni_update_value function 에서 처리 -->
+	<insert id="insertRcvDormancy" parameterType="com.amorepacific.oneap.common.vo.api.IncsRcvData">
+	
+		INSERT INTO ocp.occuei_incs_rcv
+		(
+		incs_no, 
+		drcc_cd, 
+		fscr_id, fscr_tsp, 
+		lsch_id, lsch_tsp) VALUES
+		(
+		#{incsNo}, 
+		#{drccCd}, 
+		'OCP', statement_timestamp(), 
+		'OCP', statement_timestamp())
+	
+	</insert>
+	
+	<!-- 휴면 변경용 수신데이터 수정하면 incs_rcv_trigger trigger 의 insup_omni_update_value function 에서 처리 -->
+	<update id="updateRcvDormancy" parameterType="com.amorepacific.oneap.common.vo.api.IncsRcvData">
+		
+		UPDATE ocp.occuei_incs_rcv
+		SET 
+			drcc_cd =  #{drccCd}, 
+			lsch_id = 'OCP',
+			lsch_tsp = statement_timestamp()
+		WHERE 
+			incs_no = #{incsNo}
+	
+	</update>	
+	
+	<select id="getOminUserPasswordByIncsNo" parameterType="com.amorepacific.oneap.common.vo.user.UserData" resultType="String">
+		SELECT
+			um_user_password
+		FROM
+			ocp.um_user
+		WHERE
+			um_user_incsno = #{incsNo}
+			AND um_user_name = #{loginId}
+	</select>
+	
+	<update id="updateUmUserPassword" parameterType="com.amorepacific.oneap.common.vo.user.UserData">
+		UPDATE ocp.um_user
+		SET
+		    um_user_password = #{password}
+		WHERE
+		    um_user_incsno = #{incsNo}
+		    AND um_user_name = #{loginId}
+	</update>
+	
+	<update id="updateLastPasswordUpdateNow" parameterType="com.amorepacific.oneap.common.vo.user.UserData">
+		UPDATE ocp.um_user_attribute
+		SET
+		    um_attr_value = (extract(epoch from now())::bigint * 1000)
+		WHERE 
+		    um_attr_name = 'lastPasswordUpdate'
+		    AND um_user_id = (SELECT um_id FROM ocp.um_user WHERE um_user_name = #{loginId} AND um_user_incsno = #{incsNo})
+	</update>
+	
+	<insert id="insertWeb2AppData" parameterType="com.amorepacific.oneap.auth.login.vo.Web2AppVo">
+		INSERT INTO ocp.web2app_authentication
+		(
+		web2app_id, 
+		rq_dttm, 
+		expr_dttm,
+		user_atht_st,
+		consumer_key_id,
+		ch_cd
+		) VALUES
+		(
+		#{web2appid},
+		#{requiretime}::timestamp, 
+		#{expiretime}::timestamp,
+		'required',
+		#{consumerkeyid},
+		#{chcd})
+	</insert>
+	<select id="selectWeb2AppData" parameterType="String" resultType="com.amorepacific.oneap.auth.login.vo.Web2AppVo">
+		SELECT 
+			web2app_id, 
+			access_token, 
+			username, 
+			TO_CHAR(rq_dttm::timestamp, 'YYYYMMDDHH24MISS') as rq_dttm,
+			TO_CHAR(expr_dttm::timestamp, 'YYYYMMDDHH24MISS') as expr_dttm,
+			TO_CHAR(atht_dttm::timestamp, 'YYYYMMDDHH24MISS') as atht_dttm,
+			user_atht_st, 
+			consumer_key_id,
+			ch_cd
+		FROM 
+			ocp.web2app_authentication
+		WHERE
+			web2app_id=#{uuid}
+	</select>
+	
+	<select id="selectTokenValid" parameterType="com.amorepacific.oneap.auth.login.vo.Web2AppVo" resultType="map">
+		SELECT 
+			token_state, authz_user
+		FROM 
+			ocp.idn_oauth2_access_token
+		WHERE
+			access_token=#{accesstoken}
+	</select>
+	
+	<update id="updateWeb2AppData" parameterType="com.amorepacific.oneap.auth.login.vo.Web2AppVo">
+		UPDATE ocp.web2app_authentication
+		SET
+		   username=#{username},
+		   user_atht_st=#{userathtst}
+		WHERE
+		    web2app_id=#{web2appid}
+	</update>
+	
+	<select id="selectConsumerAppId" parameterType="String" resultType="int">
+		SELECT 
+			id
+		FROM 
+			ocp.idn_oauth_consumer_apps
+		WHERE
+			consumer_key=#{consumerkey}
+	</select>
+	
+	<update id="updateWeb2AppAuthKey" parameterType="com.amorepacific.oneap.auth.login.vo.Web2AppVo">
+		UPDATE ocp.web2app_authentication
+		SET
+		   access_token=#{accesstoken}
+		WHERE
+		    web2app_id=#{web2appid}
+	</update>
+	
+</mapper>

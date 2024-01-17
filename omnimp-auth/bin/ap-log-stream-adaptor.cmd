@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=ap-log-stream-adaptor.jar -DgroupId=com.amorepacific -DartifactId=ap-log-stream-adaptor -Dversion=1.0.0 -Dpackaging=jar -DgeneratePom=true

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.auth.common.mapper.SmsMapper">
+
+	<select id="selectSmsMaxSeq" resultType="int">
+		SELECT
+			COALESCE(MAX(sms_atht_send_no),0)+1 AS SEQ 
+		FROM
+			ocp.occued_sms_atht_no_send
+				
+	</select>
+
+	<select id="selectSmsData" resultType="com.amorepacific.oneap.common.vo.sms.SmsVo" parameterType="com.amorepacific.oneap.common.vo.sms.SmsVo">
+		SELECT 
+			sms_atht_send_no, incs_no, sms_atht_no_vl, sms_send_dttm, 
+			sms_atht_expr_dttm, sms_atht_proc_rslt_cd, sms_atht_fail_cnt, 
+			fscr_id, fscr_tsp, lsch_id, lsch_tsp, sdtp_cd, reg_appl_cl_cd
+		FROM 
+			ocp.occued_sms_atht_no_send
+		WHERE
+			sms_atht_send_no = #{smsAthtSendNo}
+	</select>
+	
+	<select id="selectAuthSms" resultType="com.amorepacific.oneap.common.vo.sms.SmsVo" parameterType="com.amorepacific.oneap.common.vo.sms.SmsVo">
+		SELECT
+			*
+		FROM 
+			ocp.occued_sms_atht_no_send
+		WHERE
+			sms_atht_send_no = #{smsAthtSendNo}
+			AND sms_atht_no_vl = #{smsAthtNoVl}		
+	</select>
+	
+	<select id="selectSmsRetryAvaiable" resultType="com.amorepacific.oneap.common.vo.sms.SmsRetryData" parameterType="com.amorepacific.oneap.common.vo.sms.SmsVo">
+		SELECT 
+			trunc(mins) as mins, trunc(secs) as secs 
+		FROM
+		(
+			SELECT 
+				date_part('minute', sms_atht_expr_dttm - statement_timestamp()) as mins,
+				date_part('second', sms_atht_expr_dttm - statement_timestamp()) as secs
+			FROM 
+			(
+				SELECT MAX(sms_atht_expr_dttm) as sms_atht_expr_dttm, incs_no FROM ocp.occued_sms_atht_no_send osans 
+				WHERE sms_atht_fail_cnt = 5 AND incs_no = #{incsNo}
+				group by incs_no
+			) a
+		) a
+	</select>
+	
+	<select id="selectSmsFailCount" resultType="int" parameterType="com.amorepacific.oneap.common.vo.sms.SmsVo">
+		SELECT
+			COALESCE(SUM(sms_atht_fail_cnt), 0) as sms_atht_fail_cnt
+		FROM
+			ocp.occued_sms_atht_no_send
+		WHERE
+			sms_atht_send_no = #{smsAthtSendNo}
+	</select>	  
+
+	<insert id="insertSmsData" parameterType="com.amorepacific.oneap.common.vo.sms.SmsVo">
+	 <selectKey keyProperty="smsAthtSendNo" resultType="int" order="AFTER">
+	 	SELECT COALESCE(MAX(sms_atht_send_no),0) AS smsAthtSendNo
+	 	FROM ocp.occued_sms_atht_no_send
+	 </selectKey>
+		INSERT INTO ocp.occued_sms_atht_no_send
+		(
+			sms_atht_send_no, 
+			incs_no, 
+			sms_atht_no_vl, 
+			sms_send_dttm, 
+			sms_atht_expr_dttm, 
+			sms_atht_fail_cnt, 
+			sms_atht_proc_rslt_cd,
+			fscr_id, 
+			fscr_tsp,
+			lsch_id,
+			lsch_tsp 
+			)VALUES(
+			(
+			SELECT COALESCE(MAX(sms_atht_send_no),0)+1
+	 		FROM ocp.occued_sms_atht_no_send
+			),
+			#{incsNo}, 
+			#{smsAthtNoVl}, 
+			statement_timestamp(), 
+			statement_timestamp() + (5 * 60 * interval '1 second'), 
+			0, 
+			#{smsAthtProcRsltCd},
+			#{fscrId}, 
+			statement_timestamp(),
+			#{fscrId}, 
+			statement_timestamp()
+		) ON
+        CONFLICT (sms_atht_send_no) DO
+		UPDATE  SET incs_no = #{incsNo}, 
+					sms_atht_no_vl = #{smsAthtNoVl}, 
+					sms_send_dttm =  statement_timestamp(),
+					sms_atht_expr_dttm =  statement_timestamp() + (5 * 60 * interval '1 second'),
+					sms_atht_fail_cnt = 0,
+					sms_atht_proc_rslt_cd = #{smsAthtProcRsltCd},
+					fscr_id = #{fscrId}, 
+					fscr_tsp = statement_timestamp(),
+					lsch_id = #{fscrId}, 
+					lsch_tsp = statement_timestamp()  
+	
+	</insert>
+	
+	<update id="updateSmsDataFailCount" parameterType="com.amorepacific.oneap.common.vo.sms.SmsVo">
+		UPDATE ocp.occued_sms_atht_no_send
+			SET sms_atht_fail_cnt = sms_atht_fail_cnt + 1,
+			<if test="lschId != null and lschId != ''"> 
+			lsch_id = #{lschId}, 
+			</if>
+			sms_atht_proc_rslt_cd = #{smsAthtProcRsltCd},
+			lsch_tsp = statement_timestamp(),
+			sms_atht_expr_dttm = statement_timestamp() + (interval '30 minute') 
+		WHERE 
+			sms_atht_send_no = #{smsAthtSendNo}
+	</update>
+	
+	<update id="updateSmsAuth" parameterType="com.amorepacific.oneap.common.vo.sms.SmsVo">
+		UPDATE ocp.occued_sms_atht_no_send
+			SET sms_atht_proc_rslt_cd = #{smsAthtProcRsltCd}
+		WHERE
+			sms_atht_send_no = #{smsAthtSendNo}
+	</update>
+	
+	<delete id="deleteSmsData" parameterType="com.amorepacific.oneap.common.vo.sms.SmsVo">
+		DELETE FROM ocp.occued_sms_atht_no_send
+		WHERE sms_atht_send_no = #{smsAthtSendNo}
+	</delete>
+	
+	<delete id="deleteSmsNotUsedData" parameterType="com.amorepacific.oneap.common.vo.sms.SmsVo">
+		DELETE FROM ocp.occued_sms_atht_no_send
+		WHERE incs_no = #{incsNo} 
+		AND 
+		(
+			sms_send_dttm <![CDATA[ < ]]> statement_timestamp()
+			OR
+			sms_atht_proc_rslt_cd = 'F'
+		)
+	</delete>
+
+</mapper>

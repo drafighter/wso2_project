@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.auth.membership.mapper.MembershipMapper">
+	
+	<select id="getChCdByInterlockSellerNo" parameterType="String" resultType="String">
+		SELECT max(ch_cd) as ch_cd 
+		FROM ocp.occuem_prcn_tnc 
+		WHERE prcn_ch_cd = #{interlockSellerNo}
+	</select>
+	
+	<select id="isRequiredTermsCheck" parameterType="com.amorepacific.oneap.auth.membership.vo.naver.NaverMembershipParam" resultType="boolean">
+		SELECT CASE WHEN required_terms.required_terms_cnt = agreed_terms.agreed_terms_cnt THEN true
+		       ELSE false END AS result
+		FROM   (SELECT count(*) AS required_terms_cnt 
+		        FROM   ocp.occuem_prcn_tnc 
+		        WHERE prcn_ch_cd = #{interlockSellerNo}
+		        AND tnc_agr_mand_yn = 'Y') required_terms,
+		       (SELECT count(*) AS agreed_terms_cnt 
+		        FROM   ocp.occuem_prcn_tnc 
+		        WHERE prcn_ch_cd = #{interlockSellerNo}
+		        AND tnc_agr_mand_yn = 'Y'
+		        AND prcn_tnc_cd IN 
+					<foreach collection="provisionIds" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>		        
+		        ) agreed_terms	
+	</select>
+	
+	<select id="getNaverMembershipTerms" parameterType="String" resultType="com.amorepacific.oneap.auth.membership.vo.naver.NaverMembershipTermsVo">
+		SELECT ch_cd, 
+		       prcn_tcat_cd, 
+		       tncv_no, 
+		       prcn_ch_cd, 
+		       prcn_tnc_cd, 
+		       mk_sn, 
+		       tnc_ttl, 
+		       tnc_txt_url,
+		       tnc_agr_mand_yn, 
+		       (CASE WHEN tnc_agr_mand_yn = 'Y' THEN '필수' ELSE '선택' END) as tnc_agr_mand_yn_txt
+		FROM ocp.occuem_prcn_tnc
+		WHERE prcn_ch_cd = #{interlockSellerNo}
+		ORDER BY mk_sn asc 
+	</select>
+	
+	<select id="getNaverMembershipOpti" parameterType="com.amorepacific.oneap.auth.membership.vo.naver.NaverMembershipOptiVo" resultType="com.amorepacific.oneap.auth.membership.vo.naver.NaverMembershipOptiVo">
+		SELECT ch_cd,
+		       prcn_opti_tnc_cd, 
+		       prcn_ch_cd, 
+		       upp_prcn_opti_tnc_cd, 
+		       prcn_opti_item_cd
+		FROM ocp.occuem_prcn_opti_tnc
+		WHERE prcn_ch_cd = #{interlockSellerNo} 
+		AND prcn_opti_item_cd = #{prcnOptiItemCd}
+		AND ch_cd = #{chCd}
+	</select>
+	
+	<!-- 계열사 개인정보 제공 동의 선택 약관 조회 -->
+	<select id="getNaverMembershipOptionalTerm" parameterType="String" resultType="com.amorepacific.oneap.auth.membership.vo.naver.NaverMembershipTermsVo">
+		SELECT ch_cd, 
+		       prcn_tcat_cd, 
+		       tncv_no, 
+		       prcn_ch_cd, 
+		       prcn_tnc_cd, 
+		       mk_sn, 
+		       tnc_ttl, 
+		       tnc_txt_url,
+		       tnc_agr_mand_yn, 
+		       (CASE WHEN tnc_agr_mand_yn = 'Y' THEN '필수' ELSE '선택' END) as tnc_agr_mand_yn_txt
+		FROM ocp.occuem_prcn_tnc
+		WHERE prcn_ch_cd = #{interlockSellerNo}
+		  AND tnc_agr_mand_yn = 'N'
+		  and ch_cd != '401'
+	</select>
+
+</mapper>
