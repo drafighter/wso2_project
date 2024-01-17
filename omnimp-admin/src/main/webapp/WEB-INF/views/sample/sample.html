@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/layout-sample"
+>
+  <!-- sample 페이지 에서만 사용할 CSS 추가 -->
+  <th:block layout:fragment="css">
+  	
+  </th:block>
+
+  <!-- sample 페이지 에서만 사용할 스크립트 추가 -->
+  <th:block layout:fragment="script">
+  
+  </th:block>
+
+	<div layout:fragment="content">
+		<h1 th:text="'Sample ' + ${sample} + '!!!'"></h1>
+		<br>
+		<span th:text="'message : ' + ${message}"></span>
+		<br>
+		<span th:text="'attribute : ' + ${sample}"></span>
+		
+		
+		
+	</div>
+</html>
