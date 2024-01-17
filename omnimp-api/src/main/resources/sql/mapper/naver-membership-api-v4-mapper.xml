@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.api.v4.membership.mapper.NaverMemberShipApiMapper">
+	
+	<select id="getChCdByInterlockSellerNo" parameterType="String" resultType="String">
+		SELECT max(ch_cd) as ch_cd 
+		FROM ocp.occuem_prcn_tnc 
+		WHERE prcn_ch_cd = #{interlockSellerNo}
+	</select>
+	
+	<!-- 네이버 스마트 스토어 멤버십 제휴사 약관 목록 조회 -->
+	<select id="getNaverMembershipAffiliateTerms" parameterType="java.util.List" resultType="com.amorepacific.oneap.api.v4.membership.vo.NaverMembershipTermsVo">
+		SELECT ch_cd, 
+			   (SELECT ch_cd_nm FROM ocp.occdem_chn_infr_mgnt ocim WHERE ch_cd = opt.ch_cd) as ch_nm,
+		       prcn_tcat_cd, 
+		       tncv_no, 
+		       mk_sn, 
+		       tnc_ttl, 
+		       tnc_txt_url,
+		       tnc_agr_mand_yn, 
+		       (CASE WHEN tnc_agr_mand_yn = 'Y' THEN '필수' ELSE '선택' END) as tnc_agr_mand_yn_txt
+		FROM ocp.occuem_prcn_tnc opt
+		WHERE ch_cd in 
+			<foreach collection="afltChCdList" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		  AND ch_cd != '401'
+		ORDER BY ch_cd, mk_sn ASC
+	</select>
+</mapper>

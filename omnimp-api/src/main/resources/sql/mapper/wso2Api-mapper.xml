@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.api.v1.wso2.mapper.Wso2ApiMapper">
+
+	<select id="getUmUserIdByUsername" parameterType="string" resultType="string">
+		SELECT 
+			  uu.um_user_id
+		FROM 
+			  ocp.um_user uu
+		WHERE 
+			  uu.um_user_name = #{_parameter}
+	</select>
+	
+	<select id="getUmUserIdByUserNo" parameterType="int" resultType="string">
+		SELECT 
+			  uu.um_user_id
+		FROM 
+			  ocp.um_user uu
+		WHERE 
+			  uu.um_id = #{_parameter}
+	</select>
+	
+	<select id="getUmUserIdByIncsNo" parameterType="string" resultType="string">
+		SELECT 
+			  uu.um_user_id
+		FROM 
+			  ocp.um_user_attribute uua
+		JOIN  
+			  ocp.um_user uu
+		ON    
+			  uua.um_user_id = uu.um_id
+		WHERE 
+			  uua.um_attr_name = 'incsNo'
+		AND   uua.um_attr_value = #{_parameter}
+	</select>
+	
+	<select id="getUmIdByIncsNo" parameterType="string" resultType="string">
+		SELECT 
+			  uu.um_id
+		FROM 
+			  ocp.um_user uu
+		WHERE 
+			uu.um_user_incsno = #{_parameter}
+	</select>
+	
+	<select id="getUsernameByUmUserId" parameterType="string" resultType="string">
+		SELECT 
+			  uu.um_user_name
+		FROM 
+			  ocp.um_user_attribute uua
+		JOIN  
+			  (SELECT * FROM ocp.um_user WHERE um_user_id = #{_parameter}) uu
+		ON    
+			  uua.um_user_id = uu.um_id
+		WHERE 
+			  uua.um_attr_name = 'scimId'
+		AND   uua.um_attr_value = #{_parameter}
+	</select>
+	
+	<select id="getUserAssociatedSnsCnt" parameterType="com.amorepacific.oneap.api.v1.wso2.vo.Wso2SoapApiMergeAssociatedVo" resultType="int">
+		SELECT 
+		      count(1) as cnt 
+		FROM 
+		      idn_associated_id iai, idp i 
+		WHERE 
+		      iai.idp_id = i.id 
+		AND   iai.idp_user_id = #{asisSnsUserId}
+		AND   iai.user_name = #{userName}
+		AND   i.display_name = #{snsIdpName}
+	</select>
+	
+	<update id="updateUmUserIncsno" parameterType="com.amorepacific.oneap.api.v1.wso2.vo.Wso2RestApiCreateUserVo">
+		UPDATE ocp.um_user
+		   SET um_user_incsno = #{incsNo}
+		 WHERE um_user_name = #{userName}
+	</update>	
+	
+	<select id="searchUmUserNameByIncsNo" parameterType="string" resultType="string">
+		SELECT 
+			  uu.um_user_name
+		FROM 
+			  ocp.um_user uu
+		WHERE 
+			uu.um_user_incsno = #{_parameter}
+	</select>
+	
+</mapper>

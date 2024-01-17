@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.api.v1.sns.mapper.SnsApiMapper">
+
+	<select id="getIDNAssociatedIdIncsNo" parameterType="map" resultType="com.amorepacific.oneap.api.v1.mgmt.vo.SnsUnlinkVo">
+		SELECT  
+			  isi.user_name AS loginId, uu.um_user_incsno AS incsNo, i.name AS snsType
+		FROM 
+			  ocp.idn_associated_id isi
+		JOIN  
+			  ocp.idp i
+		ON	  
+			  isi.idp_id = i.id
+		JOIN
+			  ocp.um_user uu
+		ON
+			  isi.user_name = uu.um_user_name 
+		WHERE 
+			  isi.idp_user_id = #{snsId}
+		AND   i.name = #{snsType}
+	</select>
+	
+</mapper>

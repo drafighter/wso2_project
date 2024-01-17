@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.api.v2.joinon.mapper.JoinOnApiMapper">
+
+		<!-- 회원가입 omni 회원 정보 조회 -->
+	<select id="getOmniJoinUserList" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		SELECT 
+			um_id,
+			um_user_id,
+			um_user_name,
+			um_user_password,
+			um_user_dormancy,
+			um_user_password_reset,
+			uid,
+			incs_no,
+			created_date,
+			full_name,
+			last_login_time,
+			last_password_update,
+			account_lock,
+			failed_login_attempts,
+			unlock_time,
+			account_state,
+			account_disabled,
+			disabled_date 
+		FROM 
+		(			
+			SELECT 
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name,
+				uu.um_user_password,
+				uu.um_user_dormancy,
+				uu.um_user_password_reset,
+				uua.uid,
+				uua.incs_no,
+				uua.created_date,
+				uua.full_name,
+				uua.last_login_time,
+				uua.last_password_update,
+				uua.account_lock,
+				uua.failed_login_attempts,
+				uua.unlock_time,
+				uua.account_state,
+				uua.account_disabled,
+				uua.disabled_date
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='incsNo' THEN um_attr_value END), '') AS incs_no,
+					COALESCE( MAX(CASE WHEN um_attr_name='createdDate' THEN  TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') END), '') AS created_date,
+					COALESCE( MAX(CASE WHEN um_attr_name='cn' THEN um_attr_value END), '') AS full_name,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastLoginTime' THEN um_attr_value END), '') AS last_login_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastPasswordUpdate' THEN um_attr_value END), '') AS last_password_update,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountLock' THEN um_attr_value END), '') AS account_lock,
+					COALESCE( MAX(CASE WHEN um_attr_name='failedLoginAttempts' THEN um_attr_value END), '') AS failed_login_attempts,
+					COALESCE( MAX(CASE WHEN um_attr_name='unlockTime' THEN um_attr_value END), '') AS unlock_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountState' THEN um_attr_value END), '') AS account_state,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountDisabled' THEN um_attr_value END), '') AS account_disabled,
+					COALESCE( MAX(CASE WHEN um_attr_name='disabledDate' THEN case when (um_attr_value is null or um_attr_value = '') then '' else TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') end END), '') AS disabled_date
+				FROM 
+					ocp.um_user_attribute
+				WHERE 1 = 1	
+		<if test="umAttrName != null and umAttrName != null">
+			<choose>
+				<when test="umAttrName eq 'umUserName'">
+				AND um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_name = #{umAttrValue})
+				</when>
+				<when test="umAttrName eq 'uid'">
+				AND um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_name = #{umAttrValue})
+				</when>
+				<when test="umAttrName eq 'incsNo'">
+				AND um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_incsno = #{umAttrValue})				
+				</when>
+				<when test="umAttrName eq 'fullName'">
+				AND full_name = #{umAttrValue}
+				</when>				
+			</choose>
+		</if>					
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id)
+		) u
+		WHERE 1 = 1
+		<if test="umAttrName != null and umAttrName != null">
+			<choose>
+				<when test="umAttrName eq 'umUserName'">
+				AND um_user_name = #{umAttrValue}
+				</when>
+				<when test="umAttrName eq 'uid'">
+				AND uid = #{umAttrValue}
+				</when>
+				<when test="umAttrName eq 'incsNo'">
+				AND incs_no = #{umAttrValue}
+				</when>
+				<when test="umAttrName eq 'fullName'">
+				AND full_name = #{umAttrValue}
+				</when>				
+			</choose>
+		</if>
+		ORDER BY last_login_time DESC, um_id 
+	</select>
+	
+	<!-- 비밀번호 조회 -->
+	<select id="getOminUserPasswordByIncsNo" parameterType="com.amorepacific.oneap.common.vo.user.UserData" resultType="String">
+		SELECT
+			um_user_password
+		FROM
+			ocp.um_user
+		WHERE
+			um_user_incsno = #{incsNo}
+			AND um_user_name = #{loginId}
+	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updateUmUserPassword" parameterType="com.amorepacific.oneap.common.vo.user.UserData">
+		UPDATE ocp.um_user
+		SET
+		    um_user_password = #{password}
+		WHERE
+		    um_user_incsno = #{incsNo}
+		    AND um_user_name = #{loginId}
+	</update>
+	
+	
+</mapper>

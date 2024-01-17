@@ -1,0 +1,1026 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.amorepacific.oneap.api.v1.mgmt.mapper.MgmtApiMapper">
+	
+	<select id="isUserExist" parameterType="String" resultType="int">
+		SELECT
+			count(*) as cnt
+		FROM
+			ocp.um_user uu
+		WHERE
+			uu.um_user_incsno = #{incsNo}
+	</select>
+
+	<select id="isUserExistByLoginId" parameterType="String" resultType="int">
+		SELECT
+			count(*) as cnt
+		FROM
+			ocp.um_user uu
+		WHERE
+			uu.um_user_name = #{username}
+	</select>
+	
+	<select id="isDisabledUser" parameterType="String" resultType="String">
+		SELECT
+			uua.um_attr_value
+		FROM
+			ocp.um_user uu
+			LEFT OUTER JOIN ocp.um_user_attribute uua ON (uu.um_id = uua.um_user_id)
+		WHERE
+			uu.um_user_name = #{userName}
+			AND uua.um_attr_name = 'accountDisabled'
+	</select>
+	
+	<select id="isLockedUser" parameterType="String" resultType="String">
+		SELECT
+			uua.um_attr_value
+		FROM
+			ocp.um_user uu
+			LEFT OUTER JOIN ocp.um_user_attribute uua ON (uu.um_id = uua.um_user_id)
+		WHERE
+			uu.um_user_name = #{userName}
+			AND uua.um_attr_name = 'accountLock'
+	</select>
+	
+	<select id="isDormancyUser" parameterType="String" resultType="String">
+		SELECT
+			um_user_dormancy
+		FROM
+			ocp.um_user
+		WHERE
+			um_user_name = #{userName}
+	</select>
+	
+	<select id="getAccountState" parameterType="String" resultType="String">
+		SELECT
+			uua.um_attr_value
+		FROM
+			ocp.um_user uu
+			LEFT OUTER JOIN ocp.um_user_attribute uua ON (uu.um_id = uua.um_user_id)
+		WHERE
+			uu.um_user_name = #{userName}
+			AND uua.um_attr_name = 'accountState'
+	</select>
+	
+	<select id="isTermsExist" parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.TermsVo" resultType="int">
+	 	SELECT
+	 		count(*) as cnt
+	 	FROM
+	 		ocp.occuem_tnc as ot
+	 	WHERE
+	 		tcat_cd = #{tcatCd}
+	 		AND tncv_no = (
+							SELECT 
+								MAX(tncv_no)
+							FROM 
+								ocp.occuem_tnc ot 
+							WHERE 
+								TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ >= ]]> aply_bgn_dt::integer
+								AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ < ]]> aply_end_dt::integer
+								AND tcat_cd 		= #{tcatCd}
+						  )
+	</select>
+	
+	<select id="getAssociatedSnsId"
+	parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.SnsUnlinkVo"
+	resultType="String">
+		SELECT
+			idp_user_id
+		FROM
+			ocp.idn_associated_id as iai
+		LEFT JOIN
+			ocp.idp as idp
+		ON
+			iai.idp_id = idp.id
+		WHERE
+			iai.user_name = #{loginId}
+			AND idp.name = #{snsType}
+	</select>
+	
+	<select id="isMappingExsist"
+	parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.MappingIdSearchVo"
+	resultType="int">
+		SELECT			
+			count(*) as cnt
+		FROM 			
+			ocp.idp AS idp
+		LEFT OUTER JOIN 
+			ocp.idn_associated_id AS iai 
+		ON	
+			idp.id = iai.idp_id 
+		WHERE 			
+			iai.user_name = #{loginId}
+			AND idp.name = #{snsType}
+			AND iai.idp_user_id = #{snsId}
+	</select>
+
+	<select id="isMappingOther"
+	parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.MappingIdSearchVo"
+	resultType="int">
+		SELECT			
+			count(*) as cnt
+		FROM 			
+			ocp.idp AS idp
+		LEFT OUTER JOIN 
+			ocp.idn_associated_id AS iai 
+		ON	
+			idp.id = iai.idp_id 
+		WHERE 			
+			iai.idp_user_id = #{snsId}
+			AND idp.name = #{snsType}
+	</select>
+
+	<select id="getUserByIncsNo"
+	parameterType="String"
+	resultType="com.amorepacific.oneap.api.v1.mgmt.vo.UserVo">
+		SELECT 		
+			uu.um_id AS id
+			, uu.um_user_name AS userName
+		FROM		
+			ocp.um_user AS uu
+		LEFT JOIN ocp.um_user_attribute uua
+		  ON uu.um_id = uua.um_user_id
+		 AND uua.um_attr_name = 'accountDisabled'
+	   WHERE uu.um_user_incsno = #{incsNo}
+		 AND (uua.um_attr_value = 'false' or uua.um_id is null)
+	</select>
+	
+	<select id="getUserByIncsNoAndUserName"
+	parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.UserVo"
+	resultType="com.amorepacific.oneap.api.v1.mgmt.vo.UserVo">
+		SELECT 		
+			uu.um_user_name AS userName
+			, uu.um_user_password AS userPassword
+			, uua.um_attr_value AS cn
+		FROM		
+			ocp.um_user AS uu
+		LEFT JOIN ocp.um_user_attribute uua
+		  ON uu.um_id = uua.um_user_id
+		 AND uua.um_attr_name = 'cn'
+	   WHERE uu.um_user_incsno = #{incsNo}
+	     AND uu.um_user_name = #{userName}
+	</select>
+
+	<select id="getUser"
+	parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.UserVo"
+	resultType="com.amorepacific.oneap.api.v1.mgmt.vo.UserVo">
+		SELECT 		
+			uu.um_id AS id
+			, uu.um_user_name AS userName
+		FROM		
+			ocp.um_user AS uu
+		WHERE 
+			uu.um_user_incsno = #{incsNo}
+			AND uu.um_user_name = #{userName}
+	</select>
+	
+	<select id="getPassword"
+		parameterType="String"
+		resultType="String">
+		SELECT		um_user_password
+		FROM		ocp.um_user
+		WHERE		um_user_name = #{loginId}	
+	</select>
+
+	<select id="checkDuplicateId"
+		parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.DupIdVo"
+		resultType="int">
+		SELECT
+			COUNT(um_user_name) CNT
+		FROM
+			ocp.um_user
+		WHERE	
+			um_user_name = #{loginId}
+	</select>
+	
+	<select id="verifyPassword"
+		parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.VerifyPwdVo"
+		resultType="int">
+		SELECT
+			COUNT(um_id) CNT
+		FROM
+			ocp.um_user
+		WHERE 
+			um_user_name = #{id}
+			AND um_user_password = #{password}
+	</select>
+	
+	<update id="updatePassword" parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.UserVo">
+		UPDATE 
+			ocp.um_user
+		SET
+			um_user_password = #{userPassword}
+		WHERE
+			um_user_name = #{userName}		
+	</update>
+	
+	<update id="updateJoinDate" parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.UserVo">
+		UPDATE
+			ocp.um_user_attribute
+		SET
+			um_attr_value = #{joinDate}
+		WHERE
+			um_attr_name = 'createdDate'
+			AND
+			um_user_id = 
+			(
+				SELECT 
+					um_id
+				FROM
+					ocp.um_user
+				WHERE
+					um_user_name = #{userName}
+					AND um_user_password = #{userPassword}	
+			)
+	</update>
+	
+	<select id="getSnsInfoList"
+		parameterType="String"
+		resultType="com.amorepacific.oneap.api.v1.mgmt.vo.SearchSnsVo">
+			SELECT 			iai.idp_user_id 						AS snsId
+						, 	idp.default_authenticator_name			AS snsName 
+						, 	idp.name		 						AS snsType
+						, 	iai.user_name							AS custWebId
+						, 	iai.time_created						AS createDate
+			FROM 			ocp.idp AS idp
+			LEFT OUTER JOIN ocp.idn_associated_id AS iai 
+			ON 				idp.id = iai.idp_id 
+			WHERE 			iai.user_name = #{userName}
+	</select>
+			
+	<update id="mergeTermYn"
+		parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.TermsVo">
+		WITH upsert AS (
+			UPDATE 	ocp.occued_cust_tnc
+			SET 	tnc_agr_yn		= #{tncAgrYn}
+			WHERE	incs_no  		= #{incsNo}
+			AND		tcat_cd 		= #{tcatCd}
+			AND		tncv_no			= (
+										SELECT 
+											MAX(tncv_no)    
+										FROM 
+											ocp.occuem_tnc ot 
+										WHERE 
+											TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ >= ]]> aply_bgn_dt::integer
+											AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ < ]]> aply_end_dt::integer
+											AND tcat_cd 		= #{tcatCd}					 
+									  )
+			RETURNING *
+		) INSERT INTO ocp.occued_cust_tnc (
+				incs_no
+				, tcat_cd
+				, tnc_agr_yn
+				, tnca_dttm
+				, chg_ch_cd
+				, tncv_no
+				, fscr_id
+				, fscr_tsp
+				, lsch_id
+				, lsch_tsp
+			) SELECT 
+				#{incsNo}
+				, #{tcatCd}				
+				, #{tncAgrYn}
+				, COALESCE( #{tncaDttm}::timestamptz, current_timestamp )
+				, #{chCd}
+				, ot.tncv_no
+				, ot.fscr_id 
+				, ot.fscr_tsp
+				, ot.lsch_id
+				, ot.lsch_tsp
+			FROM
+				ocp.occuem_tnc AS ot
+			WHERE
+				NOT EXISTS (SELECT * FROM upsert)
+				AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ >= ]]> aply_bgn_dt::integer
+				AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ < ]]> aply_end_dt::integer
+				AND tcat_cd 		= #{tcatCd}
+	</update>
+	
+	
+	<select id="getTermsList"
+		parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.ChnTermsCndVo"
+		resultType="com.amorepacific.oneap.api.v1.mgmt.vo.TermsResponseVo">
+			SELECT 	ot.ch_cd 			AS chCd
+				, 	oct.tcat_cd 		AS tcatCd 
+				, 	oct.tncv_no 		AS tncvNo
+				, 	oct.incs_no 		AS incsNo
+				, 	oct.tnc_agr_yn 		AS tncAgrYn
+				, 	oct.tnca_dttm 		AS tncaDttm
+			FROM 	
+				ocp.occued_cust_tnc	AS oct
+			JOIN 	
+				ocp.occuem_tnc AS ot
+			ON		
+				ot.tcat_cd = oct.tcat_cd 
+				AND ot.tncv_no = oct.tncv_no
+			WHERE
+				ot.ch_cd = #{chCd}
+				AND	oct.incs_no = #{incsNo}
+				AND ot.mk_sn <![CDATA[ > ]]> 0
+			ORDER BY ot.mk_sn asc	
+	</select>	
+	
+	<select id="getRequiredTermsList"
+		parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.ChnTermsCndVo"
+		resultType="com.amorepacific.oneap.api.v1.mgmt.vo.TermsResponseVo">
+			SELECT 	ot.ch_cd 			AS chCd
+				, 	oct.tcat_cd 		AS tcatCd 
+				, 	oct.tncv_no 		AS tncvNo
+				, 	oct.incs_no 		AS incsNo
+				, 	oct.tnc_agr_yn 		AS tncAgrYn
+				, 	oct.tnca_dttm 		AS tncaDttm
+			FROM	
+				ocp.occued_cust_tnc	AS oct
+			JOIN 	
+				ocp.occuem_tnc AS ot
+			ON
+				ot.tcat_cd = oct.tcat_cd 
+				AND ot.tncv_no = oct.tncv_no 			
+			WHERE
+				ot.ch_cd = #{chCd}
+				AND	oct.incs_no = #{incsNo}
+				AND ot.tnc_agr_mand_yn = 'Y'
+				AND oct.tnc_agr_yn = 'D'
+				AND ot.mk_sn <![CDATA[ > ]]> 0
+	</select>
+	
+	<!-- 경로 약관 동의 여부 -->
+	<select id="hasTermsAgree" parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.ChnTermsCndVo" resultType="int">
+		SELECT 
+			CASE WHEN termcnt = agreecnt THEN 1
+			ELSE 0 END AS flag
+		FROM
+		(
+			SELECT 	
+				(SELECT COUNT(*) from ocp.occuem_tnc AS ot where ot.ch_cd = #{chCd} and ot.tnc_agr_mand_yn = 'Y' AND ot.mk_sn <![CDATA[>]]> 0) as termcnt,
+				count(*) as agreecnt
+			FROM 	
+				ocp.occued_cust_tnc	AS oct
+			JOIN
+				ocp.occuem_tnc AS ot
+			ON		
+				ot.tcat_cd = oct.tcat_cd 
+				AND ot.tncv_no = oct.tncv_no 
+			WHERE
+				oct.chg_ch_cd = #{chCd}
+				AND oct.incs_no = #{incsNo}
+				AND ot.tnc_agr_mand_yn = 'Y'
+				AND oct.tnc_agr_yn = 'A'
+				AND ot.mk_sn <![CDATA[>]]> 0
+		) a
+	</select>
+	
+	<!-- 전사 약관 동의 여부 -->
+	<select id="hasCorpTermsAgree" parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.ChnTermsCndVo" resultType="int">
+		SELECT 
+			CASE WHEN termcnt = agreecnt THEN 1
+			ELSE 0 END AS flag
+		FROM
+		(
+			SELECT 	
+				(SELECT COUNT(*) from ocp.occuem_tnc AS ot where ot.ch_cd = #{chCd} and ot.tnc_agr_mand_yn = 'Y' AND ot.mk_sn = 0) as termcnt,
+				count(*) as agreecnt
+			FROM 	
+				ocp.occued_cust_tnc	AS oct
+			JOIN
+				ocp.occuem_tnc AS ot
+			ON		
+				ot.tcat_cd = oct.tcat_cd 
+				AND ot.tncv_no = oct.tncv_no 
+			WHERE
+				oct.chg_ch_cd = #{chCd}
+				AND oct.incs_no = #{incsNo}
+				AND ot.tnc_agr_mand_yn = 'Y'
+				AND oct.tnc_agr_yn = 'A'
+				AND ot.mk_sn = 0
+		) a	
+	</select>	
+		
+	<delete id="deleteAssociatedId"
+	parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.SnsUnlinkVo">
+		DELETE FROM
+			ocp.idn_associated_id as iai
+		USING
+			ocp.idp as idp
+		WHERE
+			iai.idp_id = idp.id
+			AND	iai.user_name = #{loginId}
+			AND idp.name = #{snsType}
+	</delete>
+	
+	<insert id="inserOccuCustTncHist"
+		parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.TermsVo">
+		INSERT INTO ocp.occueh_cust_tnc_hist (
+			incs_no
+			, tcat_cd
+			, tnca_chg_dt
+			, tnc_agr_hist_sn
+			, tncv_no
+			, tnc_agr_yn
+			, tnca_dttm
+			, chg_ch_cd
+			, fscr_id
+			, fscr_tsp
+			, lsch_id
+			, lsch_tsp
+			<!-- , sdtp_cd
+			, reg_appl_cl_cd -->
+		) SELECT 
+			#{incsNo}
+			, #{tcatCd}
+			, TO_CHAR(current_timestamp, 'YYYYMMDD')
+			<!--  , nextval('ocp.seq_terms_hist') 2021.01.04 채번 오류 수정 -->
+			, (SELECT coalesce(max(tnc_agr_hist_sn) + 1, 1) FROM ocp.occueh_cust_tnc_hist WHERE incs_no = #{incsNo} AND tcat_cd = #{tcatCd}) 
+			, ot.tncv_no
+			, #{tncAgrYn}
+			, current_timestamp
+			, #{chCd}
+			, ot.fscr_id
+			, current_timestamp <!-- ot.fscr_tsp -->
+			, ot.lsch_id
+			, current_timestamp <!-- ot.lsch_tsp -->
+		FROM
+			ocp.occuem_tnc AS ot
+		WHERE
+			TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ >= ]]> aply_bgn_dt::integer
+			AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ < ]]> aply_end_dt::integer
+			AND tcat_cd 		= #{tcatCd}
+	</insert>
+	
+	<update id="updatePasswordReset" parameterType="String">
+		UPDATE 
+			ocp.um_user
+		SET
+			um_user_password_reset = 'R'
+		WHERE
+			um_user_name = #{userName}
+	</update>
+	
+	<select id="getChUser" 
+	parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.ChUserVo"
+	resultType="com.amorepacific.oneap.api.v1.mgmt.vo.ChUserVo">
+		SELECT
+			ch_cd 								AS chCd
+			, chcs_web_id 						AS webId
+			, lin_pwd_ec 						AS password
+			, TO_CHAR(incs_no, 'FM999999999')	AS incsNo
+			, incs_web_id_swt_yn 				AS swtYN
+		FROM 
+			ocp.occued_chcs_lin_acct
+		WHERE
+			ch_cd = #{chCd}
+			AND incs_no = #{incsNo}::integer
+			AND chcs_web_id = #{webId}
+	</select>
+	
+	<update id="updateChUserPassword" 
+	parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.ChUserVo">
+		UPDATE
+			ocp.occued_chcs_lin_acct
+		SET
+			lin_pwd_ec = #{password}
+		WHERE
+			ch_cd = #{chCd}
+			AND incs_no = #{incsNo}::integer
+			AND chcs_web_id = #{webId}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')
+	</update>
+	
+	<select id="getCorpTermsCode" parameterType="String" resultType="String">
+		SELECT
+			tcat_cd
+		FROM
+			ocp.occuem_tnc
+		WHERE
+			ch_cd = #{chCd}
+			AND mk_sn = 0
+	</select>
+	
+	<select id="existUserByLoginidAndIncsNo" parameterType="hashmap" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			ocp.um_user
+		WHERE
+			UM_USER_INCSNO = #{incsNo}
+			AND UM_USER_NAME IN
+			<foreach collection="loginIds" item="id" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+	</select>
+	
+	<select id="existUserByLoginidAndIncsNoNew" parameterType="hashmap" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			ocp.um_user
+		WHERE
+			UM_USER_INCSNO = #{incsNoNew}	
+			AND UM_USER_NAME IN
+			<foreach collection="loginIds" item="id" open="(" close=")" separator=",">
+				#{id}
+			</foreach> 	
+	</select>	
+	
+	
+	<select id="existDisabledUser" parameterType="hashmap" resultType="com.amorepacific.oneap.common.vo.api.CreateDupUserResponse">
+		SELECT 
+			um_id,
+			um_user_id,
+			um_user_name,
+			account_disabled,
+			disabled_date 
+		FROM 
+		(			
+			SELECT 
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name,
+				uua.account_disabled,
+				uua.disabled_date
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountDisabled' THEN um_attr_value END), '') AS account_disabled,
+					COALESCE( MAX(CASE WHEN um_attr_name='disabledDate' THEN case when (um_attr_value is null or um_attr_value = '') then '' else TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') end END), '') AS disabled_date
+				FROM 
+					ocp.um_user_attribute
+				WHERE 1 = 1	
+				AND um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_incsno = #{incsNoNew})				
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id)
+		) u
+		WHERE 1 = 1
+			AND UM_USER_NAME IN
+			<foreach collection="loginIds" item="id" open="(" close=")" separator=",">
+				#{id}
+			</foreach> 					
+					
+	</select>
+	
+	<update id="updateIncsNoByNewUser" parameterType="hashmap">
+	
+		UPDATE ocp.um_user
+			SET UM_USER_INCSNO = #{incsNoNew}	
+		WHERE 
+			UM_USER_INCSNO = #{incsNo}
+			AND UM_USER_NAME IN
+			<foreach collection="loginIds" item="id" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+	
+	</update>
+	
+	<update id="updateIncsNoByNewUserAttribute" parameterType="com.amorepacific.oneap.common.vo.api.CreateDupUserRequest">
+		
+		UPDATE ocp.um_user_attribute
+			SET UM_ATTR_VALUE = TO_CHAR(#{incsNoNew}, 'FM999999999')
+		WHERE 
+			UM_ATTR_NAME = 'incsNo'
+			AND UM_USER_ID IN 
+			( SELECT UM_ID from ocp.um_user WHERE UM_USER_INCSNO = TO_CHAR(#{incsNoNew}, 'FM999999999') )
+			
+	</update>
+	
+	<select id="getUserTermsListByIncsNo" parameterType="com.amorepacific.oneap.common.vo.api.CreateDupUserRequest" resultType="com.amorepacific.oneap.api.v1.mgmt.vo.TermsResponseVo">
+		SELECT 	ot.ch_cd 			AS chCd
+			, 	oct.tcat_cd 		AS tcatCd 
+			, 	oct.tncv_no 		AS tncvNo
+			, 	oct.incs_no 		AS incsNo
+			, 	oct.tnc_agr_yn 		AS tncAgrYn
+			, 	oct.tnca_dttm 		AS tncaDttm
+		FROM 	
+			ocp.occued_cust_tnc	AS oct
+		JOIN 	
+			ocp.occuem_tnc AS ot
+		ON		
+			ot.tcat_cd = oct.tcat_cd 
+			AND ot.tncv_no = oct.tncv_no
+		WHERE
+			oct.incs_no = #{incsNo}
+	</select>
+	
+	<delete id="deleteChannelUser" parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.TermsVo">
+		DELETE FROM 
+			ocp.occued_chcs_lin_acct 
+		WHERE 
+			ch_cd = #{chCd}
+			AND incs_no = #{incsNo}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')
+	</delete>
+	
+	<delete id="deleteSnsMapping" parameterType="String">
+	
+		DELETE FROM 
+			ocp.idn_associated_id 
+		WHERE user_name 
+			IN ( select um_user_name from ocp.um_user where um_user_incsno = #{incs_no} )
+	
+	</delete>
+	
+	<!-- 통합고객 이름변경, 휴면 변경용 수신데이터 존재여부 체크 -->
+	<select id="existRcvDormancyData" parameterType="com.amorepacific.oneap.common.vo.api.IncsRcvData" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			ocp.occuei_incs_rcv
+		WHERE
+			incs_no = #{incsNo}		
+	</select>
+	
+	<!-- 이름변경, 휴면 변경용 수신데이터 입력하면 incs_rcv_trigger trigger 의 insup_omni_update_value function 에서 처리 -->
+	<insert id="insertRcvDormancyName" parameterType="com.amorepacific.oneap.common.vo.api.IncsRcvData">
+	
+		INSERT INTO ocp.occuei_incs_rcv
+		(
+		incs_no, cust_nm, 
+		drcc_cd, 
+		fscr_id, fscr_tsp, 
+		lsch_id, lsch_tsp) VALUES
+		(
+		#{incsNo}, #{custNm}, 
+		#{drccCd}, 
+		'OCP', statement_timestamp(), 
+		'OCP', statement_timestamp())
+	
+	</insert>
+	
+	<!-- 이름변경, 휴면 변경용 수신데이터 수정하면 incs_rcv_trigger trigger 의 insup_omni_update_value function 에서 처리 -->
+	<update id="updateRcvDormancyName" parameterType="com.amorepacific.oneap.common.vo.api.IncsRcvData">
+		
+		UPDATE ocp.occuei_incs_rcv
+		SET 
+			cust_nm = #{custNm}, 
+			drcc_cd =  #{drccCd}, 
+			lsch_id = 'OCP',
+			lsch_tsp = statement_timestamp()
+		WHERE 
+			incs_no = #{incsNo}
+	
+	</update>	
+	
+	<!-- 사용자 휴면 복구 -->
+	<update id="updateReleaseDormancyUser" parameterType="String">
+		UPDATE			
+			ocp.um_user AS ua
+		SET
+			um_user_dormancy = 'N'
+		WHERE
+			um_user_incsno = #{incsNo}
+	</update>	
+	
+	<update id="updateSnsUserName" parameterType="String">
+		UPDATE
+			ocp.idn_associated_id
+		SET
+			user_name = #{userNameNew}
+		WHERE
+			user_name = #{userName}
+	</update>
+	
+	<update id="updateUserIncsNo" parameterType="String">
+		UPDATE
+			ocp.occued_chcs_lin_acct
+		SET
+			incs_no = #{tobeIncsNo}::integer
+		WHERE
+			ch_cd = #{chCd}
+			AND incs_no = #{asisIncsNo}::integer
+			AND chcs_web_id = #{webId}
+			AND (incs_web_id_swt_yn is null OR incs_web_id_swt_yn = 'N')
+	</update>
+	
+	<!-- SNS ID로 사용자 정보 조회 -->
+	<select id="getUserBySnsId" parameterType="com.amorepacific.oneap.common.vo.api.CheckSnsIdVo" resultType="com.amorepacific.oneap.common.vo.api.CheckSnsIdUserVo">
+	select
+	    #{snsId} as sns_id,
+	    #{snsType} as sns_type,
+		uu.um_user_name as user_name,
+		case when uu.um_user_dormancy is null or uu.um_user_dormancy = 'N' then 'false' else uu.um_user_dormancy end as user_dormancy,
+		uua.incs_no,
+		cast(uua.created_date as TEXT) as created_date,
+		uua.full_name,
+		case when uua.account_disabled is null then 'false' else uua.account_disabled end as account_disabled,
+		uua.disabled_date
+	from
+		ocp.um_user uu
+	join (
+		select
+			uua.um_user_id,
+			coalesce( MAX(case when uua.um_attr_name = 'incsNo' then um_attr_value end), '') as incs_no,
+			coalesce( MAX(case when uua.um_attr_name = 'createdDate' then TO_CHAR(um_attr_value::timestamp, 'YYYY-MM-DD HH24:MI:SS') end), '') as created_date,
+			coalesce( MAX(case when uua.um_attr_name = 'cn' then um_attr_value end), '') as full_name,
+			coalesce( MAX(case when uua.um_attr_name = 'accountDisabled' then um_attr_value end), 'false') as account_disabled,
+			coalesce( MAX(case when uua.um_attr_name = 'disabledDate' then case when (um_attr_value is null or um_attr_value = '') then '' else TO_CHAR(um_attr_value::timestamp, 'YYYY-MM-DD HH24:MI:SS') end end), '') as disabled_date
+		from
+			ocp.um_user_attribute uua 
+		where uua.um_user_id = (select uu.um_id from ocp.um_user uu,  ocp.idn_associated_id iai 
+		                         where iai.idp_id = (select id from ocp.idp where name = #{snsType})
+		                           and iai.idp_user_id = #{snsId}
+		                           and iai.user_name = uu.um_user_name)
+		group by
+			uua.um_user_id ) uua on
+		(uu.um_id = uua.um_user_id)	
+	</select>
+	
+	<select id="getOmniLoginUserList" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		SELECT 
+			um_id,
+			um_user_id,
+			um_user_name,
+			um_user_password,
+			um_user_dormancy,
+			um_user_password_reset,
+			uid,
+			incs_no,
+			created_date,
+			full_name,
+			last_login_time,
+			last_password_update,
+			account_lock,
+			failed_login_attempts,
+			unlock_time,
+			account_state,
+			account_disabled,
+			disabled_date 
+		FROM 
+		(			
+			SELECT 
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name,
+				uu.um_user_password,
+				uu.um_user_dormancy,
+				uu.um_user_password_reset,
+				uua.uid,
+				uua.incs_no,
+				uua.created_date,
+				uua.full_name,
+				uua.last_login_time,
+				uua.last_password_update,
+				uua.account_lock,
+				uua.failed_login_attempts,
+				uua.unlock_time,
+				uua.account_state,
+				uua.account_disabled,
+				uua.disabled_date
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='incsNo' THEN um_attr_value END), '') AS incs_no,
+					COALESCE( MAX(CASE WHEN um_attr_name='createdDate' THEN  TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') END), '') AS created_date,
+					COALESCE( MAX(CASE WHEN um_attr_name='cn' THEN um_attr_value END), '') AS full_name,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastLoginTime' THEN um_attr_value END), '') AS last_login_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastPasswordUpdate' THEN um_attr_value END), '') AS last_password_update,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountLock' THEN um_attr_value END), '') AS account_lock,
+					COALESCE( MAX(CASE WHEN um_attr_name='failedLoginAttempts' THEN um_attr_value END), '') AS failed_login_attempts,
+					COALESCE( MAX(CASE WHEN um_attr_name='unlockTime' THEN um_attr_value END), '') AS unlock_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountState' THEN um_attr_value END), '') AS account_state,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountDisabled' THEN um_attr_value END), '') AS account_disabled,
+					COALESCE( MAX(CASE WHEN um_attr_name='disabledDate' THEN case when (um_attr_value is null or um_attr_value = '') then '' else TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') end END), '') AS disabled_date
+				FROM 
+					ocp.um_user_attribute
+				WHERE
+					um_user_id IN (SELECT um_id from ocp.um_user WHERE um_user_name = #{umUserName} AND um_user_password = #{umUserPassword})		
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id)
+		) u
+		WHERE um_user_name = #{umUserName}
+		AND um_user_password = #{umUserPassword}
+		AND uid = #{umUserName}
+		ORDER BY last_login_time DESC, um_id 
+	</select>
+	
+	<select id="getOmniUserByLoginUserName" parameterType="java.lang.String" resultType="com.amorepacific.oneap.common.vo.user.UmOmniUser">
+		SELECT 
+			um_id						AS umId,
+			um_user_id					AS umUserId,
+			um_user_name				AS umUserName,
+			um_user_password			AS umUserPassword,
+			um_user_dormancy			AS umUserDormancy,
+			um_user_password_reset		AS umUserPasswordReset,
+			uid							AS uid,
+			incs_no						AS incsNo,
+			created_date,				
+			full_name					AS fullName,
+			last_login_time				AS lastLoginTime,
+			last_password_update		AS lastPasswordUpdate,
+			account_lock				AS accountLock,
+			failed_login_attempts		AS failedLoginAttempts,
+			unlock_time					AS unlockTime,
+			account_state				AS accountState,
+			account_disabled			AS accountDisabled,
+			disabled_date 				AS disabledDate
+		FROM
+		(			
+			SELECT 
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name,
+				uu.um_user_password,
+				uu.um_user_dormancy,
+				uu.um_user_password_reset,
+				uua.uid,
+				uua.incs_no,
+				uua.created_date,
+				uua.full_name,
+				uua.last_login_time,
+				uua.last_password_update,
+				uua.account_lock,
+				uua.failed_login_attempts,
+				uua.unlock_time,
+				uua.account_state,
+				uua.account_disabled,
+				uua.disabled_date
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='incsNo' THEN um_attr_value END), '') AS incs_no,
+					COALESCE( MAX(CASE WHEN um_attr_name='createdDate' THEN  TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') END), '') AS created_date,
+					COALESCE( MAX(CASE WHEN um_attr_name='cn' THEN um_attr_value END), '') AS full_name,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastLoginTime' THEN um_attr_value END), '') AS last_login_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='lastPasswordUpdate' THEN um_attr_value END), '') AS last_password_update,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountLock' THEN um_attr_value END), '') AS account_lock,
+					COALESCE( MAX(CASE WHEN um_attr_name='failedLoginAttempts' THEN um_attr_value END), '') AS failed_login_attempts,
+					COALESCE( MAX(CASE WHEN um_attr_name='unlockTime' THEN um_attr_value END), '') AS unlock_time,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountState' THEN um_attr_value END), '') AS account_state,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountDisabled' THEN um_attr_value END), '') AS account_disabled,
+					COALESCE( MAX(CASE WHEN um_attr_name='disabledDate' THEN case when (um_attr_value is null or um_attr_value = '') then '' else TO_CHAR(um_attr_value::timestamp, 'YYYYMMDDHH24MISS') end END), '') AS disabled_date
+				FROM 
+					ocp.um_user_attribute
+				WHERE
+					um_user_id IN (SELECT um_id FROM ocp.um_user WHERE um_user_name = #{umUserName})	
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id)
+		) u
+		WHERE um_user_name = #{umUserName} AND uid = #{umUserName}
+	</select>
+	
+	<!-- 온라인 ID로 사용자 정보 조회 -->
+	<select id="getUserByUserId" parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.UserVo" resultType="com.amorepacific.oneap.api.v1.mgmt.vo.OmniUserVo">
+	select
+		uu.um_user_name as user_name,
+		case when uu.um_user_dormancy is null or uu.um_user_dormancy = 'N' then 'false' else uu.um_user_dormancy end as user_dormancy,
+		uua.incs_no,
+		cast(uua.created_date as TEXT) as create_date,
+		uua.full_name,
+		case when uua.account_disabled is null then 'false' else uua.account_disabled end as account_disabled,
+		uua.disabled_date
+	from
+		ocp.um_user uu
+	join (
+		select
+			uua.um_user_id,
+			coalesce( MAX(case when uua.um_attr_name = 'incsNo' then um_attr_value end), '') as incs_no,
+			coalesce( MAX(case when uua.um_attr_name = 'createdDate' then TO_CHAR(um_attr_value::timestamp, 'YYYY-MM-DD HH24:MI:SS') end), '') as created_date,
+			coalesce( MAX(case when uua.um_attr_name = 'cn' then um_attr_value end), '') as full_name,
+			coalesce( MAX(case when uua.um_attr_name = 'lastPasswordUpdate' then um_attr_value end), '') as last_password_update,
+			coalesce( MAX(case when uua.um_attr_name = 'accountDisabled' then um_attr_value end), 'false') as account_disabled,
+			coalesce( MAX(CASE WHEN um_attr_name='disabledDate' THEN case when (um_attr_value is null or um_attr_value = '') then '' else TO_CHAR(um_attr_value::timestamp, 'YYYY-MM-DD HH24:MI:SS') end END), '') AS disabled_date
+		from
+			ocp.um_user_attribute uua 
+		where 
+		um_user_id = (select um_id from ocp.um_user where um_user_name = #{userName}) 
+		group by
+			uua.um_user_id ) uua on
+		(uu.um_id = uua.um_user_id)	
+		where uu.um_user_name = #{userName}
+		and um_user_password = #{userPassword}
+	</select>
+	
+	<select id="getChannelLoginUserListByFlag" parameterType="com.amorepacific.oneap.common.vo.user.UmChUser" resultType="com.amorepacific.oneap.common.vo.user.UmChUser">
+		SELECT 
+			ch_cd,
+			chcs_web_id,
+			incs_no,
+			incs_web_id_swt_yn,
+			incs_web_id_swt_dttm
+		FROM 
+			ocp.occued_chcs_lin_acct ocla 
+		WHERE
+			ch_cd = #{chCd}
+			AND chcs_web_id = #{chcsWebId} 
+			AND lin_pwd_ec = #{linPwdEc}
+	</select>
+	
+	<select id="getAbusingUserSearch" parameterType="int" resultType="com.amorepacific.oneap.api.v1.mgmt.vo.AbusingUserVo">
+		SELECT 
+			acct_lock_rq_emp_id as lockEmpId,
+			acct_lock_incs_no as incs_no,
+			mbpf_acct_lock_rsn_cd as lockRsnCd,
+			TO_CHAR(acct_lock_reg_dttm::timestamp, 'YYYY-MM-DD HH24:MI:SS') as lockRegDttm,
+			TO_CHAR(acct_lock_canc_dttm ::timestamp, 'YYYY-MM-DD HH24:MI:SS') as lockCancDttn,
+			acct_lock_canc_ch_cd as lockCanaChCd,
+			fscr_id as fscrId,
+			fscr_tsp as fscrTsp,
+			lsch_id as lschId,
+			lsch_tsp as lschTsp,
+			sdtp_cd as sdtpCd,
+			reg_appl_cl_cd as applCld
+		FROM 
+			ocp.occuem_cust_acct_lock ocal 
+		WHERE 
+			acct_lock_incs_no = #{incsNo}
+	</select>
+	<update id="updateAbusingUser" parameterType="int" >
+		UPDATE 
+			ocp.occuem_cust_acct_lock ocal 
+		SET
+			acct_lock_canc_dttm = now(),
+			lsch_tsp = now()
+		WHERE
+			acct_lock_incs_no = #{incsNo}	
+	</update>
+	
+	<insert id="abusingUserLockLog" parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.AbusingLockVo">
+		INSERT INTO ocp.occueg_cust_acct_lock_log
+		(
+			mbpf_acct_lock_log_no, 
+			acct_lock_incs_no, 
+			acct_lock_cust_lin_dttm, 
+			acct_lock_canc_rq_dttm,
+			mbpf_acct_lock_log_tp_cd, 
+			aces_ch_cd, 
+			mbpf_lock_canc_imps_rsn_cd, 
+			clnt_ip,
+			clnt_ua_vl, 
+			fscr_id, fscr_tsp,
+			lsch_id, lsch_tsp,
+			sdtp_cd, reg_appl_cl_cd
+		) VALUES
+		(
+			nextval('ocp.seq_occueg_cust_acct_lock_log'), 
+			#{incsNo}, 
+			now(), 
+			<choose>
+				<when test = "'update'.equals(doAction)">
+					now()
+				</when>
+				<otherwise>
+					NULL
+				</otherwise>
+			</choose>,
+			#{acctLockLogTpCd}, 
+			#{chCd}, 
+			#{lockCancImpsRsnCd}, 
+			#{clntIp}, 
+			#{clntUaVl}, 
+			'OCP', now(),
+			'OCP', now(), 
+			'230', 'OCP'
+		)
+	</insert>
+	
+	<insert id="abusingUserInsert" parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.AbusingUserVo">
+		INSERT INTO ocp.occuem_cust_acct_lock
+		(
+			acct_lock_rq_emp_id, 
+			acct_lock_incs_no, 
+			mbpf_acct_lock_rsn_cd, 
+			acct_lock_reg_dttm,
+			acct_lock_canc_dttm, 
+			acct_lock_canc_ch_cd, 
+			fscr_id, 
+			fscr_tsp,
+			lsch_id, 
+			lsch_tsp,
+			sdtp_cd, 
+			reg_appl_cl_cd
+		) VALUES
+		(
+			#{lockEmpId},
+			#{incsNo}, 
+			#{lockRsnCd},
+			now(),
+			To_TIMESTAMP(#{lockCancDttn},'YYYY-MM-DD HH24:mi:ss.SSSSSX'),
+			#{lockCanaChCd}, 
+			#{fscrId}, 
+			now(),
+			#{lschId}, 
+			now(), 
+			'230', 
+			#{applCld}
+		)
+	</insert>
+	<update id="web2AppSendAuthKey" parameterType="com.amorepacific.oneap.api.v1.mgmt.vo.Web2AppVo">
+		UPDATE ocp.web2app_authentication
+		SET
+		   access_token=#{accessToken}
+		WHERE
+		    web2app_id=#{uuid}
+	</update>
+</mapper>

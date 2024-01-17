@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.api.v1.admin.mapper.AdminApiMapper">
+
+	<sql id="getAdminUserQuery">
+	
+		SELECT 
+			um_id,
+			um_user_id,
+			web_id,
+			incs_no,
+			name,
+			'030' as ch_cd,
+			'N' as swt_yn,
+		     '' as swt_dttm 
+		FROM 
+		(
+			SELECT
+				uu.um_id,
+				uu.um_user_id,
+				uu.um_user_name as web_id,
+				uua.incs_no,
+				uua.full_name as name,
+				uua.accountDisabled as disabled
+			FROM
+				ocp.um_user uu
+			JOIN
+			(
+				SELECT 
+					um_user_id,
+					COALESCE( MAX(CASE WHEN um_attr_name='uid' THEN um_attr_value END), '') AS uid,
+					COALESCE( MAX(CASE WHEN um_attr_name='incsNo' THEN um_attr_value END), '') AS incs_no,
+					COALESCE( MAX(CASE WHEN um_attr_name='cn' THEN um_attr_value END), '') AS full_name,
+					COALESCE( MAX(CASE WHEN um_attr_name='accountDisabled' THEN um_attr_value END), 'false') AS accountDisabled
+				FROM 
+					ocp.um_user_attribute
+					where 1 = 1
+			<if test="incsNo != null and incsNo != ''">
+			and um_user_id in (select um_id from ocp.um_user where um_user_incsno = #{incsNo})
+			</if>
+			<if test="webId != null and webId != ''">
+			and um_user_id in (select um_id from ocp.um_user where um_user_name = #{webId})
+			</if>					
+				GROUP BY um_user_id
+			) uua ON (uu.um_id = uua.um_user_id AND uua.accountDisabled = 'false')
+		) u
+		WHERE  1 = 1
+		<if test="incsNo != null and incsNo != ''">
+			AND incs_no = #{incsNo}
+		</if>
+		<if test="webId != null and webId != ''">
+		AND web_id = #{webId}
+		</if>
+		
+		UNION ALL
+		
+		SELECT 
+			* 
+		FROM 
+		(
+ 			SELECT 
+ 				0 as um_id,
+ 				'' as um_user_id,
+				chcs_web_id as web_id,
+				to_char(incs_no, 'FM999999999') as incs_no,
+				'' as name,
+				ch_cd,
+				incs_web_id_swt_yn as swt_yn,
+				COALESCE( TO_CHAR(incs_web_id_swt_dttm::timestamp, 'YYYYMMDDHH24MISS') , '') as swt_dttm 
+ 			FROM 
+ 				ocp.occued_chcs_lin_acct ocla 
+ 		) u
+ 		WHERE 1 = 1 
+ 		<if test="incsNo != null and incsNo != ''">
+			and incs_no = #{incsNo}
+		</if>
+		<if test="webId != null and webId != ''">
+		and web_id = #{webId}
+		</if>
+	</sql>
+	
+	<select id="getAdminUser" parameterType="com.amorepacific.oneap.api.v1.admin.vo.AdminSearchRequest" resultType="com.amorepacific.oneap.api.v1.admin.vo.AdminSearchList">
+		<include refid="getAdminUserQuery"/>
+	</select>
+
+	<select id="getAdminUserSearchListPaging" parameterType="com.amorepacific.oneap.api.v1.admin.vo.AdminSearchRequest" resultType="com.amorepacific.oneap.api.v1.admin.vo.AdminSearchList">
+		SELECT
+			R.*
+		FROM
+		(	
+		<include refid="getAdminUserQuery"/>
+		) R
+		ORDER BY incs_no, name
+		LIMIT #{listSize, jdbcType=INTEGER} OFFSET #{offsetSize, jdbcType=INTEGER}	
+	</select>
+	
+	<select id="getAdminUserSearchListPagingCount" parameterType="com.amorepacific.oneap.api.v1.admin.vo.AdminSearchRequest" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+		(
+		
+		<include refid="getAdminUserQuery"/>
+		
+		) R	
+	</select>
+	
+</mapper>

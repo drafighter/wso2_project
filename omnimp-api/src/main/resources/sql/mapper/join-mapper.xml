@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.api.v2.join.mapper.JoinMapper">
+
+	<!-- 채널별 현재 사용자가 약관 미동의 내역이 있는지 체크 -->
+	<select id="getAcceptTermsOfChannelCount" parameterType="map" resultType="int">	
+		SELECT 
+			CASE 
+				WHEN termcnt = agreecnt THEN 1
+				ELSE 0
+				END
+		FROM (
+			SELECT (
+				SELECT 
+					count(*) 
+				FROM 
+					ocp.occuem_tnc AS ot 
+				WHERE 
+					ot.ch_cd = #{chCd}
+					AND ot.tnc_agr_mand_yn = 'Y'
+				) AS termcnt,
+				count(*) AS agreecnt
+	        FROM     
+	        	ocp.occued_cust_tnc	AS oct
+            JOIN     
+                ocp.occuem_tnc AS ot
+            ON        
+                ot.tcat_cd = oct.tcat_cd 
+                AND ot.tncv_no = oct.tncv_no
+            WHERE
+                ot.ch_cd = #{chCd}
+                AND TO_CHAR(oct.incs_no, 'FM999999999') = #{incsNo}
+                AND ot.tnc_agr_mand_yn = 'Y'
+                AND oct.tnc_agr_yn = 'A'
+		) a
+	</select>
+	
+	<!-- 로그인 아이디가 있는지 체크 -->
+	<select id="getCountAvaiableUserId" parameterType="String" resultType="int">
+		SELECT	
+			SUM(idcnt) AS idcnt
+		FROM
+		(
+			SELECT
+				COUNT(*) AS idcnt 
+			FROM
+				ocp.um_user uu 
+			WHERE um_user_name = #{id}
+		) a	
+	</select>
+	
+	<!-- 사용자 휴면 여부 조회 -->
+	<select id="isDormancyUser" parameterType="String" resultType="String">
+		SELECT			
+			uu.um_user_dormancy 	AS dormancy
+		FROM
+			ocp.um_user AS uu
+		WHERE
+			uu.um_user_incsno = #{incsNo}
+	</select>
+	
+	<!-- 사용자 휴면 복구 -->
+	<update id="updateDormancyUser" parameterType="String">
+		UPDATE			
+			ocp.um_user AS ua
+		SET
+			um_user_dormancy = 'N'
+		WHERE
+			um_user_incsno = #{incsNo}
+	</update>
+
+</mapper>

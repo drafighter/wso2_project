@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.amorepacific.oneap.api.v2.terms.mapper.TermsMapper">
+
+	<select id="getCorpTerms" resultType="com.amorepacific.oneap.api.v2.terms.vo.TermsVo" parameterType="com.amorepacific.oneap.api.v2.terms.vo.TermsVo">
+	select 
+		a.tcat_cd,
+		a.tncv_no,
+		a.ch_cd,
+		a.mk_sn,
+		a.tnc_ttl,
+		a.tnc_txt_url,
+		a.tnc_agr_mand_yn,
+		a.tnc_agr_mand_yn_txt,
+		a.aply_bgn_dt,
+		a.aply_end_dt
+	from 
+	(	
+		SELECT
+			tcat_cd, 
+			tncv_no, 
+			ch_cd, 
+			mk_sn, 
+			tnc_ttl, 
+			tnc_txt_url, 
+			tnc_agr_mand_yn, 
+			tnc_agr_mand_yn_txt,
+			aply_bgn_dt, 
+			aply_end_dt
+		FROM
+		(	
+			SELECT 
+				tcat_cd, 
+				tncv_no, 
+				ch_cd, 
+				mk_sn, 
+				tnc_ttl, 
+				tnc_txt_url, 
+				tnc_agr_mand_yn,
+				(CASE WHEN tnc_agr_mand_yn = 'Y' THEN '필수' ELSE '선택' END) as tnc_agr_mand_yn_txt,  
+				aply_bgn_dt, 
+				aply_end_dt,
+				to_date(aply_bgn_dt, 'YYYYMMDD') as aply_bgn_dt1, 
+				to_date(aply_end_dt, 'YYYYMMDD') as aply_end_dt1 
+			FROM 
+				ocp.occuem_tnc
+			WHERE
+				ch_cd = #{chCd}
+				AND mk_sn = 0
+				<!--   AND tncv_no = (select max(tncv_no) from ocp.occuem_tnc where ch_cd = #{chCd} and mk_sn = 0) -->	
+		) a
+		WHERE aply_bgn_dt1 <![CDATA[<]]> now() and aply_end_dt1 <![CDATA[>]]> now()
+	) a,
+	(select max(tncv_no) as tncv_no, tcat_cd from ocp.occuem_tnc where ch_cd = #{chCd} and mk_sn = 0 group by tcat_cd ) b
+	where a.tncv_no = b.tncv_no and a.tcat_cd = b.tcat_cd
+	order by a.mk_sn asc			
+	</select>
+
+	<select id="existTerms" parameterType="com.amorepacific.oneap.common.vo.Terms" resultType="int">
+	 	SELECT
+	 		count(*) as cnt
+	 	FROM
+	 		ocp.occuem_tnc as ot
+	 	WHERE
+	 		tcat_cd = #{tcatCd}
+	 		AND tncv_no = 
+	 		(
+				SELECT 
+					MAX(tncv_no)
+				FROM 
+					ocp.occuem_tnc ot 
+				WHERE 
+					TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ >= ]]> aply_bgn_dt::integer
+					AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ < ]]> aply_end_dt::integer
+					AND tcat_cd	= #{tcatCd}
+			)	
+	</select>
+	
+	<update id="mergeTerms"
+		parameterType="com.amorepacific.oneap.common.vo.Terms">
+		WITH upsert AS (
+			UPDATE 	ocp.occued_cust_tnc
+			SET 	tnc_agr_yn		= #{tncAgrYn}
+			WHERE	incs_no  		= #{incsNo}
+			AND		tcat_cd 		= #{tcatCd}
+			AND		tncv_no			= (
+										SELECT 
+											MAX(tncv_no)    
+										FROM 
+											ocp.occuem_tnc ot 
+										WHERE 
+											TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ >= ]]> aply_bgn_dt::integer
+											AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ < ]]> aply_end_dt::integer
+											AND tcat_cd = #{tcatCd}					 
+									  )
+			RETURNING *
+		) INSERT INTO ocp.occued_cust_tnc (
+				incs_no
+				, tcat_cd
+				, tnc_agr_yn
+				, tnca_dttm
+				, chg_ch_cd
+				, tncv_no
+				, fscr_id
+				, fscr_tsp
+				, lsch_id
+				, lsch_tsp
+			) SELECT 
+				#{incsNo}
+				, #{tcatCd}				
+				, #{tncAgrYn}
+				, COALESCE( #{tncaDttm}::timestamptz, current_timestamp )
+				, #{chgChCd}
+				, #{tncvNo}
+				, ot.fscr_id 
+				, current_timestamp
+				, ot.lsch_id
+				, current_timestamp
+			FROM
+				ocp.occuem_tnc AS ot
+			WHERE
+				NOT EXISTS (SELECT * FROM upsert)
+				AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ >= ]]> aply_bgn_dt::integer
+				AND TO_CHAR(current_timestamp, 'YYYYMMDD')::integer <![CDATA[ < ]]> aply_end_dt::integer
+				AND tcat_cd = #{tcatCd}
+	</update>	
+	
+	<insert id="insertTermHist" parameterType="com.amorepacific.oneap.common.vo.Terms">
+		INSERT INTO 
+			ocp.occueh_cust_tnc_hist
+		(
+			incs_no, 
+			tcat_cd, 
+			tnca_chg_dt, 
+			tnc_agr_hist_sn, 
+			tncv_no, 
+			tnc_agr_yn, 
+			tnca_dttm, 
+			chg_ch_cd, 
+			fscr_id, 
+			fscr_tsp, 
+			lsch_id, 
+			lsch_tsp
+		)
+		VALUES
+			(
+				#{incsNo},	
+				#{tcatCd},	
+				#{tncaChgDt},
+				<!-- nextval('ocp.seq_terms_hist'), 2021.01.04 채번 오류 수정 -->
+				(SELECT coalesce(max(tnc_agr_hist_sn) + 1, 1) FROM ocp.occueh_cust_tnc_hist WHERE incs_no = #{incsNo} AND tcat_cd = #{tcatCd} AND TO_CHAR(tnca_dttm, 'YYYYMMDD')::integer = TO_CHAR(current_timestamp, 'YYYYMMDD')::integer),
+				#{tncvNo},	
+				#{tncAgrYn},	
+				current_timestamp,	
+				#{chgChCd},	
+				'OCP',	
+				current_timestamp, 
+				'OCP',	
+				current_timestamp
+			)
+	</insert>
+	
+	<select id="hasTermsAgree" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser" resultType="int">
+		SELECT 
+			CASE WHEN termcnt = agreecnt THEN 1
+			ELSE 0 END AS flag
+		FROM
+		(
+			SELECT 	
+				(SELECT COUNT(*) from ocp.occuem_tnc AS ot where ot.ch_cd = #{chCd} and ot.tnc_agr_mand_yn = 'Y' AND ot.mk_sn <![CDATA[>]]> 0) as termcnt,
+				count(*) as agreecnt
+			FROM 	
+				ocp.occued_cust_tnc	AS oct
+			JOIN
+				ocp.occuem_tnc AS ot
+			ON		
+				ot.tcat_cd = oct.tcat_cd 
+				AND ot.tncv_no = oct.tncv_no 
+			WHERE
+				oct.chg_ch_cd = #{chCd}
+				<!--  2020-10.27 hjw0228 Query 튜닝
+				AND TO_CHAR(oct.incs_no, 'FM999999999') = #{incsNo}
+				-->
+				AND oct.incs_no = cast(coalesce(#{incsNo}, '0') as integer)
+				AND ot.tnc_agr_mand_yn = 'Y'
+				AND oct.tnc_agr_yn = 'A'
+				AND ot.mk_sn <![CDATA[>]]> 0
+		) a
+	</select>
+	
+	<select id="hasCorpTermsAgree" parameterType="com.amorepacific.oneap.common.vo.user.UmOmniUser" resultType="int">
+		SELECT 
+			CASE WHEN termcnt = agreecnt THEN 1
+			ELSE 0 END AS flag
+		FROM
+		(
+			SELECT 	
+				(SELECT COUNT(*) from ocp.occuem_tnc AS ot where ot.ch_cd = #{chCd} and ot.tnc_agr_mand_yn = 'Y' AND ot.mk_sn = 0) as termcnt,
+				count(*) as agreecnt
+			FROM 	
+				ocp.occued_cust_tnc	AS oct
+			JOIN
+				ocp.occuem_tnc AS ot
+			ON		
+				ot.tcat_cd = oct.tcat_cd 
+				AND ot.tncv_no = oct.tncv_no 
+			WHERE
+				oct.chg_ch_cd = #{chCd}
+				<!--  2020-10.27 hjw0228 Query 튜닝
+				AND TO_CHAR(oct.incs_no, 'FM999999999') = #{incsNo}
+				-->
+				AND oct.incs_no = cast(coalesce(#{incsNo}, '0') as integer)
+				AND ot.tnc_agr_mand_yn = 'Y'
+				AND oct.tnc_agr_yn = 'A'
+				AND ot.mk_sn = 0
+		) a	
+	</select>
+	
+</mapper>

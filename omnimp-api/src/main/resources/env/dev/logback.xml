@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+	<property name="LOGS_PATH" value="/data/was/tomcat9/logs"/>
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+       	<layout class="ch.qos.logback.classic.PatternLayout">
+           	<Pattern>▶ %-5level %d{HH:mm:ss.SSS} [%thread] [%X{trx-uuid}] %logger[%method:%line] - %msg%n</Pattern>
+       	</layout>
+	</appender>
+       	
+   	<appender name="AP_STD_LOG" class="com.amorepacific.log.client.ApLogAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+     		<level>DEBUG</level>
+     		<onMatch>DENY</onMatch>
+ 		</filter>   	
+       	<file>${LOGS_PATH}/omni_api_application.log</file>
+       	<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+           	<layout class="com.amorepacific.log.client.ApLogInfoLayout" />
+       	</encoder>
+       	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+           	<fileNamePattern>${LOGS_PATH}/omni_api_application.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+           	<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+               	<maxFileSize>100MB</maxFileSize>
+           	</timeBasedFileNamingAndTriggeringPolicy>
+           	<maxHistory>100</maxHistory>
+       	</rollingPolicy>  
+       	<logManagerHost>kafka://172.28.6.212:9092</logManagerHost>
+       	<kafkaTopic>omni_topic</kafkaTopic>
+       	<applicationName>omni-application</applicationName>
+       	<sysDiv>omni</sysDiv>
+       	<layoutClass>com.amorepacific.log.client.ApLogInfoLayout</layoutClass>
+   	</appender>
+   	
+   	<appender name="AP_CONSOLE_LOG" class="com.amorepacific.log.client.ApLogConsoleAppender">
+		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+			<layout class="com.amorepacific.log.client.ApLogInfoLayout" />
+	 	</encoder>
+		<applicationName>omni-application</applicationName>
+	    <sysDiv>omni</sysDiv>
+	    <layoutClass>com.amorepacific.log.client.ApLogInfoLayout</layoutClass>
+	</appender>
+
+    <logger name="com.amorepacific.oneap.common" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.amorepacific.oneap.api" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.amorepacific.oneap.api.handler.ApiInterceptorHandler" level="debug" additivity="false">
+        <appender-ref ref="AP_STD_LOG" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.amorepacific.oneap.api.v1.mgmt.validator.MgmtApiValidator" level="debug" additivity="false">
+        <appender-ref ref="AP_STD_LOG" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.amorepacific.oneap.api.v1.mgmt.web.MgmtApiController" level="debug" additivity="false">
+        <appender-ref ref="AP_STD_LOG" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="com.amorepacific.oneap.api.v1.wso2.service.Wso2ApiCommonService" level="debug" additivity="false">
+        <appender-ref ref="AP_STD_LOG" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    
+    <logger name="org.springframework" level="INFO" />
+	<logger name="org.springframework.web.filter" level="ERROR" />
+	<logger name="org.springframework.security" level="ERROR" />
+	<logger name="org.springframework.core" level="ERROR" />
+	<logger name="org.springframework.context" level="ERROR" />
+	<logger name="org.springframework.beans" level="ERROR" />
+	<logger name="org.springframework.jmx" level="ERROR" />
+	<logger name="org.springframework.scheduling" level="ERROR" />
+
+	<logger name="org.springframework.boot.admin" level="ERROR" />
+	<logger name="org.springframework.boot.context.config"
+		level="ERROR" />
+	<logger name="org.springframework.boot.context.logging"
+		level="ERROR" />
+	<logger name="org.springframework.boot.devtools" level="ERROR" />
+	<logger name="org.springframework.boot.autoconfigure"
+		level="ERROR" />
+
+	<logger name="com.ulisesbocchio" level="ERROR" /> <!-- jasypt -->
+
+	<logger name="springfox.documentation.schema" level="ERROR" /> <!-- swagger -->
+
+	<logger name="io.netty.util" level="ERROR" /> <!-- netty -->
+
+	<logger name="org.mybatis.spring" level="ERROR" />
+	<logger name="org.apache.ibatis" level="OFF" />
+
+	<logger name="org.quartz" level="ERROR" />
+	<logger name="org.hibernate" level="OFF" />
+	<logger name="org.apache.commons.beanutils" level="OFF" />
+
+	<logger name="jdbc" level="ERROR" />
+
+	<logger name="jdbc.sqlonly" level="OFF" />
+	<logger name="jdbc.sqltiming" level="ERROR" />
+	<logger name="jdbc.audit" level="OFF" />
+	<logger name="jdbc.resultset" level="OFF" />
+	<logger name="jdbc.resultsettable" level="OFF" />
+	<logger name="jdbc.connection" level="OFF" />
+    
+    <root level="error">
+        <appender-ref ref="STDOUT" />
+    </root>   	
+</configuration>
