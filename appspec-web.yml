@@ -1,0 +1,22 @@
+version: 0.0
+os: linux
+files:
+  - source:  /omnimp-auth.war
+    destination: /data/web-app/
+
+file_exists_behavior: OVERWRITE
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: apache
+    group: web
+
+hooks:
+  BeforeInstall:
+    - location: deploy-before.sh
+      runas: ec2-user
+  AfterInstall:
+    - location: deploy.sh
+      runas: ec2-user
+      timeout: 180

@@ -1,0 +1,20 @@
+version: 0.0
+os: linux
+files:
+  - source:  /omnimp-emp-auth.war
+    destination: /data/was-app/omnimp
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: tomcat
+    group: was
+
+hooks:
+  BeforeInstall:
+    - location: deploy-before.sh
+      runas: ec2-user
+  AfterInstall:
+    - location: deploy.sh
+      runas: ec2-user
+      timeout: 180
